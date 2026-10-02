@@ -1,0 +1,144 @@
+{
+    // sudo apt install python3-colcon-clean
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Colcon: Build",
+            "type": "shell",
+            "linux": {
+                "command": "colcon build"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/${config:ros_workspace}/"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Colcon: Build [Symlink]",
+            "type": "shell",
+            "linux": {
+                "command": "colcon build --symlink-install"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/${config:ros_workspace}/"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Colcon: Clean Build",
+            "type": "shell",
+            "linux": {
+                "command": "colcon clean workspace -y"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/${config:ros_workspace}/"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "ROS: Create Package",
+            "type": "shell",
+            "linux": {
+                "command": "ros2 pkg create ${input:ros_pkg} --dependencies ${input:ros_pkg_dep} --build-type ${input:ros_build} --license ${input:ros_pkg_lic} --maintainer-name bonnybk --maintainer-email bonnybabukachappilly@gmail.com"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/${config:ros_workspace}/src"
+            },
+            "problemMatcher": []
+        },
+        // * ---------------------------------------------------------------------------
+        // * ------------------------------- GROUP TASKS -------------------------------
+        // * ---------------------------------------------------------------------------
+        {
+            "label": "Colcon: Clean & Build",
+            "dependsOn": [
+                "Colcon: Clean Build",
+                "Colcon: Build",
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "Colcon: Clean & Build [Symlink]",
+            "dependsOn": [
+                "Colcon: Clean Build",
+                "Colcon: Build [Symlink]",
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "Colcon: Clean, Create pkg & Build",
+            "dependsOn": [
+                "Colcon: Clean Build",
+                "ROS: Create Package",
+                "Colcon: Build",
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "Colcon: Clean, Create pkg & Build [Symlink]",
+            "dependsOn": [
+                "Colcon: Clean Build",
+                "ROS: Create Package",
+                "Colcon: Build [Symlink]",
+            ],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        // * ---------------------------------------------------------------------------
+        // * ------------------------------ ROS RUN TASKS ------------------------------
+        // * ---------------------------------------------------------------------------
+        // * ---------------------------------------------------------------------------
+        // * ----------------------------- ROS LAUNCH TASKS ----------------------------
+        // * ---------------------------------------------------------------------------
+    ],
+    "inputs": [
+        {
+            "id": "ros_build",
+            "type": "pickString",
+            "description": "ROS build type",
+            "default": "ament_python",
+            "options": [
+                "ament_python",
+                "ament_cmake"
+            ]
+        },
+        {
+            "id": "ros_pkg",
+            "type": "promptString",
+            "description": "ROS package name"
+        },
+        {
+            "id": "ros_pkg_dep",
+            "type": "promptString",
+            "description": "ROS package dependencies"
+        },
+        {
+            "id": "ros_pkg_lic",
+            "type": "pickString",
+            "description": "ROS package license",
+            "default": "GPL-3.0-only",
+            "options": [
+                "Apache-2.0",
+                "BSL-1.0",
+                "BSD-2.0",
+                "BSD-2-Clause",
+                "BSD-3-Clause",
+                "GPL-3.0-only",
+                "LGPL-3.0-only",
+                "MIT",
+                "MIT-0",
+            ]
+        },
+    ]
+}
