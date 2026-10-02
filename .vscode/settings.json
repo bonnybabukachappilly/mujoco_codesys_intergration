@@ -2,10 +2,10 @@
     "ros_workspace": "workspace",
     "cmake.ignoreCMakeListsMissing": true,
     "python.autoComplete.extraPaths": [
-        "./ros_ws/install/**/lib/python3.*/site-packages",
+        "./workspace/install/**/lib/python3.*/site-packages",
     ],
     "python.analysis.extraPaths": [
-        "./ros_ws/install/**/lib/python3.*/site-packages",
+        "./workspace/install/**/lib/python3.*/site-packages",
     ],
     "python-envs.pythonProjects": [
         {
