@@ -20,7 +20,6 @@
     </worldbody>
 
     <include file="../robots/cr5/robot.xml" />
-    <!-- <include file="../robots/cr5/actuators.xml" /> -->
 
     <keyframe>
         <key name="home" qpos="0 0 0 0 0 0" ctrl="0 0 0 0 0 0" />

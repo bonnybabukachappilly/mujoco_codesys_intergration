@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="cr5_robot" params="prefix:=^|'' package_name:='cr5_description'">
+    <xacro:macro name="cr5_robot" params="prefix:=^|''">
 
         <!-- Base Link -->
         <link name="${prefix}base_link">
@@ -14,13 +14,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/visual/base.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/visual/base.STL" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/collision/base.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/collision/base.STL" />
                 </geometry>
             </collision>
         </link>
@@ -45,13 +45,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/visual/link_1.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/visual/link_1.STL" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/collision/link_1.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/collision/link_1.STL" />
                 </geometry>
             </collision>
         </link>
@@ -76,13 +76,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/visual/link_2.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/visual/link_2.STL" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/collision/link_2.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/collision/link_2.STL" />
                 </geometry>
             </collision>
         </link>
@@ -107,13 +107,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/visual/link_3.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/visual/link_3.STL" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/collision/link_3.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/collision/link_3.STL" />
                 </geometry>
             </collision>
         </link>
@@ -138,13 +138,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/visual/link_4.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/visual/link_4.STL" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/collision/link_4.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/collision/link_4.STL" />
                 </geometry>
             </collision>
         </link>
@@ -169,13 +169,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/visual/link_5.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/visual/link_5.STL" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/collision/link_5.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/collision/link_5.STL" />
                 </geometry>
             </collision>
         </link>
@@ -200,13 +200,13 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/visual/link_6.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/visual/link_6.STL" />
                 </geometry>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="package://${package_name}/meshes/collision/link_6.STL" />
+                    <mesh filename="package://dobot_description/meshes/cr5/collision/link_6.STL" />
                 </geometry>
             </collision>
         </link>
