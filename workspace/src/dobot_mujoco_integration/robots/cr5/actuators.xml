@@ -1,0 +1,11 @@
+<mujoco>
+    <actuator>
+        <position name="joint_1" joint="joint_1" class="cr5_j123" ctrlrange="-6.2832 6.2832" />
+        <position name="joint_2" joint="joint_2" class="cr5_j123" ctrlrange="-6.2832 6.2832"
+            kp="8600" />
+        <position name="joint_3" joint="joint_3" class="cr5_j123" ctrlrange="-2.792 2.792" />
+        <position name="joint_4" joint="joint_4" class="cr5_j456" ctrlrange="-6.2832 6.2832" />
+        <position name="joint_5" joint="joint_5" class="cr5_j456" ctrlrange="-6.2832 6.2832" />
+        <position name="joint_6" joint="joint_6" class="cr5_j456" ctrlrange="-6.2832 6.2832" />
+    </actuator>
+</mujoco>
