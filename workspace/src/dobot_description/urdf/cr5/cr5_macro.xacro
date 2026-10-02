@@ -213,11 +213,11 @@
 
         <joint name="${prefix}tcp_joint" type="fixed">
             <parent link="${prefix}link_6" />
-            <child link="${prefix}tcp_link" />
+            <child link="${prefix}flange" />
             <origin xyz="0 0 0.01" rpy="0 0 0" />
         </joint>
 
-        <link name="${prefix}tcp_link" />
+        <link name="${prefix}flange" />
 
     </xacro:macro>
 
