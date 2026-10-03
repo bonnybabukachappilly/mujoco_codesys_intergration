@@ -55,7 +55,7 @@
                                         fullinertia="0.000079401 0.000079169 0.000130860 4.662104e-15 2.944135e-14 -9.613137e-08" />
                                     <geom class="cr5_visual" mesh="link_6_visual" />
                                     <geom class="cr5_collision" mesh="link_6_collision" />
-                                    <site name="tcp" pos="0 0 0.01" size="0.015" />
+                                    <!-- <site name="gripper" pos="0 0 0" size="0.005" /> -->
                                 </body>
                             </body>
                         </body>

@@ -1,0 +1,11 @@
+<mujoco>
+    <equality>
+        <joint joint1="slider_2" joint2="slider_1" polycoef="0 1 0 0 0" solref="0.005 1"
+            solimp="0.95 0.99 0.001 0.5 2" />
+    </equality>
+
+    <actuator>
+        <position name="slider_1" joint="slider_1" ctrlrange="0 0.0187"
+            kp="1000" kv="10" forcerange="-50 50" />
+    </actuator>
+</mujoco>

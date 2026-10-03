@@ -1,0 +1,11 @@
+<mujoco>
+    <asset>
+        <mesh name="body_visual" file="meshes/visual/base.stl" />
+        <mesh name="finger_1_visual" file="meshes/visual/finger_1.stl" />
+        <mesh name="finger_2_visual" file="meshes/visual/finger_2.stl" />
+
+        <mesh name="body_collision" file="meshes/collision/base.stl" />
+        <mesh name="finger_1_collision" file="meshes/collision/finger_1.stl" />
+        <mesh name="finger_2_collision" file="meshes/collision/finger_2.stl" />
+    </asset>
+</mujoco>

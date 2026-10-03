@@ -4,7 +4,7 @@
     <statistic center="0 0 0.4" extent="1.8" />
 
     <visual>
-        <headlight ambient="0.4 0.4 0.4" diffuse="0.8 0.8 0.8" specular="0.2 0.2 0.2" />
+        <headlight ambient="0.5 0.5 0.5" diffuse="0.8 0.8 0.8" specular="0.2 0.2 0.2" />
     </visual>
 
     <asset>
@@ -12,10 +12,9 @@
             width="300" height="300" />
         <material name="grid" texture="grid" texrepeat="5 5" reflectance="0.1" />
 
-        <!-- Each arm is the full single-arm model (robot.xml). Mesh paths resolve
-            relative to that file, and its actuators come along with the attach. -->
         <model name="cr5_left" file="../robots/cr5/robot.xml" />
         <model name="cr5_right" file="../robots/cr5/robot.xml" />
+
     </asset>
 
     <worldbody>
@@ -23,16 +22,18 @@
         <camera name="main_camera" pos="2.5 0 1.5" xyaxes="0 1 0 -0.5 0 0.85" />
         <geom name="floor" type="plane" size="0 0 0.05" material="grid" />
 
-        <!-- Resulting names: left_base, left_joint_1..6, left_actuators ... -->
         <frame name="left_mount" pos="0 -0.5 0">
             <attach model="cr5_left" body="base" prefix="left_" />
         </frame>
+
         <frame name="right_mount" pos="0 0.5 0">
             <attach model="cr5_right" body="base" prefix="right_" />
         </frame>
+
     </worldbody>
 
     <keyframe>
-        <key name="home" qpos="0 0 0 0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0 0 0 0 0 0" />
+        <key name="home" qpos="0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0" />
+        <!-- <key name="home" qpos="0 0" ctrl="0" /> -->
     </keyframe>
 </mujoco>
