@@ -1,0 +1,39 @@
+<mujoco model="pgc_50_35">
+    <compiler angle="radian" />
+
+    <include file="gripper_asset.xml" />
+    <include file="gripper_default.xml" />
+
+    <worldbody>
+        <body name="gripper_base" childclass="pgc_50_35" euler="-1.57079633 0 0">
+            <inertial pos="0 0 0.038" mass="0.4528" diaginertia="0.000415 0.000455 0.000248" />
+            <geom class="pgc_50_35_visual" mesh="body_visual" />
+            <geom class="pgc_50_35_collision" mesh="body_collision" />
+            <!-- <site name="tcp" pos="0 0 0.1189" size="0.01" /> -->
+
+            <body name="finger_1" pos="0 0 0">
+                <inertial pos="0.005 0.004 0.017" mass="0.0236"
+                    fullinertia="4.68e-06 5.57e-06 2.70e-06 -5.9e-07 -1.36e-06 -1.26e-06" />
+                <joint name="slider_1" />
+                <geom class="pgc_50_35_visual" mesh="finger_1_visual" />
+                <geom class="pgc_50_35_collision" mesh="finger_1_collision" />
+            </body>
+
+            <body name="finger_2" pos="0 0 0" euler="0 3.14159265 0">
+                <inertial pos="-0.005 -0.004 0.017" mass="0.0236"
+                    fullinertia="4.68e-06 5.57e-06 2.70e-06 -5.9e-07 1.36e-06 1.26e-06" />
+                <joint name="slider_2" damping="0" />
+                <geom class="pgc_50_35_visual" mesh="finger_2_visual" />
+                <geom class="pgc_50_35_collision" mesh="finger_2_collision" />
+            </body>
+        </body>
+    </worldbody>
+
+    <contact>
+        <exclude body1="gripper_base" body2="finger_1" />
+        <exclude body1="gripper_base" body2="finger_2" />
+        <exclude body1="finger_1" body2="finger_2" />
+    </contact>
+
+    <include file="gripper_control.xml" />
+</mujoco>

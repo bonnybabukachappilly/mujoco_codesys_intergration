@@ -9,7 +9,6 @@
     ],
     "python-envs.pythonProjects": [
         {
-            
             "path": ".",
             "envManager": "ms-python.python:system",
             "packageManager": "ms-python.python:pip"
@@ -17,5 +16,11 @@
     ],
     "ruff.enable": true,
     "ruff.lint.enable": true,
-    "ruff.format.enable": true
+    "ruff.format.enable": true,
+    "xml.fileAssociations": [
+        {
+            "pattern": "**/*.xml",
+            "systemId": "https://raw.githubusercontent.com/google-deepmind/mujoco/refs/heads/main/src/xml/generated/mjcf.xsd"
+        }
+    ]
 }
