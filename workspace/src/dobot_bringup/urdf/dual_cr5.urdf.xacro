@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="dual_cr5">
+    <xacro:arg name="mujoco_model"
+        default="$(find dobot_mujoco_integration)/scenes/dual_scene.xml" />
+
+    <xacro:include filename="$(find dobot_description)/urdf/cr5/cr5_macro.xacro" />
+    <xacro:include filename="$(find dobot_bringup)/urdf/cr5/cr5_controller.xacro" />
+
+    <link name="world" />
+
+    <xacro:cr5_robot prefix="left_" />
+
+    <joint name="left_world_to_base_joint" type="fixed">
+        <parent link="world" />
+        <child link="left_base_link" />
+        <origin xyz="0 -0.5 0" rpy="0 0 0" />
+    </joint>
+
+    <xacro:cr5_robot prefix="right_" />
+
+    <joint name="right_world_to_base_joint" type="fixed">
+        <parent link="world" />
+        <child link="right_base_link" />
+        <origin xyz="0 0.5 0" rpy="0 0 0" />
+    </joint>
+
+    <xacro:macro name="cr5_joint_set" params="prefix">
+        <xacro:cr5_joint_interface joint_name="${prefix}joint_1" />
+        <xacro:cr5_joint_interface joint_name="${prefix}joint_2" />
+        <xacro:cr5_joint_interface joint_name="${prefix}joint_3" />
+        <xacro:cr5_joint_interface joint_name="${prefix}joint_4" />
+        <xacro:cr5_joint_interface joint_name="${prefix}joint_5" />
+        <xacro:cr5_joint_interface joint_name="${prefix}joint_6" />
+    </xacro:macro>
+
+    <ros2_control name="dual_cr5_system" type="system">
+        <hardware>
+            <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+            <param name="mujoco_model">$(arg mujoco_model)</param>
+            <param name="auto_register_cameras">false</param>
+        </hardware>
+        <xacro:cr5_joint_set prefix="left_" />
+        <xacro:cr5_joint_set prefix="right_" />
+    </ros2_control>
+
+</robot>

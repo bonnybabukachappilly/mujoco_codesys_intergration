@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="dual_cr5">
+    <group name="left_arm">
+        <chain base_link="left_base_link" tip_link="left_flange" />
+    </group>
+    <group name="right_arm">
+        <chain base_link="right_base_link" tip_link="right_flange" />
+    </group>
+    <group name="both_arms">
+        <group name="left_arm" />
+        <group name="right_arm" />
+    </group>
+
+    <group_state name="home" group="left_arm">
+        <joint name="left_joint_1" value="0" />
+        <joint name="left_joint_2" value="0" />
+        <joint name="left_joint_3" value="0" />
+        <joint name="left_joint_4" value="0" />
+        <joint name="left_joint_5" value="0" />
+        <joint name="left_joint_6" value="0" />
+    </group_state>
+    <group_state name="home" group="right_arm">
+        <joint name="right_joint_1" value="0" />
+        <joint name="right_joint_2" value="0" />
+        <joint name="right_joint_3" value="0" />
+        <joint name="right_joint_4" value="0" />
+        <joint name="right_joint_5" value="0" />
+        <joint name="right_joint_6" value="0" />
+    </group_state>
+
+    <!-- Intra-arm pairs, copied from cr5.srdf with prefixes -->
+    <disable_collisions link1="left_base_link" link2="left_link_1" reason="Adjacent" />
+    <disable_collisions link1="left_link_1" link2="left_link_2" reason="Adjacent" />
+    <disable_collisions link1="left_link_1" link2="left_link_3" reason="Never" />
+    <disable_collisions link1="left_link_1" link2="left_link_4" reason="Never" />
+    <disable_collisions link1="left_link_2" link2="left_link_3" reason="Adjacent" />
+    <disable_collisions link1="left_link_3" link2="left_link_4" reason="Adjacent" />
+    <disable_collisions link1="left_link_4" link2="left_link_5" reason="Adjacent" />
+    <disable_collisions link1="left_link_4" link2="left_link_6" reason="Never" />
+    <disable_collisions link1="left_link_5" link2="left_link_6" reason="Adjacent" />
+
+    <disable_collisions link1="right_base_link" link2="right_link_1" reason="Adjacent" />
+    <disable_collisions link1="right_link_1" link2="right_link_2" reason="Adjacent" />
+    <disable_collisions link1="right_link_1" link2="right_link_3" reason="Never" />
+    <disable_collisions link1="right_link_1" link2="right_link_4" reason="Never" />
+    <disable_collisions link1="right_link_2" link2="right_link_3" reason="Adjacent" />
+    <disable_collisions link1="right_link_3" link2="right_link_4" reason="Adjacent" />
+    <disable_collisions link1="right_link_4" link2="right_link_5" reason="Adjacent" />
+    <disable_collisions link1="right_link_4" link2="right_link_6" reason="Never" />
+    <disable_collisions link1="right_link_5" link2="right_link_6" reason="Adjacent" />
+
+    <group_state name="ready" group="left_arm">
+        <joint name="left_joint_1" value="0" />
+        <joint name="left_joint_2" value="0" />
+        <joint name="left_joint_3" value="1.5707" />
+        <joint name="left_joint_4" value="0" />
+        <joint name="left_joint_5" value="-1.5707" />
+        <joint name="left_joint_6" value="0" />
+    </group_state>
+    <group_state name="ready" group="right_arm">
+        <joint name="right_joint_1" value="0" />
+        <joint name="right_joint_2" value="0" />
+        <joint name="right_joint_3" value="1.5707" />
+        <joint name="right_joint_4" value="0" />
+        <joint name="right_joint_5" value="-1.5707" />
+        <joint name="right_joint_6" value="0" />
+    </group_state>
+
+    <group_state name="home" group="both_arms">
+        <joint name="left_joint_1" value="0" />
+        <joint name="left_joint_2" value="0" />
+        <joint name="left_joint_3" value="0" />
+        <joint name="left_joint_4" value="0" />
+        <joint name="left_joint_5" value="0" />
+        <joint name="left_joint_6" value="0" />
+        <joint name="right_joint_1" value="0" />
+        <joint name="right_joint_2" value="0" />
+        <joint name="right_joint_3" value="0" />
+        <joint name="right_joint_4" value="0" />
+        <joint name="right_joint_5" value="0" />
+        <joint name="right_joint_6" value="0" />
+    </group_state>
+    <group_state name="ready" group="both_arms">
+        <joint name="left_joint_1" value="0" />
+        <joint name="left_joint_2" value="0" />
+        <joint name="left_joint_3" value="1.5707" />
+        <joint name="left_joint_4" value="0" />
+        <joint name="left_joint_5" value="-1.5707" />
+        <joint name="left_joint_6" value="0" />
+        <joint name="right_joint_1" value="0" />
+        <joint name="right_joint_2" value="0" />
+        <joint name="right_joint_3" value="1.5707" />
+        <joint name="right_joint_4" value="0" />
+        <joint name="right_joint_5" value="-1.5707" />
+        <joint name="right_joint_6" value="0" />
+    </group_state>
+</robot>
