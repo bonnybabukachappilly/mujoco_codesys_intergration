@@ -18,12 +18,11 @@ def generate_launch_description() -> LaunchDescription:
     rviz = LaunchConfiguration("rviz")
 
     xacro_file = PathJoinSubstitution(
-        [FindPackageShare("dobot_description"), "urdf",
-         "cr5", "cr5.urdf.xacro"]
+        [FindPackageShare("dobot_bringup"), "urdf", "single_cr5.urdf.xacro"]
     )
-    controllers_file = PathJoinSubstitution(
-        [FindPackageShare("dobot_bringup"), "config",
-         "single_controllers.yaml"]
+    controllers_file = PathJoinSubstitution([
+        FindPackageShare("dobot_bringup"), "config",
+        "single_controllers.yaml"]
     )
     rviz_config = PathJoinSubstitution(
         [FindPackageShare("dobot_description"), "rviz", "view_cr5.rviz"]
@@ -61,17 +60,17 @@ def generate_launch_description() -> LaunchDescription:
         output="screen",
     )
 
-    joint_trajectory_controller_spawner = Node(
+    arm_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["arm_controller", "-c", "/controller_manager"],
         output="screen",
     )
 
     delay_jtc_after_jsb = RegisterEventHandler(
         OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
-            on_exit=[joint_trajectory_controller_spawner],
+            on_exit=[arm_controller_spawner],
         )
     )
 
