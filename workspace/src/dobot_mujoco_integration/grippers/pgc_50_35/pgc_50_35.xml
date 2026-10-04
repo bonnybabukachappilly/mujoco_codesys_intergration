@@ -1,5 +1,5 @@
 <mujoco model="pgc_50_35">
-    <compiler angle="radian" />
+    <compiler angle="radian" eulerseq="XYZ" />
 
     <include file="gripper_asset.xml" />
     <include file="gripper_default.xml" />

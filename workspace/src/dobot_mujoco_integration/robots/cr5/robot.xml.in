@@ -4,7 +4,7 @@
     <include file="default.xml" />
     <include file="asset.xml" />
 
-    
+    <!--TOOL_ASSET-->
 
     <worldbody>
         <body name="base" childclass="cr5">
@@ -58,7 +58,7 @@
                                     <geom class="cr5_visual" mesh="link_6_visual" />
                                     <geom class="cr5_collision" mesh="link_6_collision" />
 
-                                    
+                                    <!--TOOL_MOUNT-->
 
                                 </body>
                             </body>

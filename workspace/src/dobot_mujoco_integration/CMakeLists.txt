@@ -13,14 +13,29 @@ find_package(eoat_description REQUIRED)
 get_filename_component(DOBOT_DESC_SHARE "${dobot_description_DIR}/.." ABSOLUTE)
 get_filename_component(GRIPPER_DESC_SHARE "${eoat_description_DIR}/.." ABSOLUTE)
 
-install(DIRECTORY robots grippers scenes scripts
-  DESTINATION share/${PROJECT_NAME})
+execute_process(
+  COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generate_cell.py ${CMAKE_CURRENT_SOURCE_DIR}
+  RESULT_VARIABLE gen_rc
+)
 
-install(DIRECTORY ${DOBOT_DESC_SHARE}/meshes/cr5/
-  DESTINATION share/${PROJECT_NAME}/robots/cr5/meshes)
+if(NOT gen_rc EQUAL 0)
+  message(FATAL_ERROR "generate_cell.py failed")
+endif()
 
-install(DIRECTORY ${GRIPPER_DESC_SHARE}/meshes/pgc_50_35/
-  DESTINATION share/${PROJECT_NAME}/grippers/pgc_50_35/meshes)
+install(
+  DIRECTORY ${DOBOT_DESC_SHARE}/meshes/cr5/
+  DESTINATION share/${PROJECT_NAME}/robots/cr5/meshes
+)
+
+install(
+  DIRECTORY ${GRIPPER_DESC_SHARE}/meshes/pgc_50_35/
+  DESTINATION share/${PROJECT_NAME}/grippers/pgc_50_35/meshes
+)
+
+install(
+  DIRECTORY robots grippers scenes scripts config urdf
+  DESTINATION share/${PROJECT_NAME}
+)
 
 
 if(BUILD_TESTING)
