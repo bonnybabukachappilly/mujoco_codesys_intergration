@@ -12,23 +12,4 @@
             <state_interface name="effort" />
         </joint>
     </xacro:macro>
-
-    <xacro:macro name="cr5_ros2_control" params="prefix:='' mujoco_model">
-
-        <ros2_control name="${prefix}cr5_system" type="system">
-            <hardware>
-                <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
-                <param name="mujoco_model">${mujoco_model}</param>
-                <param name="auto_register_cameras">false</param>
-            </hardware>
-
-            <xacro:cr5_joint_interface joint_name="${prefix}joint_1" />
-            <xacro:cr5_joint_interface joint_name="${prefix}joint_2" />
-            <xacro:cr5_joint_interface joint_name="${prefix}joint_3" />
-            <xacro:cr5_joint_interface joint_name="${prefix}joint_4" />
-            <xacro:cr5_joint_interface joint_name="${prefix}joint_5" />
-            <xacro:cr5_joint_interface joint_name="${prefix}joint_6" />
-        </ros2_control>
-
-    </xacro:macro>
 </robot>

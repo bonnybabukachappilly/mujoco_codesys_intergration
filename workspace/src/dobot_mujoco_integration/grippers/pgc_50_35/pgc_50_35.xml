@@ -9,7 +9,6 @@
             <inertial pos="0 0 0.038" mass="0.4528" diaginertia="0.000415 0.000455 0.000248" />
             <geom class="pgc_50_35_visual" mesh="body_visual" />
             <geom class="pgc_50_35_collision" mesh="body_collision" />
-            <!-- <site name="tcp" pos="0 0 0.1189" size="0.01" /> -->
 
             <body name="finger_1" pos="0 0 0">
                 <inertial pos="0.005 0.004 0.017" mass="0.0236"
