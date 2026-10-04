@@ -631,16 +631,3 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 refrences/
-
-
-workspace/src/dobot_mujoco_integration/robots/cr5/robot.xml
-workspace/src/dobot_mujoco_integration/robots/cr5/robot_*.xml
-workspace/src/dobot_mujoco_integration/scenes/cell.xml
-workspace/src/dobot_mujoco_integration/urdf/cell.urdf.xacro
-workspace/src/dobot_mujoco_integration/config/cell_controllers.yaml
-
-workspace/src/dobot_mujoco_integration/config/cell.srdf
-workspace/src/dobot_mujoco_integration/config/cell_kinematics.yaml
-workspace/src/dobot_mujoco_integration/config/cell_joint_limits.yaml
-workspace/src/dobot_mujoco_integration/config/cell_ompl_planning.yaml
-workspace/src/dobot_mujoco_integration/config/cell_moveit_controllers.yaml
