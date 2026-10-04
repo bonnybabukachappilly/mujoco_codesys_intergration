@@ -1,4 +1,5 @@
 import os
+
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -13,18 +14,20 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    integ = get_package_share_directory("dobot_mujoco_integration")
-    with open(os.path.join(integ, "config", "cell.yaml")) as f:
+    cell_share = get_package_share_directory("cell_description")
+    mujoco_share = get_package_share_directory("cell_mujoco")
+
+    with open(os.path.join(cell_share, "config", "cell.yaml")) as f:
         cell = yaml.safe_load(f)["robots"]
     controller_names = [f'{r["name"]}_arm_controller' for r in cell] + \
                        [f'{r["name"]}_gripper_controller' for r in cell if r["gripper"]]
 
     use_sim_time = LaunchConfiguration("use_sim_time")
     rviz = LaunchConfiguration("rviz")
-    xacro_file = os.path.join(integ, "urdf", "cell.urdf.xacro")
-    controllers_file = os.path.join(integ, "config", "cell_controllers.yaml")
+    xacro_file = os.path.join(mujoco_share, "urdf", "cell_mujoco.urdf.xacro")
+    controllers_file = os.path.join(mujoco_share, "config", "cell_controllers.yaml")
     rviz_config = PathJoinSubstitution(
-        [FindPackageShare("dobot_description"), "rviz", "view_cr5.rviz"])
+        [FindPackageShare("dobot_cr5_description"), "rviz", "view_cr5.rviz"])
 
     robot_description = ParameterValue(
         Command([FindExecutable(name="xacro"), " ", xacro_file]), value_type=str)

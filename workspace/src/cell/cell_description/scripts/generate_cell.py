@@ -1,48 +1,50 @@
 #!/usr/bin/env python3
-"""Generate all cell models and configs from ``cell.yaml``.
+"""Generate cell models and configs from ``cell.yaml``, one target per package.
 
-Single entry point that turns the cell description into every file the
-simulation and the MoveIt stack need, so that nothing is maintained twice.
+The cell description (``cell.yaml`` + ``grippers.yaml``) lives in the
+``cell_description`` package and is the single source of truth. This script
+is installed with that package. Each consuming package runs it at build time
+with its own *target* and writes only the files it owns:
 
-Inputs (read from ``--src``, the package source directory)
-----------------------------------------------------------
-``config/cell.yaml``
-    List of robots: ``name``, ``pos`` (x y z in metres) and ``gripper``
-    (a key of ``grippers.yaml`` or ``null``).
-``config/grippers.yaml``
-    Tool registry: mount transform in MJCF and URDF, actuated joints,
-    ros2_control controller type and SRDF collision pairs.
-``robots/cr5/robot.xml.in``
-    MJCF robot template with two placeholders: ``<!--TOOL_ASSET-->`` and
-    ``<!--TOOL_MOUNT-->``.
+========  =====================  ===========================================
+target    run by                 files written under ``--out``
+========  =====================  ===========================================
+urdf      cell_description       ``urdf/cell.urdf.xacro`` (links, joints,
+                                 tools; no ros2_control)
+mujoco    cell_mujoco            ``robots/cr5/robot*.xml``,
+                                 ``scenes/cell.xml``,
+                                 ``urdf/cell_mujoco.urdf.xacro``
+                                 (ros2_control + MuJoCo plugin),
+                                 ``config/cell_controllers.yaml``
+moveit    cell_moveit_config     ``config/cell.srdf``,
+                                 ``cell_kinematics.yaml``,
+                                 ``cell_joint_limits.yaml``,
+                                 ``cell_ompl_planning.yaml``,
+                                 ``cell_moveit_controllers.yaml``
+========  =====================  ===========================================
 
-Outputs (written under ``--out``, mirroring the install layout)
----------------------------------------------------------------
-``robots/cr5/robot.xml``, ``robots/cr5/robot_<gripper>.xml``
-    One MJCF robot variant per tool type in use, plus a tool-less one.
-``scenes/cell.xml``
-    MuJoCo scene that attaches every robot at its configured position.
-``urdf/cell.urdf.xacro``
-    Cell URDF with the ``ros2_control`` block for the MuJoCo system.
-``config/cell_controllers.yaml``
-    ros2_control controller manager and controller parameters.
-``config/cell.srdf``
-    MoveIt semantic description (groups, states, disabled collisions).
-``config/cell_kinematics.yaml``, ``cell_joint_limits.yaml``,
-``cell_ompl_planning.yaml``, ``cell_moveit_controllers.yaml``
-    MoveIt configuration files.
+Inputs
+------
+``--cell-share DIR``
+    Directory holding ``config/cell.yaml`` and ``config/grippers.yaml``.
+    For ``cell_description`` this is its source dir; for the other packages
+    it is the installed ``share/cell_description``.
+``--src DIR``
+    Package source dir. Only the ``mujoco`` target needs it, for
+    ``robots/cr5/robot.xml.in`` (placeholders ``<!--TOOL_ASSET-->`` and
+    ``<!--TOOL_MOUNT-->``).
 
 Naming convention
 -----------------
-Robot ``r1`` owns the links ``r1_base_link`` ... ``r1_flange`` and the
-joints ``r1_joint_1`` ... ``r1_joint_6``. Its tool joints are prefixed
-``r1_grip_`` (for example ``r1_grip_slider_1``). The MJCF ``attach``
-prefixes in the scene produce the same names, so MuJoCo, URDF and
-ros2_control agree without any mapping table.
+Robot ``r1`` owns the links ``r1_base_link`` ... ``r1_flange`` and the joints
+``r1_joint_1`` ... ``r1_joint_6``. Its tool joints are prefixed ``r1_grip_``
+(for example ``r1_grip_slider_1``). The MJCF ``attach`` prefixes produce the
+same names, so MuJoCo, URDF and ros2_control agree without a mapping table.
 
 Usage
 -----
-    generate_cell.py --src <pkg_source_dir> --out <output_dir> [--stamp FILE]
+    generate_cell.py {urdf,mujoco,moveit} --cell-share DIR --out DIR
+                     [--src DIR] [--stamp FILE]
 """
 
 from __future__ import annotations
@@ -58,6 +60,14 @@ import yaml
 # Constants
 # --------------------------------------------------------------------------
 
+#: Package names used in ``$(find ...)`` references of generated files.
+PKG_ROBOT = "dobot_cr5_description"
+PKG_TOOLS = "eoat_description"
+PKG_CELL = "cell_description"
+PKG_MUJOCO = "cell_mujoco"
+
+TARGETS = ("urdf", "mujoco", "moveit")
+
 #: Body pairs of one CR5 that are disabled for collision in the SRDF.
 #: Names are given without the robot prefix.
 ARM_PAIRS: list[tuple[str, str]] = [
@@ -72,8 +82,9 @@ READY: list[float] = [0, 0, 1.5707, 0, -1.5707, 0]
 #: Number of arm joints per robot.
 ARM_JOINTS = 6
 
-#: Planning request adapters for ROS 2 Humble (space separated, one string).
-#: Jazzy replaces this mechanism, so this is the Humble-specific part.
+#: HUMBLE-ONLY: planning request adapters as one space separated string.
+#: Jazzy replaces this mechanism. ``grep -rn HUMBLE-ONLY`` lists every
+#: Humble-specific site in the workspace.
 HUMBLE_ADAPTERS = (
     "default_planner_request_adapters/AddTimeOptimalParameterization "
     "default_planner_request_adapters/ResolveConstraintFrames "
@@ -117,15 +128,14 @@ def used_grippers(cell: Cell) -> list[str]:
     return sorted({r["gripper"] for r in cell if r["gripper"]})
 
 
-def load_inputs(src: Path) -> tuple[Cell, Registry, str]:
-    """Load and sanity-check the generator inputs.
+def load_inputs(cell_share: Path) -> tuple[Cell, Registry]:
+    """Load ``cell.yaml`` and ``grippers.yaml`` and sanity-check them.
 
-    Returns the robot list, the gripper registry and the MJCF template.
     Raises ``ValueError`` with a readable message on bad input.
     """
-    cell = yaml.safe_load((src / "config/cell.yaml").read_text())["robots"]
-    reg = yaml.safe_load((src / "config/grippers.yaml").read_text()) or {}
-    template = (src / "robots/cr5/robot.xml.in").read_text()
+    cfg = cell_share / "config"
+    cell = yaml.safe_load((cfg / "cell.yaml").read_text())["robots"]
+    reg = yaml.safe_load((cfg / "grippers.yaml").read_text()) or {}
 
     names = [r["name"] for r in cell]
     if len(set(names)) != len(names):
@@ -137,14 +147,63 @@ def load_inputs(src: Path) -> tuple[Cell, Registry, str]:
             raise ValueError(
                 f"robot {r['name']}: gripper '{r['gripper']}' "
                 f"is not defined in grippers.yaml")
+    return cell, reg
+
+
+def load_template(src: Path) -> str:
+    """Read the MJCF robot template and check its placeholders."""
+    template = (src / "robots/cr5/robot.xml.in").read_text()
     for marker in ("<!--TOOL_ASSET-->", "<!--TOOL_MOUNT-->"):
         if marker not in template:
             raise ValueError(f"robot.xml.in is missing the {marker} marker")
-    return cell, reg, template
+    return template
 
 
 # --------------------------------------------------------------------------
-# 1. MJCF robot variants
+# Target urdf  (cell_description)
+# --------------------------------------------------------------------------
+
+def gen_cell_urdf(out: Path, cell: Cell, reg: Registry) -> None:
+    """Write ``urdf/cell.urdf.xacro``: the robots and tools, no hardware.
+
+    Hardware interfaces are deliberately absent so that the same description
+    can be paired with MuJoCo today and real hardware later.
+    """
+    lines = [
+        '<?xml version="1.0"?>',
+        '<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cell">',
+        f'  <xacro:include filename="$(find {PKG_ROBOT})'
+        f'/urdf/cr5/cr5_macro.xacro"/>',
+    ]
+    for g in used_grippers(cell):
+        lines.append(
+            f'  <xacro:include filename="$(find {PKG_TOOLS})'
+            f'/urdf/{g}/{g}_macro.xacro"/>')
+    lines.append('  <link name="world"/>')
+
+    for r in cell:
+        name = r["name"]
+        lines += [
+            f'  <xacro:cr5_robot prefix="{name}_"/>',
+            f'  <joint name="{name}_world_to_base_joint" type="fixed">',
+            f'    <parent link="world"/><child link="{name}_base_link"/>',
+            f'    <origin xyz="{fmt(r["pos"])}" rpy="0 0 0"/>',
+            '  </joint>',
+        ]
+        if r["gripper"]:
+            g = r["gripper"]
+            cfg = reg[g]
+            lines.append(
+                f'  <xacro:{g} prefix="{name}_grip_" parent="{name}_flange">'
+                f'<origin xyz="{fmt(cfg["urdf_origin_xyz"])}" '
+                f'rpy="{fmt(cfg["urdf_origin_rpy"])}"/></xacro:{g}>')
+
+    lines.append("</robot>")
+    write(out / "urdf/cell.urdf.xacro", "\n".join(lines))
+
+
+# --------------------------------------------------------------------------
+# Target mujoco  (cell_mujoco)
 # --------------------------------------------------------------------------
 
 def gen_robot_variants(out: Path, cell: Cell, reg: Registry,
@@ -171,10 +230,6 @@ def gen_robot_variants(out: Path, cell: Cell, reg: Registry,
               template.replace("<!--TOOL_ASSET-->", asset)
                       .replace("<!--TOOL_MOUNT-->", mount))
 
-
-# --------------------------------------------------------------------------
-# 2. MuJoCo scene
-# --------------------------------------------------------------------------
 
 def gen_scene(out: Path, cell: Cell) -> None:
     """Write ``scenes/cell.xml``: floor, light, camera and all robots."""
@@ -213,55 +268,29 @@ def gen_scene(out: Path, cell: Cell) -> None:
     write(out / "scenes/cell.xml", scene)
 
 
-# --------------------------------------------------------------------------
-# 3. URDF (xacro)
-# --------------------------------------------------------------------------
+def gen_mujoco_urdf(out: Path, cell: Cell, reg: Registry) -> None:
+    """Write ``urdf/cell_mujoco.urdf.xacro``.
 
-def gen_urdf(out: Path, cell: Cell, reg: Registry) -> None:
-    """Write ``urdf/cell.urdf.xacro``.
-
-    Contains the robot macros, the fixed world-to-base joints, the tool
-    macros and the ``ros2_control`` block that selects the MuJoCo hardware
-    plugin and lists every commanded joint.
+    Includes the hardware-free cell description and adds the ``ros2_control``
+    block that selects the MuJoCo plugin and lists every commanded joint.
     """
-    includes = "\n".join(
-        f'  <xacro:include filename="$(find eoat_description)'
-        f'/urdf/{g}/{g}_macro.xacro"/>'
-        for g in used_grippers(cell))
-
-    body: list[str] = []
     joints: list[str] = []
     for r in cell:
         name = r["name"]
-        body.append(
-            f'  <xacro:cr5_robot prefix="{name}_"/>\n'
-            f'  <joint name="{name}_world_to_base_joint" type="fixed">\n'
-            f'    <parent link="world"/><child link="{name}_base_link"/>\n'
-            f'    <origin xyz="{fmt(r["pos"])}" rpy="0 0 0"/>\n'
-            f'  </joint>')
         joints += [f'    <xacro:cr5_joint_interface joint_name="{j}"/>'
                    for j in joint_names(name)]
         if r["gripper"]:
-            g = r["gripper"]
-            cfg = reg[g]
-            body.append(
-                f'  <xacro:{g} prefix="{name}_grip_" parent="{name}_flange">'
-                f'<origin xyz="{fmt(cfg["urdf_origin_xyz"])}" '
-                f'rpy="{fmt(cfg["urdf_origin_rpy"])}"/></xacro:{g}>')
             joints += [
-                f'    <xacro:cr5_joint_interface joint_name="{name}_grip_{j}"/>'
-                for j in cfg["actuated"]]
-
-    body_xml = "\n".join(body)
+                f'    <xacro:cr5_joint_interface '
+                f'joint_name="{name}_grip_{j}"/>'
+                for j in reg[r["gripper"]]["actuated"]]
     joints_xml = "\n".join(joints)
+
     urdf = f"""<?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cell">
-  <xacro:arg name="mujoco_model" default="$(find dobot_mujoco_integration)/scenes/cell.xml"/>
-  <xacro:include filename="$(find dobot_description)/urdf/cr5/cr5_macro.xacro"/>
-  <xacro:include filename="$(find dobot_description)/urdf/cr5/cr5_ros2_control.xacro"/>
-{includes}
-  <link name="world"/>
-{body_xml}
+  <xacro:arg name="mujoco_model" default="$(find {PKG_MUJOCO})/scenes/cell.xml"/>
+  <xacro:include filename="$(find {PKG_CELL})/urdf/cell.urdf.xacro"/>
+  <xacro:include filename="$(find {PKG_ROBOT})/urdf/cr5/cr5_ros2_control.xacro"/>
   <ros2_control name="cell_system" type="system">
     <hardware>
       <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
@@ -271,12 +300,8 @@ def gen_urdf(out: Path, cell: Cell, reg: Registry) -> None:
 {joints_xml}
   </ros2_control>
 </robot>"""
-    write(out / "urdf/cell.urdf.xacro", urdf)
+    write(out / "urdf/cell_mujoco.urdf.xacro", urdf)
 
-
-# --------------------------------------------------------------------------
-# 4. ros2_control controllers
-# --------------------------------------------------------------------------
 
 def gen_controllers(out: Path, cell: Cell, reg: Registry) -> None:
     """Write ``config/cell_controllers.yaml``.
@@ -320,7 +345,7 @@ def gen_controllers(out: Path, cell: Cell, reg: Registry) -> None:
 
 
 # --------------------------------------------------------------------------
-# 5. MoveIt: SRDF
+# Target moveit  (cell_moveit_config)
 # --------------------------------------------------------------------------
 
 def gen_srdf(out: Path, cell: Cell, reg: Registry) -> None:
@@ -358,10 +383,8 @@ def gen_srdf(out: Path, cell: Cell, reg: Registry) -> None:
             for a, b in reg[r["gripper"]]["srdf_pairs"]:
                 # arm links are "<robot>_link_x"; tool links are
                 # "<robot>_grip_<link>"
-                pa = f"{name}_{a}" if a.startswith(
-                    "link_") else f"{name}_grip_{a}"
-                pb = f"{name}_{b}" if b.startswith(
-                    "link_") else f"{name}_grip_{b}"
+                pa = f"{name}_{a}" if a.startswith("link_") else f"{name}_grip_{a}"
+                pb = f"{name}_{b}" if b.startswith("link_") else f"{name}_grip_{b}"
                 lines.append(
                     f'  <disable_collisions link1="{pa}" link2="{pb}" '
                     f'reason="Adjacent"/>')
@@ -369,10 +392,6 @@ def gen_srdf(out: Path, cell: Cell, reg: Registry) -> None:
     lines.append("</robot>")
     write(out / "config/cell.srdf", "\n".join(lines))
 
-
-# --------------------------------------------------------------------------
-# 6. MoveIt: kinematics, limits, OMPL, controller mapping
-# --------------------------------------------------------------------------
 
 def gen_moveit_yaml(out: Path, cell: Cell) -> None:
     """Write the four MoveIt YAML files (kinematics, limits, OMPL, controllers)."""
@@ -403,7 +422,7 @@ def gen_moveit_yaml(out: Path, cell: Cell) -> None:
                       "planner_configs": ["RRTConnectkConfigDefault"]}
     ompl: dict[str, Any] = {
         "planning_plugin": "ompl_interface/OMPLPlanner",
-        "request_adapters": HUMBLE_ADAPTERS,
+        "request_adapters": HUMBLE_ADAPTERS,  # HUMBLE-ONLY
         "start_state_max_bounds_error": 0.1,
         "planner_configs": {"RRTConnectkConfigDefault": {
             "type": "geometric::RRTConnect", "range": 0.0}},
@@ -440,41 +459,52 @@ def gen_moveit_yaml(out: Path, cell: Cell) -> None:
 # Entry points
 # --------------------------------------------------------------------------
 
-def main(src: Path, out: Path) -> None:
-    """Run every generator step.
+def main(target: str, cell_share: Path, out: Path,
+         src: Path | None = None) -> None:
+    """Run the generator steps that belong to ``target``."""
+    cell, reg = load_inputs(cell_share)
 
-    ``src`` is the package source directory, ``out`` the directory that
-    receives all generated files (the CMake build directory).
-    """
-    cell, reg, template = load_inputs(src)
-
-    gen_robot_variants(out, cell, reg, template)
-    gen_scene(out, cell)
-    gen_urdf(out, cell, reg)
-    gen_controllers(out, cell, reg)
-    gen_srdf(out, cell, reg)
-    gen_moveit_yaml(out, cell)
+    if target == "urdf":
+        gen_cell_urdf(out, cell, reg)
+    elif target == "mujoco":
+        if src is None:
+            raise ValueError("target 'mujoco' requires --src")
+        gen_robot_variants(out, cell, reg, load_template(src))
+        gen_scene(out, cell)
+        gen_mujoco_urdf(out, cell, reg)
+        gen_controllers(out, cell, reg)
+    elif target == "moveit":
+        gen_srdf(out, cell, reg)
+        gen_moveit_yaml(out, cell)
+    else:
+        raise ValueError(f"unknown target '{target}'")
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     """Parse command line arguments."""
     ap = argparse.ArgumentParser(
-        description="Generate MJCF, URDF, SRDF and controller configs "
-                    "from cell.yaml.")
-    ap.add_argument("--src", type=Path, required=True,
-                    help="package source directory (contains config/, robots/)")
+        description="Generate cell models and configs from cell.yaml.")
+    ap.add_argument("target", choices=TARGETS,
+                    help="which package's files to generate")
+    ap.add_argument("--cell-share", type=Path, required=True,
+                    help="dir containing config/cell.yaml and grippers.yaml")
+    ap.add_argument("--src", type=Path,
+                    help="package source dir (required for target 'mujoco')")
     ap.add_argument("--out", type=Path, required=True,
                     help="output directory for generated files")
     ap.add_argument("--stamp", type=Path,
                     help="file touched on success (CMake dependency stamp)")
-    return ap.parse_args(argv)
+    args = ap.parse_args(argv)
+    if args.target == "mujoco" and args.src is None:
+        ap.error("target 'mujoco' requires --src")
+    return args
 
 
 if __name__ == "__main__":
     args = parse_args()
     try:
-        main(args.src, args.out)
-    except (ValueError, KeyError, FileNotFoundError) as exc:
+        main(args.target, args.cell_share, args.out, args.src)
+    except (ValueError, KeyError, FileNotFoundError, yaml.YAMLError) as exc:
         print(f"generate_cell.py: error: {exc!r}", file=sys.stderr)
         sys.exit(1)
     if args.stamp:

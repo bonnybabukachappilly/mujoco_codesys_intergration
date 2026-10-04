@@ -17,11 +17,11 @@ def generate_launch_description() -> LaunchDescription:
     gui = LaunchConfiguration("gui")
 
     xacro_file = PathJoinSubstitution(
-        [FindPackageShare("dobot_description"), "urdf",
+        [FindPackageShare("dobot_cr5_description"), "urdf",
          "cr5", "cr5.urdf.xacro"]
     )
     rviz_config = PathJoinSubstitution(
-        [FindPackageShare("dobot_description"), "rviz", "view_cr5.rviz"]
+        [FindPackageShare("dobot_cr5_description"), "rviz", "view_cr5.rviz"]
     )
 
     robot_description = ParameterValue(

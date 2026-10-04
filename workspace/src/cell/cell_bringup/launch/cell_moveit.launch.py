@@ -10,15 +10,17 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 
 def generate_launch_description():
-    bringup = get_package_share_directory("dobot_bringup")
-    integ = get_package_share_directory("dobot_mujoco_integration")
+    bringup = get_package_share_directory("cell_bringup")
+    mujoco = get_package_share_directory("cell_mujoco")
+    moveit_cfg = get_package_share_directory("cell_moveit_config")
 
     def cfg(f):
-        return os.path.join(integ, "config", f)
+        return os.path.join(moveit_cfg, "config", f)
 
     moveit_config = (
-        MoveItConfigsBuilder("cell", package_name="dobot_mujoco_integration")
-        .robot_description(file_path=os.path.join(integ, "urdf", "cell.urdf.xacro"))
+        MoveItConfigsBuilder("cell", package_name="cell_moveit_config")
+        .robot_description(
+            file_path=os.path.join(mujoco, "urdf", "cell_mujoco.urdf.xacro"))
         .robot_description_semantic(file_path=cfg("cell.srdf"))
         .robot_description_kinematics(file_path=cfg("cell_kinematics.yaml"))
         .joint_limits(file_path=cfg("cell_joint_limits.yaml"))
@@ -27,7 +29,8 @@ def generate_launch_description():
         .to_moveit_configs()
     )
 
-    # Humble's builder only reads config/ompl_planning.yaml, so inject ours.
+    # HUMBLE-ONLY: Humble's builder only reads config/ompl_planning.yaml,
+    # so inject ours. Remove this block when moving to Jazzy.
     with open(cfg("cell_ompl_planning.yaml")) as f:
         ompl = yaml.safe_load(f)
     moveit_config.planning_pipelines = {
