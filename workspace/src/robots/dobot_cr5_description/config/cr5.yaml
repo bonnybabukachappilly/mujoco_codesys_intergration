@@ -1,12 +1,11 @@
 acceleration_limits:
-  source: placeholder
   values:
-    joint_1: 3.0
-    joint_2: 3.0
-    joint_3: 3.0
-    joint_4: 3.0
-    joint_5: 3.0
-    joint_6: 3.0
+    joint_1: 3.49065850399
+    joint_2: 3.49065850399
+    joint_3: 3.49065850399
+    joint_4: 17.4532925199
+    joint_5: 17.4532925199
+    joint_6: 17.4532925199
 
 collision:
   disabled_pairs:
@@ -19,3 +18,12 @@ collision:
     - {link1: link_4,    link2: link_5, reason: Adjacent}
     - {link1: link_4,    link2: link_6, reason: Unverified}
     - {link1: link_5,    link2: link_6, reason: Adjacent}
+
+# J1, J2, J3 -> 218 deg/sec
+# J4, J5, J6 -> 270 deg/sec
+
+# Jerk
+# J1, J2, J3 -> 2000 deg/sec^3
+# J4, J5, J6 -> 10000 deg/sec^3
+# X, Y, Z -> 18000 mm/sec^3
+# RX, RY, RZ -> 9000 deg/sec^3
