@@ -1,0 +1,15 @@
+<mujoco>
+    <default>
+        <default class="pgc_50_35">
+            <joint type="slide" axis="0 0 1" range="0 0.0187" damping="1" armature="0.001" />
+            <position kp="8100" kv="150" forcerange="-100 100" />
+            <default class="pgc_50_35_visual">
+                <geom type="mesh" pos="0 0 0" contype="0" conaffinity="0" group="1"
+                    rgba="0.6 0.6 0.6 1" />
+            </default>
+            <default class="pgc_50_35_collision">
+                <geom type="mesh" pos="0 0 0" group="3" condim="4" friction="1.5 0.01 0.001" />
+            </default>
+        </default>
+    </default>
+</mujoco>

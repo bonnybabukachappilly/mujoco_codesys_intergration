@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<!-- Test fixture: cr5.urdf.xacro expanded with prefix "". Used by test_generate_cell.py
+     so the generator can be tested without ROS. test_real_urdf_matches_fixture compares it
+     with the real xacro whenever ROS is available, so drift is detected. -->
+<robot name="cr5">
+  <link name="world" />
+  <joint name="world_to_base_joint" type="fixed">
+    <parent link="world" />
+    <child link="base_link" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-7.944817e-06 0.003129798 0.028930534" rpy="0 0 0" />
+      <mass value="0.921803442" />
+      <inertia ixx="0.001552184" ixy="4.579729e-08" ixz="-1.889855e-07" iyy="0.001346829" iyz="-1.490499e-06" izz="0.002252597" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/visual/base.STL" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/collision/base.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="link_1">
+    <inertial>
+      <origin xyz="1.732462e-07 -0.003254572 -0.007633470" rpy="0 0 0" />
+      <mass value="1.613090768" />
+      <inertia ixx="0.005467836" ixy="1.551051e-09" ixz="-7.416569e-08" iyy="0.005250346" iyz="-9.788468e-05" izz="0.003409568" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/visual/link_1.STL" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/collision/link_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="link_2">
+    <inertial>
+      <origin xyz="-0.213514541 -0.000174146 0.142532293" rpy="0 0 0" />
+      <mass value="5.525027664" />
+      <inertia ixx="0.013539010" ixy="-0.000132792" ixz="1.089426e-06" iyy="0.175351191" iyz="-1.557619e-07" izz="0.171155666" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/visual/link_2.STL" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/collision/link_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="link_3">
+    <inertial>
+      <origin xyz="-0.152341668 0.000149359 0.022683148" rpy="0 0 0" />
+      <mass value="2.853894211" />
+      <inertia ixx="0.004262339" ixy="5.976804e-05" ixz="0.001453665" iyy="0.065129511" iyz="-1.398065e-06" izz="0.064386446" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/visual/link_3.STL" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/collision/link_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="link_4">
+    <inertial>
+      <origin xyz="5.594972e-08 -0.002033705 -0.001553275" rpy="0 0 0" />
+      <mass value="0.670967728" />
+      <inertia ixx="0.001652150" ixy="6.998841e-10" ixz="-2.827351e-09" iyy="0.000679018" iyz="-3.933120e-05" izz="0.001612073" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/visual/link_4.STL" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/collision/link_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="link_5">
+    <inertial>
+      <origin xyz="1.668393e-08 -0.006125032 -0.001271823" rpy="0 0 0" />
+      <mass value="0.741136955" />
+      <inertia ixx="0.002128583" ixy="-3.051141e-08" ixz="1.845873e-08" iyy="0.000739514" iyz="5.384795e-05" izz="0.002088154" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/visual/link_5.STL" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/collision/link_5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="link_6">
+    <inertial>
+      <origin xyz="4.943970e-11 9.376323e-05 -0.019285436" rpy="0 0 0" />
+      <mass value="0.157885370" />
+      <inertia ixx="0.000079401" ixy="4.662104e-15" ixz="2.944135e-14" iyy="0.000079169" iyz="-9.613137e-08" izz="0.000130860" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/visual/link_6.STL" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://dobot_cr5_description/meshes/cr5/collision/link_6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="joint_1" type="revolute">
+    <parent link="base_link" />
+    <child link="link_1" />
+    <origin xyz="0 0 0.147" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.2832" upper="6.2832" effort="100.0" velocity="3.14159" />
+    <dynamics damping="5.0" friction="1.0" />
+  </joint>
+  <joint name="joint_2" type="revolute">
+    <parent link="link_1" />
+    <child link="link_2" />
+    <origin xyz="0 0 0" rpy="1.5708 1.5708 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.2832" upper="6.2832" effort="100.0" velocity="3.14159" />
+    <dynamics damping="5.0" friction="1.0" />
+  </joint>
+  <joint name="joint_3" type="revolute">
+    <parent link="link_2" />
+    <child link="link_3" />
+    <origin xyz="-0.427 -0.00034866 0" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-2.792" upper="2.792" effort="100.0" velocity="3.14159" />
+    <dynamics damping="5.0" friction="1.0" />
+  </joint>
+  <joint name="joint_4" type="revolute">
+    <parent link="link_3" />
+    <child link="link_4" />
+    <origin xyz="-0.357 0.00034866 0.141" rpy="0 0 -1.5708" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.2832" upper="6.2832" effort="50.0" velocity="3.14159" />
+    <dynamics damping="1.0" friction="0.2" />
+  </joint>
+  <joint name="joint_5" type="revolute">
+    <parent link="link_4" />
+    <child link="link_5" />
+    <origin xyz="0 -0.116 0" rpy="1.5708 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.2832" upper="6.2832" effort="50.0" velocity="3.14159" />
+    <dynamics damping="1.0" friction="0.2" />
+  </joint>
+  <joint name="joint_6" type="revolute">
+    <parent link="link_5" />
+    <child link="link_6" />
+    <origin xyz="0 0.105 0" rpy="-1.5708 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-6.2832" upper="6.2832" effort="50.0" velocity="3.14159" />
+    <dynamics damping="1.0" friction="0.2" />
+  </joint>
+  <joint name="tcp_joint" type="fixed">
+    <parent link="link_6" />
+    <child link="flange" />
+    <origin xyz="0 0 0.01" rpy="0 0 0" />
+  </joint>
+  <link name="flange" />
+</robot>

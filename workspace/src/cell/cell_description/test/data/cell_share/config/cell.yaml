@@ -1,0 +1,5 @@
+# Fixed two-robot layout used by the generator tests. The real cell.yaml
+# changes whenever a robot is added, so layout-specific tests must not read it.
+robots:
+  - {name: r1, pos: [0, -0.5, 0], gripper: pgc_50_35}
+  - {name: r2, pos: [0,  0.5, 0], gripper: null}

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>cell_mujoco</name>
+  <version>0.1.0</version>
+  <description>MuJoCo plant of the cell: MJCF models generated from the URDF, scene, ros2_control hardware description and controller configuration.</description>
+  <maintainer email="bonnybabukachappilly@gmail.com">bonnybk</maintainer>
+  <license>GPL-3.0-only</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>cell_description</depend>
+  <depend>dobot_cr5_description</depend>
+  <depend>eoat_description</depend>
+  <depend>python3-yaml</depend>
+  <!-- the generator expands the robot URDF with xacro at build time -->
+  <build_depend>xacro</build_depend>
+  <!-- built from source; provides the MujocoSystemInterface plugin -->
+  <exec_depend>mujoco_ros2_control</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

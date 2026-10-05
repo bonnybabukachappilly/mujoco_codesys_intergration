@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cr5">
+
+    <xacro:arg name="prefix" default="" />
+
+    <xacro:include filename="$(find dobot_cr5_description)/urdf/cr5/cr5_macro.xacro" />
+
+    <link name="world" />
+
+    <joint name="$(arg prefix)world_to_base_joint" type="fixed">
+        <parent link="world" />
+        <child link="$(arg prefix)base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <xacro:cr5_robot prefix="$(arg prefix)" />
+
+</robot>

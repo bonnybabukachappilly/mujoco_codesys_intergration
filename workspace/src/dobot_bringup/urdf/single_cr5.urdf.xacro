@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cr5">
-    <xacro:arg name="mujoco_model"
-        default="$(find dobot_mujoco_integration)/scenes/main_scene.xml" />
-    <xacro:include filename="$(find dobot_description)/urdf/cr5/cr5.urdf.xacro" />
-    <xacro:include filename="$(find dobot_bringup)/urdf/cr5/cr5_controller.xacro" />
-
-    <xacro:cr5_ros2_control prefix="$(arg prefix)" mujoco_model="$(arg mujoco_model)" />
-</robot>
