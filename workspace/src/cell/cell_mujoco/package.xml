@@ -3,7 +3,7 @@
 <package format="3">
   <name>cell_mujoco</name>
   <version>0.1.0</version>
-  <description>MuJoCo plant of the cell: MJCF models, scene, ros2_control hardware description and controller configuration.</description>
+  <description>MuJoCo plant of the cell: MJCF models generated from the URDF, scene, ros2_control hardware description and controller configuration.</description>
   <maintainer email="bonnybabukachappilly@gmail.com">bonnybk</maintainer>
   <license>GPL-3.0-only</license>
 
@@ -13,6 +13,8 @@
   <depend>dobot_cr5_description</depend>
   <depend>eoat_description</depend>
   <depend>python3-yaml</depend>
+  <!-- the generator expands the robot URDF with xacro at build time -->
+  <build_depend>xacro</build_depend>
   <!-- built from source; provides the MujocoSystemInterface plugin -->
   <exec_depend>mujoco_ros2_control</exec_depend>
 

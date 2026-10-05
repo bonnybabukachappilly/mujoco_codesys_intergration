@@ -3,6 +3,7 @@ project(cell_moveit_config)
 
 find_package(ament_cmake REQUIRED)
 find_package(cell_description REQUIRED)
+find_package(dobot_cr5_description REQUIRED)
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 execute_process(
@@ -14,7 +15,8 @@ if(NOT yaml_rc EQUAL 0)
     "Install python3-yaml or pass -DPython3_EXECUTABLE=/usr/bin/python3")
 endif()
 
-get_filename_component(CELL_DESC_SHARE "${cell_description_DIR}/.." ABSOLUTE)
+get_filename_component(CELL_DESC_SHARE  "${cell_description_DIR}/.."       ABSOLUTE)
+get_filename_component(ROBOT_DESC_SHARE "${dobot_cr5_description_DIR}/.."  ABSOLUTE)
 
 # ---- generation (build time, dependency-tracked) ----
 set(GEN_SCRIPT ${CELL_DESC_SHARE}/scripts/generate_cell.py)
@@ -26,10 +28,14 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove_directory ${GEN_DIR}
   COMMAND ${Python3_EXECUTABLE} ${GEN_SCRIPT} moveit
           --cell-share ${CELL_DESC_SHARE}
+          --robot-share ${ROBOT_DESC_SHARE}
           --out ${GEN_DIR} --stamp ${GEN_STAMP}
   DEPENDS ${GEN_SCRIPT}
           ${CELL_DESC_SHARE}/config/cell.yaml
           ${CELL_DESC_SHARE}/config/grippers.yaml
+          ${ROBOT_DESC_SHARE}/config/cr5.yaml
+          ${ROBOT_DESC_SHARE}/urdf/cr5/cr5.urdf.xacro
+          ${ROBOT_DESC_SHARE}/urdf/cr5/cr5_macro.xacro
   COMMENT "Generating MoveIt configuration"
   VERBATIM)
 add_custom_target(generate_cell_moveit ALL DEPENDS ${GEN_STAMP})

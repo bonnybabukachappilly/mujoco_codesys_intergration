@@ -30,13 +30,17 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E remove_directory ${GEN_DIR}
   COMMAND ${Python3_EXECUTABLE} ${GEN_SCRIPT} mujoco
           --cell-share ${CELL_DESC_SHARE}
+          --robot-share ${ROBOT_DESC_SHARE}
           --src ${CMAKE_CURRENT_SOURCE_DIR}
           --out ${GEN_DIR} --stamp ${GEN_STAMP}
   DEPENDS ${GEN_SCRIPT}
           ${CELL_DESC_SHARE}/config/cell.yaml
           ${CELL_DESC_SHARE}/config/grippers.yaml
-          ${CMAKE_CURRENT_SOURCE_DIR}/robots/cr5/robot.xml.in
-  COMMENT "Generating MuJoCo models and ros2_control config"
+          ${ROBOT_DESC_SHARE}/config/cr5.yaml
+          ${ROBOT_DESC_SHARE}/urdf/cr5/cr5.urdf.xacro
+          ${ROBOT_DESC_SHARE}/urdf/cr5/cr5_macro.xacro
+          ${CMAKE_CURRENT_SOURCE_DIR}/config/cr5_sim.yaml
+  COMMENT "Generating MuJoCo models from the CR5 URDF"
   VERBATIM)
 add_custom_target(generate_cell_mujoco ALL DEPENDS ${GEN_STAMP})
 
@@ -45,7 +49,7 @@ install(DIRECTORY ${ROBOT_DESC_SHARE}/meshes/cr5/
         DESTINATION share/${PROJECT_NAME}/robots/cr5/meshes)
 install(DIRECTORY ${TOOLS_DESC_SHARE}/meshes/pgc_50_35/
         DESTINATION share/${PROJECT_NAME}/grippers/pgc_50_35/meshes)
-install(DIRECTORY robots grippers
+install(DIRECTORY grippers config
         DESTINATION share/${PROJECT_NAME})
 install(DIRECTORY ${GEN_DIR}/
         DESTINATION share/${PROJECT_NAME}
