@@ -1,0 +1,15 @@
+# Test copy of the tool registry (same schema as cell_description/config).
+pgc_50_35:
+  body: gripper_base
+  mount_pos: [0, 0, 0]
+  mount_euler: [0, 0, 0]
+  urdf_origin_xyz: [0, 0, -0.01]
+  urdf_origin_rpy: [-1.5708, 0, 0]
+  actuated: [slider_1]
+  controller: forward_command_controller/ForwardCommandController
+  disabled_collisions:
+    - [link_5, gripper_base]
+    - [link_6, gripper_base]
+    - [gripper_base, finger_1]
+    - [gripper_base, finger_2]
+    - [finger_1, finger_2]

@@ -42,4 +42,9 @@ install(DIRECTORY ${GEN_DIR}/
         DESTINATION share/${PROJECT_NAME}
         PATTERN ".generated" EXCLUDE)
 
+if(BUILD_TESTING)
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(generator test TIMEOUT 120)
+endif()
+
 ament_package()
