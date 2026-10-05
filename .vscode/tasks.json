@@ -102,10 +102,10 @@
             "label": "MuJoCo: Test Run XML",
             "type": "shell",
             "linux": {
-                "command": "~/Packages/mujoco/mujoco-3.14.0/bin/simulate ${input:mujoco_scenes}"
+                "command": "simulate ${input:mujoco_scenes}"
             },
             "options": {
-                "cwd": "${workspaceFolder}/${config:ros_workspace}/install/dobot_mujoco_integration/share/dobot_mujoco_integration/scenes/"
+                "cwd": "${workspaceFolder}/${config:ros_workspace}/install/cell_mujoco/share/cell_mujoco/scenes/"
             },
             "problemMatcher": []
         },
@@ -155,10 +155,9 @@
             "id": "mujoco_scenes",
             "type": "pickString",
             "description": "MuJoCo Scene",
-            "default": "main_scene.xml",
+            "default": "cell.xml",
             "options": [
-                "dual_scene.xml",
-                "main_scene.xml"
+                "cell.xml"
             ]
         },
     ]
