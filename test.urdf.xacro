@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cell">
+    <xacro:arg name="mujoco_model" default="$(find cell_mujoco)/scenes/cell.xml" />
+    <xacro:include filename="$(find mujoco_system)/urdf/cell.urdf.xacro" />
+    <xacro:include filename="$(find dobot_description)/urdf/cr5/cr5_ros2_control.xacro" />
+    <ros2_control name="cell_system" type="system">
+        <hardware>
+            <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+            <param name="mujoco_model">$(arg mujoco_model)</param>
+            <param name="auto_register_cameras">false</param>
+        </hardware>
+    </ros2_control>
+    <xacro:cr5_joint_interface joint_name="r1_joint_1" />
+    <xacro:cr5_joint_interface joint_name="r1_joint_2" />
+    <xacro:cr5_joint_interface joint_name="r1_joint_3" />
+    <xacro:cr5_joint_interface joint_name="r1_joint_4" />
+    <xacro:cr5_joint_interface joint_name="r1_joint_5" />
+    <xacro:cr5_joint_interface joint_name="r1_joint_6" />
+    <xacro:cr5_joint_interface joint_name="r2_joint_1" />
+    <xacro:cr5_joint_interface joint_name="r2_joint_2" />
+    <xacro:cr5_joint_interface joint_name="r2_joint_3" />
+    <xacro:cr5_joint_interface joint_name="r2_joint_4" />
+    <xacro:cr5_joint_interface joint_name="r2_joint_5" />
+    <xacro:cr5_joint_interface joint_name="r2_joint_6" />
+    <xacro:cr5_joint_interface joint_name="r1_grip_slider_1" />
+</robot>

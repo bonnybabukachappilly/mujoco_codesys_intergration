@@ -1,0 +1,162 @@
+<mujoco model="cell_layout">
+    <compiler angle="radian" eulerseq="XYZ" />
+
+    <asset>
+        <mesh name="linear_slider" file="../assets/linear_slider.stl" />
+        <mesh name="support_leg" file="../assets/support_leg.stl" />
+        <mesh name="support_roof_middle" file="../assets/support_roof_middle.stl" />
+        <mesh name="support_roof" file="../assets/support_roof.stl" />
+        <mesh name="lift_support" file="../assets/lift_support.stl" />
+        <mesh name="lift" file="../assets/lift.stl" />
+        <mesh name="ceiling_support" file="../assets/ceiling_support.stl" />
+        <mesh name="support_robot" file="../assets/support_robot.stl" />
+
+        <material name="slider_mat" rgba="0.231 0.380 1 1" specular="0.1" shininess="0.5" />
+        <material name="support_leg_mat" rgba="0.101 0.101 0.101 1" specular="0.4" shininess="0.4" />
+        <material name="support_robot_mat" rgba="0.980 0.713 0.003 1" specular="0.4" shininess="0.4" />
+
+
+        <model name="cr5" file="./robots/dobot/cr5/robot.xml" />
+    </asset>
+
+    <default>
+        <default class="slider">
+            <geom type="mesh" material="slider_mat" />
+        </default>
+        <default class="support_color">
+            <geom type="mesh" material="support_leg_mat" />
+            <default class="support_leg_color">
+                <geom type="mesh" mesh="support_leg" />
+            </default>
+            <default class="support_roof_color">
+                <geom type="mesh" />
+            </default>
+        </default>
+        <default class="support_robot_color">
+            <geom type="mesh" material="support_robot_mat" mesh="support_robot" />
+        </default>
+        <default class="lift">
+            <geom type="mesh" material="support_robot_mat" />
+        </default>
+    </default>
+
+    <worldbody>
+        <frame name="layout_frame">
+            <body name="roof_support">
+                <geom childclass="support_color" class="support_roof_color" mesh="ceiling_support" />
+            </body>
+
+            <body name="slider_bottom">
+                <geom class="slider" mesh="linear_slider" />
+
+                <body name="lift_support_left" pos="0 0 0">
+                    <geom class="lift" mesh="lift_support" />
+                </body>
+
+                <body name="lift_left" pos="0 0 0">
+                    <geom class="lift" mesh="lift" />
+                </body>
+
+                <body name="lift_support_right" pos="2 -0.304 0" euler="0 0 1.5708">
+                    <geom class="lift" mesh="lift_support" />
+                </body>
+
+                <body name="lift_right" pos="2 -0.304 0" euler="0 0 1.5708">
+                    <geom class="lift" mesh="lift" />
+                </body>
+
+                <body name="support_sld_btm_1" pos="0 0 0">
+                    <geom childclass="support_color" class="support_leg_color" />
+                </body>
+
+                <body name="support_sld_btm_2" pos="0 -1.486 0">
+                    <geom childclass="support_color" class="support_leg_color" />
+                </body>
+
+                <body name="support_sld_btm_3" pos="1.648 0 0">
+                    <geom childclass="support_color" class="support_leg_color" />
+                </body>
+
+                <body name="support_sld_btm_4" pos="3.296 0 0">
+                    <geom childclass="support_color" class="support_leg_color" />
+                </body>
+            </body>
+
+            <frame name="robot_mounts">
+                <body name="support_robot_1" pos="-0.466 -0.652 0" euler="0 0 1.5708">
+                    <geom class="support_robot_color" />
+                    <frame name="r1_mount" pos="0 0 0.595">
+                        <attach model="cr5" body="base_link" prefix="r1_" />
+                    </frame>
+                </body>
+
+                <body name="support_robot_2" pos="0.152 0.466 0">
+                    <geom class="support_robot_color" />
+                    <frame name="r2_mount" pos="0 0 0.595">
+                        <attach model="cr5" body="base_link" prefix="r2_" />
+                    </frame>
+                </body>
+
+                <body name="support_robot_3" pos="1.148 0.466 0">
+                    <geom class="support_robot_color" />
+                    <frame name="r3_mount" pos="0 0 0.595">
+                        <attach model="cr5" body="base_link" prefix="r3_" />
+                    </frame>
+                </body>
+
+                <body name="support_robot_4" pos="2.148 0.466 0">
+                    <geom class="support_robot_color" />
+                    <frame name="r4_mount" pos="0 0 0.595">
+                        <attach model="cr5" body="base_link" prefix="r4_" />
+                    </frame>
+                </body>
+
+                <body name="support_robot_5" pos="3.148 0.466 0">
+                    <geom class="support_robot_color" />
+                    <frame name="r5_mount" pos="0 0 0.595">
+                        <attach model="cr5" body="base_link" prefix="r5_" />
+                    </frame>
+                </body>
+
+                <body name="support_robot_6" pos="3.148 0.466 3.795" euler="0 3.1416 0">
+                    <geom class="support_robot_color" />
+                    <frame name="r6_mount" pos="0 0 0.595">
+                        <attach model="cr5" body="base_link" prefix="r6_" />
+                    </frame>
+                </body>
+
+                <body name="support_robot_7" pos="0.770 -1.152 3.795" euler="0 3.1416 -1.5708">
+                    <geom class="support_robot_color" euler="0 0 0" />
+                    <frame name="r7_mount" pos="0 0 0.595">
+                        <attach model="cr5" body="base_link" prefix="r7_" />
+                    </frame>
+                </body>
+            </frame>
+
+            <body name="slider_top" pos="0 0 1.5">
+                <geom class="slider" mesh="linear_slider" />
+
+                <body name="support_sld_1" pos="0 0 -1.5">
+                    <geom childclass="support_color" class="support_roof_color"
+                        mesh="support_roof_middle" />
+                </body>
+
+                <body name="support_sld_2" pos="0 -0.28 -1.5">
+                    <geom childclass="support_color" class="support_roof_color"
+                        mesh="support_roof" />
+                </body>
+
+                <body name="support_sld_3" pos="3.5 0 -1.5" euler="0 0 -1.5708">
+                    <geom childclass="support_color" class="support_roof_color"
+                        mesh="support_roof" />
+                </body>
+
+                <body name="support_sld_4" pos="5 0 -1.5" euler="0 0 -1.5708">
+                    <geom childclass="support_color" class="support_roof_color"
+                        mesh="support_roof" />
+                </body>
+            </body>
+        </frame>
+    </worldbody>
+
+</mujoco>

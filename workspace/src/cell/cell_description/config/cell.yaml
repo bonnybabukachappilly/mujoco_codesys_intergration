@@ -1,3 +1,0 @@
-robots:
-  - {name: r1, pos: [0, -0.5, 0], gripper: pgc_50_35}
-  - {name: r2, pos: [0,  0.5, 0], gripper: null}

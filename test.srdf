@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="cell">
+    <group name="all_arms">
+        <group name="r2_arm" />
+        <group name="r1_arm" />
+    </group>
+    <group_state name="home" group="all_arms">
+        <joint name="r2_joint_1" value="0.0" />
+        <joint name="r2_joint_2" value="0.0" />
+        <joint name="r2_joint_3" value="0.0" />
+        <joint name="r2_joint_4" value="0.0" />
+        <joint name="r2_joint_5" value="0.0" />
+        <joint name="r2_joint_6" value="0.0" />
+        <joint name="r1_joint_1" value="0.0" />
+        <joint name="r1_joint_2" value="0.0" />
+        <joint name="r1_joint_3" value="0.0" />
+        <joint name="r1_joint_4" value="0.0" />
+        <joint name="r1_joint_5" value="0.0" />
+        <joint name="r1_joint_6" value="0.0" />
+    </group_state>
+    <group_state name="ready" group="all_arms">
+        <joint name="r2_joint_1" value="0.0" />
+        <joint name="r2_joint_2" value="0.0" />
+        <joint name="r2_joint_3" value="1.5707" />
+        <joint name="r2_joint_4" value="0.0" />
+        <joint name="r2_joint_5" value="-1.5707" />
+        <joint name="r2_joint_6" value="0.0" />
+        <joint name="r1_joint_1" value="0.0" />
+        <joint name="r1_joint_2" value="0.0" />
+        <joint name="r1_joint_3" value="1.5707" />
+        <joint name="r1_joint_4" value="0.0" />
+        <joint name="r1_joint_5" value="-1.5707" />
+        <joint name="r1_joint_6" value="0.0" />
+    </group_state>
+
+    <group name="r1_arm">
+        <chain base_link="r1_base_link" tip_link="r1_flange" />
+    </group>
+    <group_state name="home" group="r1_arm">
+        <joint name="r1_joint_1" value="0" />
+        <joint name="r1_joint_2" value="0" />
+        <joint name="r1_joint_3" value="0" />
+        <joint name="r1_joint_4" value="0" />
+        <joint name="r1_joint_5" value="0" />
+        <joint name="r1_joint_6" value="0" />
+    </group_state>
+    <group_state name="home" group="r1_arm">
+        <joint name="r1_joint_1" value="0" />
+        <joint name="r1_joint_2" value="0" />
+        <joint name="r1_joint_3" value="-1.5707" />
+        <joint name="r1_joint_4" value="0" />
+        <joint name="r1_joint_5" value="1.5707" />
+        <joint name="r1_joint_6" value="0" />
+    </group_state>
+    <disable_collisions link1="r1_base_link" link2="r1_link_1" reason="Adjacent" />
+    <disable_collisions link1="r1_link_1" link2="r1_link_2" reason="Adjacent" />
+    <disable_collisions link1="r1_link_1" link2="r1_link_3" reason="Unverified" />
+    <disable_collisions link1="r1_link_1" link2="r1_link_4" reason="Unverified" />
+    <disable_collisions link1="r1_link_2" link2="r1_link_3" reason="Adjacent" />
+    <disable_collisions link1="r1_link_3" link2="r1_link_4" reason="Adjacent" />
+    <disable_collisions link1="r1_link_4" link2="r1_link_5" reason="Adjacent" />
+    <disable_collisions link1="r1_link_4" link2="r1_link_6" reason="Unverified" />
+    <disable_collisions link1="r1_link_5" link2="r1_link_6" reason="Adjacent" />
+    
+    <disable_collisions link1="r1_link_5" link2="r1_grip_gripper_base" reason="Adjacent" />
+    <disable_collisions link1="r1_link_6" link2="r1_grip_gripper_base" reason="Adjacent" />
+    
+    <disable_collisions link1="r1_grip_gripper_base" link2="r1_grip_finger_1" reason="Adjacent" />
+    <disable_collisions link1="r1_grip_gripper_base" link2="r1_grip_finger_2" reason="Adjacent" />
+    <disable_collisions link1="r1_grip_finger_1" link2="r1_grip_finger_2" reason="Adjacent" />
+    <group name="r2_arm">
+        <chain base_link="r2_base_link" tip_link="r2_flange" />
+    </group>
+    <group_state name="home" group="r2_arm">
+        <joint name="r2_joint_1" value="0" />
+        <joint name="r2_joint_2" value="0" />
+        <joint name="r2_joint_3" value="0" />
+        <joint name="r2_joint_4" value="0" />
+        <joint name="r2_joint_5" value="0" />
+        <joint name="r2_joint_6" value="0" />
+    </group_state>
+    <group_state name="home" group="r2_arm">
+        <joint name="r2_joint_1" value="0" />
+        <joint name="r2_joint_2" value="0" />
+        <joint name="r2_joint_3" value="-1.5707" />
+        <joint name="r2_joint_4" value="0" />
+        <joint name="r2_joint_5" value="1.5707" />
+        <joint name="r2_joint_6" value="0" />
+    </group_state>
+    <disable_collisions link1="r2_base_link" link2="r2_link_1" reason="Adjacent" />
+    <disable_collisions link1="r2_link_1" link2="r2_link_2" reason="Adjacent" />
+    <disable_collisions link1="r2_link_1" link2="r2_link_3" reason="Unverified" />
+    <disable_collisions link1="r2_link_1" link2="r2_link_4" reason="Unverified" />
+    <disable_collisions link1="r2_link_2" link2="r2_link_3" reason="Adjacent" />
+    <disable_collisions link1="r2_link_3" link2="r2_link_4" reason="Adjacent" />
+    <disable_collisions link1="r2_link_4" link2="r2_link_5" reason="Adjacent" />
+    <disable_collisions link1="r2_link_4" link2="r2_link_6" reason="Unverified" />
+    <disable_collisions link1="r2_link_5" link2="r2_link_6" reason="Adjacent" />
+</robot>
