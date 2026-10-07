@@ -1,0 +1,2 @@
+WARNING Wed Oct  7 00:03:35 2026: Child model has pending keyframes. They will not be namespaced correctly. To prevent this, compile the child model before attaching it again.
+

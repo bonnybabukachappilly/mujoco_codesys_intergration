@@ -1,0 +1,28 @@
+<mujoco>
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.70 0.73 0.78" rgb2="0.45 0.48 0.52"
+            width="512" height="512" />
+        <texture name="floor_tex" type="2d" builtin="checker" rgb1="0.82 0.83 0.85"
+            rgb2="0.88 0.89 0.9" width="512" height="512" />
+
+        <material name="epoxy_floor" texture="floor_tex" texrepeat="20 20" reflectance="0.08"
+            specular="0.2" shininess="0.3" />
+        <material name="rail_blue" rgba="0.1 0.35 0.75 1" specular="0.3" shininess="0.4" />
+        <material name="safety_yellow" rgba="0.95 0.75 0.05 1" specular="0.3" shininess="0.5" />
+        <material name="cabinet_orange" rgba="0.92 0.42 0.1 1" specular="0.3" shininess="0.4" />
+        <material name="walkway_green" rgba="0.2 0.7 0.35 1" specular="0.1" />
+        <material name="fence_frame" rgba="0.15 0.45 0.75 1" />
+        <material name="fence_mesh" rgba="0.9 0.9 0.95 0.35" specular="0.4" shininess="0.5" />
+        <material name="conduit_silver" rgba="0.75 0.78 0.82 1" specular="0.5" shininess="0.6" />
+        <material name="tool_red" rgba="0.85 0.15 0.15 1" specular="0.4" shininess="0.5" />
+        <material name="dark_metal" rgba="0.2 0.2 0.22 1" specular="0.3" shininess="0.4" />
+
+        <material name="status_green" rgba="0.1 0.9 0.2 1" specular="0.6" shininess="0.8" />
+        <material name="status_yellow" rgba="1 0.8 0 1" specular="0.6" shininess="0.8" />
+        <material name="status_red" rgba="0.9 0.1 0.1 1" specular="0.6" shininess="0.8" />
+        <material name="estop_red" rgba="0.9 0.05 0.05 1" specular="0.5" shininess="0.6" />
+
+        <model name="cell_layout" file="../models/layout.xml" />
+
+    </asset>
+</mujoco>
