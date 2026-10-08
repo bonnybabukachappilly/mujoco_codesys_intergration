@@ -30,7 +30,7 @@
       <geom class="cr5_visual" mesh="base_link_visual"/>
       <geom class="cr5_collision" mesh="base_link_collision"/>
       <body name="link_1" pos="0 0 0.147" euler="0 0 0">
-        <joint name="joint_1" type="hinge" axis="0 0 1" range="-6.2832 6.2832" armature="0.1" damping="5.0" frictionloss="1.0" ref="-1.57"/>
+        <joint name="joint_1" type="hinge" axis="0 0 1" range="-6.2832 6.2832" armature="0.1" damping="5.0" frictionloss="1.0"/>
         <inertial pos="1.732462e-07 -0.003254572 -0.007633470" mass="1.613090768" fullinertia="0.005467836 0.005250346 0.003409568 1.551051e-09 -7.416569e-08 -9.788468e-05"/>
         <geom class="cr5_visual" mesh="link_1_visual"/>
         <geom class="cr5_collision" mesh="link_1_collision"/>
@@ -40,7 +40,7 @@
           <geom class="cr5_visual" mesh="link_2_visual"/>
           <geom class="cr5_collision" mesh="link_2_collision"/>
           <body name="link_3" pos="-0.427 -0.00034866 0" euler="0 0 0">
-            <joint name="joint_3" type="hinge" axis="0 0 1" range="-2.792 2.792" armature="0.1" damping="5.0" frictionloss="1.0" ref="-1.57"/>
+            <joint name="joint_3" type="hinge" axis="0 0 1" range="-2.792 2.792" armature="0.1" damping="5.0" frictionloss="1.0"/>
             <inertial pos="-0.152341668 0.000149359 0.022683148" mass="2.853894211" fullinertia="0.004262339 0.065129511 0.064386446 5.976804e-05 0.001453665 -1.398065e-06"/>
             <geom class="cr5_visual" mesh="link_3_visual"/>
             <geom class="cr5_collision" mesh="link_3_collision"/>
@@ -50,7 +50,7 @@
               <geom class="cr5_visual" mesh="link_4_visual"/>
               <geom class="cr5_collision" mesh="link_4_collision"/>
               <body name="link_5" pos="0 -0.116 0" euler="1.5708 0 0">
-                <joint name="joint_5" type="hinge" axis="0 0 1" range="-6.2832 6.2832" armature="0.02" damping="1.0" frictionloss="0.2" ref="1.57"/>
+                <joint name="joint_5" type="hinge" axis="0 0 1" range="-6.2832 6.2832" armature="0.02" damping="1.0" frictionloss="0.2"/>
                 <inertial pos="1.668393e-08 -0.006125032 -0.001271823" mass="0.741136955" fullinertia="0.002128583 0.000739514 0.002088154 -3.051141e-08 1.845873e-08 5.384795e-05"/>
                 <geom class="cr5_visual" mesh="link_5_visual"/>
                 <geom class="cr5_collision" mesh="link_5_collision"/>
