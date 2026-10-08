@@ -515,6 +515,7 @@ class GenerateConfig:
 
 
 def main() -> None:
+    
     srdf = GenerateSRDF()
     srdf.generate()
 
