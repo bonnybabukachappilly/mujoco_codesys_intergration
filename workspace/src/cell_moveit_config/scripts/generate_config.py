@@ -1,23 +1,28 @@
+"""Generate the cell's MoveIt / ros2_control / xacro configuration.
+
+Run by CMake at build time (see CMakeLists.txt), or by hand:
+
+    python3 generate_config.py --templates ../templates \
+        --cr5-config <path>/dobot_description/config/cr5.yaml --out /tmp/gen
+
+Output layout, relative to --out:
+    config/  cell.srdf cell.yaml cell_controllers.yaml cell_joint_limits.yaml
+             cell_kinematics.yaml cell_moveit_controllers.yaml
+             cell_ompl_planning.yaml pilz_cartesian_limits.yaml
+    urdf/    cell.urdf.xacro cell_mujoco.urdf.xacro
+"""
+import argparse
 import copy
 import itertools
-import os
-from xml.etree.ElementTree import (
-    Element,
-    ElementTree,
-    SubElement,
-    indent,
-    register_namespace,
-)
+from pathlib import Path
+from xml.etree.ElementTree import Element, ElementTree, SubElement, indent
 
 import yaml
-from ament_index_python.packages import get_package_share_directory
 
 PKG_ROBOT = 'dobot_description'
 PKG_EOAT = 'eoat_description'
-PKG_MECHANISM = 'mechanism_description'
 PKG_MUJOCO = 'mujoco_system'
-PKG_MOVEIT = 'cell_moveit_config'
-PKG_CELL = 'cell_bringup'
+PKG_MOVEIT = 'cell_moveit_config'  # also owns the generated xacro now
 
 ROBOT_ROOT = 'base_link'
 FLANGE_LINK = 'flange'
@@ -26,20 +31,25 @@ FLANGE_LINK = 'flange'
 # the robot, which itself is attached with prefix="<robot>_".
 GRIPPER_INFIX = 'grip_'
 
+# Keep in sync with GENERATED_FILES in CMakeLists.txt.
+EXPECTED_OUTPUTS = (
+    'config/cell.srdf',
+    'config/cell.yaml',
+    'config/cell_controllers.yaml',
+    'config/cell_joint_limits.yaml',
+    'config/cell_kinematics.yaml',
+    'config/cell_moveit_controllers.yaml',
+    'config/cell_ompl_planning.yaml',
+    'config/pilz_cartesian_limits.yaml',
+    'urdf/cell.urdf.xacro',
+    'urdf/cell_mujoco.urdf.xacro',
+)
+
 # Single source of truth for named poses (used by per-arm and all_arms states).
 ROBOT_POSE: dict[str, list[float]] = {
     'home': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
     'ready': [0.0, 0.0, 1.5707, 0.0, -1.5707, 0.0]
 }
-
-HUMBLE_ADAPTERS = (
-    'default_planner_request_adapters/AddTimeOptimalParameterization '
-    'default_planner_request_adapters/ResolveConstraintFrames '
-    'default_planner_request_adapters/FixWorkspaceBounds '
-    'default_planner_request_adapters/FixStartStateBounds '
-    'default_planner_request_adapters/FixStartStateCollision '
-    'default_planner_request_adapters/FixStartStatePathConstraints'
-)
 
 ROBOT_CONFIG: list[dict[str, str | None]] = [
     {
@@ -50,7 +60,6 @@ ROBOT_CONFIG: list[dict[str, str | None]] = [
         'gripper': 'pgc_50_35',
         'gripper_xyz': '0 0 0',
         'gripper_rpy': '0 0 0'
-
     },
     {
         'robot': 'cr5',
@@ -60,7 +69,6 @@ ROBOT_CONFIG: list[dict[str, str | None]] = [
         'gripper': None,
         'gripper_xyz': None,
         'gripper_rpy': None
-
     },
     {
         'robot': 'cr5',
@@ -70,7 +78,6 @@ ROBOT_CONFIG: list[dict[str, str | None]] = [
         'gripper': None,
         'gripper_xyz': None,
         'gripper_rpy': None
-
     },
     {
         'robot': 'cr5',
@@ -80,7 +87,6 @@ ROBOT_CONFIG: list[dict[str, str | None]] = [
         'gripper': None,
         'gripper_xyz': None,
         'gripper_rpy': None
-
     },
     {
         'robot': 'cr5',
@@ -90,7 +96,6 @@ ROBOT_CONFIG: list[dict[str, str | None]] = [
         'gripper': None,
         'gripper_xyz': None,
         'gripper_rpy': None
-
     },
     {
         'robot': 'cr5',
@@ -100,7 +105,6 @@ ROBOT_CONFIG: list[dict[str, str | None]] = [
         'gripper': None,
         'gripper_xyz': None,
         'gripper_rpy': None
-
     },
     {
         'robot': 'cr5',
@@ -110,49 +114,45 @@ ROBOT_CONFIG: list[dict[str, str | None]] = [
         'gripper': None,
         'gripper_xyz': None,
         'gripper_rpy': None
-
     }
 ]
 
 
 def _prefixes() -> list[str]:
-    """Robot prefixes in a deterministic order (sets are random per run)."""
-    return sorted({item['prefix'] for item in ROBOT_CONFIG})  # type: ignore
+    """Robot prefixes in ROBOT_CONFIG order (deterministic, r10 after r9)."""
+    return list(dict.fromkeys(
+        item['prefix'] for item in ROBOT_CONFIG))  # type: ignore
 
 
 def _gripper_prefixes() -> list[str]:
-    return sorted(
+    return [
         item['prefix'] for item in ROBOT_CONFIG  # type: ignore
-        if item['gripper'] is not None)
+        if item['gripper'] is not None]
 
 
-def _write_xml(tree: ElementTree, path: str) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+def _write_xml(tree: ElementTree, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     indent(tree, space='    ', level=0)
     tree.write(path, encoding='utf-8', xml_declaration=True)
 
 
-def _write_yaml(data: dict, path: str) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+def _write_yaml(data: dict, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, 'w', encoding='utf-8') as f:
         yaml.dump(data, f, sort_keys=False, indent=2)
 
 
-def _load_disabled_pairs() -> list[dict[str, str]]:
-    """Single source for collision pairs: dobot_description/config/cr5.yaml."""
-    path = os.path.join(
-        get_package_share_directory(PKG_ROBOT), 'config', 'cr5.yaml')
+def _load_yaml(path: Path) -> dict:
     with open(path, 'r', encoding='utf-8') as f:
-        return yaml.safe_load(f)['collision']['disabled_pairs']
+        return yaml.safe_load(f)
 
 
 class GenerateSRDF:
-    def __init__(self) -> None:
-        pkg: str = get_package_share_directory(PKG_MOVEIT)
-        self._save_path: str = os.path.join(
-            pkg, 'config', 'cell.srdf'
-        )
-        self._disabled_pairs = _load_disabled_pairs()
+    def __init__(self, out: Path, cr5_config: Path) -> None:
+        self._save_path: Path = out / 'config' / 'cell.srdf'
+        # Single source for collision pairs: dobot_description/config/cr5.yaml
+        self._disabled_pairs: list[dict[str, str]] = (
+            _load_yaml(cr5_config)['collision']['disabled_pairs'])
 
     def _generate_gripper_srdf(self, parent: Element, prefix: str) -> None:
         grip = f'{prefix}_{GRIPPER_INFIX}'
@@ -184,8 +184,6 @@ class GenerateSRDF:
             group, 'chain', base_link=f'{prefix}_{ROBOT_ROOT}',
             tip_link=f'{prefix}_{FLANGE_LINK}')
 
-        # Per-arm states now come from ROBOT_POSE (previously 'ready' was
-        # named 'home' and had opposite signs to ROBOT_POSE['ready']).
         for state_name, values in ROBOT_POSE.items():
             group_state: Element = SubElement(
                 parent, 'group_state', name=state_name,
@@ -238,16 +236,10 @@ class GenerateSRDF:
 
 
 class GenerateXacro:
-    def __init__(self) -> None:
-        pkg_main: str = get_package_share_directory(PKG_MUJOCO)
-        self._save_path_main: str = os.path.join(
-            pkg_main, 'urdf', 'cell_mujoco.urdf.xacro'
-        )
-
-        pkg_cell: str = get_package_share_directory(PKG_CELL)
-        self._save_path_cell: str = os.path.join(
-            pkg_cell, 'urdf', 'cell.urdf.xacro'
-        )
+    def __init__(self, out: Path) -> None:
+        self._out: Path = out
+        self._save_path_main: Path = out / 'urdf' / 'cell_mujoco.urdf.xacro'
+        self._save_path_cell: Path = out / 'urdf' / 'cell.urdf.xacro'
 
     def __generate_argument(self, parent: Element, name: str, default: str) -> None:
         SubElement(parent, 'xacro:arg', name=name, default=default)
@@ -297,13 +289,15 @@ class GenerateXacro:
                 parent, 'xacro:cr5_joint_interface',
                 joint_name=f'{item}_{GRIPPER_INFIX}slider_1')
 
-    def _generate_cell(self) -> None:
-        register_namespace('xacro', 'http://www.ros.org/wiki/xacro')
-
-        root: Element = Element('robot', {
+    @staticmethod
+    def __new_root() -> Element:
+        return Element('robot', {
             'xmlns:xacro': 'http://www.ros.org/wiki/xacro',
             'name': 'cell'
         })
+
+    def _generate_cell(self) -> None:
+        root: Element = self.__new_root()
 
         self.__add_include(
             root, f'$(find {PKG_ROBOT})/urdf/cr5/cr5_macro.xacro')
@@ -327,12 +321,7 @@ class GenerateXacro:
         _write_xml(ElementTree(root), self._save_path_cell)
 
     def _generate_main(self) -> None:
-        register_namespace('xacro', 'http://www.ros.org/wiki/xacro')
-
-        root: Element = Element('robot', {
-            'xmlns:xacro': 'http://www.ros.org/wiki/xacro',
-            'name': 'cell'
-        })
+        root: Element = self.__new_root()
 
         robot_prefix: list[str] = _prefixes()
         gripper: list[str] = _gripper_prefixes()
@@ -341,8 +330,10 @@ class GenerateXacro:
             root, 'mujoco_model',
             f'$(find {PKG_MUJOCO})/scenes/cell.xml')
 
+        # cell.urdf.xacro is generated into this same package now
+        # (it used to live in cell_bringup, which created a package cycle).
         self.__add_include(
-            root, f'$(find {PKG_CELL})/urdf/cell.urdf.xacro')
+            root, f'$(find {PKG_MOVEIT})/urdf/cell.urdf.xacro')
 
         self.__add_include(
             root, f'$(find {PKG_ROBOT})/urdf/cr5/cr5_ros2_control.xacro')
@@ -358,9 +349,7 @@ class GenerateXacro:
         _write_xml(ElementTree(root), self._save_path_main)
 
     def _generate_controllers(self) -> None:
-        path = os.path.join(
-            get_package_share_directory(PKG_MUJOCO),
-            'config', 'cell_controllers.yaml')
+        path = self._out / 'config' / 'cell_controllers.yaml'
 
         manager: dict = {
             'update_rate': 500,
@@ -406,28 +395,19 @@ class GenerateXacro:
 
 
 class GenerateConfig:
-    def __init__(self) -> None:
-        pkg: str = get_package_share_directory(PKG_MOVEIT)
-        self._save_path: str = os.path.join(
-            pkg, 'config'
-        )
-        template_path: str = os.path.join(
-            pkg, 'templates'
-        )
-        with open(f'{template_path}/cr5_joint_limits.yaml', 'r') as data:
-            self.__cr5_joint_limit: dict = yaml.safe_load(data)
+    def __init__(self, out: Path, templates: Path) -> None:
+        self._save_path: Path = out / 'config'
 
-        with open(f'{template_path}/kinematics.yaml', 'r') as data:
-            self.__cr5_kinematics: dict = yaml.safe_load(data)
-
-        with open(f'{template_path}/moveit_controllers.yaml', 'r') as data:
-            self.__cr5_moveit_controls: dict = yaml.safe_load(data)
-
-        with open(f'{template_path}/ompl_planning.yaml', 'r') as data:
-            self.__cr5_ompl: dict = yaml.safe_load(data)
-
-        with open(f'{template_path}/pilz_cartesian_limits.yaml', 'r') as data:
-            self.__cr5_pilz: dict = yaml.safe_load(data)
+        self.__cr5_joint_limit: dict = _load_yaml(
+            templates / 'cr5_joint_limits.yaml')
+        self.__cr5_kinematics: dict = _load_yaml(
+            templates / 'kinematics.yaml')
+        self.__cr5_moveit_controls: dict = _load_yaml(
+            templates / 'moveit_controllers.yaml')
+        self.__cr5_ompl: dict = _load_yaml(
+            templates / 'ompl_planning.yaml')
+        self.__cr5_pilz: dict = _load_yaml(
+            templates / 'pilz_cartesian_limits.yaml')
 
         self._prefix: list[str] = _prefixes()
 
@@ -444,7 +424,7 @@ class GenerateConfig:
 
         _write_yaml(
             self.__cr5_joint_limit,
-            f'{self._save_path}/cell_joint_limits.yaml')
+            self._save_path / 'cell_joint_limits.yaml')
 
     def _generate_kinematics(self) -> None:
         kinematics = {
@@ -452,7 +432,7 @@ class GenerateConfig:
             for _prefix in self._prefix
         }
 
-        _write_yaml(kinematics, f'{self._save_path}/cell_kinematics.yaml')
+        _write_yaml(kinematics, self._save_path / 'cell_kinematics.yaml')
 
     def _generate_moveit_controls(self) -> None:
         manager = self.__cr5_moveit_controls['moveit_simple_controller_manager']
@@ -473,7 +453,7 @@ class GenerateConfig:
 
         _write_yaml(
             self.__cr5_moveit_controls,
-            f'{self._save_path}/cell_moveit_controllers.yaml')
+            self._save_path / 'cell_moveit_controllers.yaml')
 
     def _generate_ompl(self) -> None:
         arm = self.__cr5_ompl.pop('arm')
@@ -486,11 +466,11 @@ class GenerateConfig:
             self.__cr5_ompl['all_arms'] = copy.deepcopy(arm)
 
         _write_yaml(
-            self.__cr5_ompl, f'{self._save_path}/cell_ompl_planning.yaml')
+            self.__cr5_ompl, self._save_path / 'cell_ompl_planning.yaml')
 
     def _generate_pilz(self) -> None:
         _write_yaml(
-            self.__cr5_pilz, f'{self._save_path}/pilz_cartesian_limits.yaml')
+            self.__cr5_pilz, self._save_path / 'pilz_cartesian_limits.yaml')
 
     def _generate_cell(self) -> None:
         config: list[dict[str, object]] = []
@@ -503,7 +483,7 @@ class GenerateConfig:
             for robot in ROBOT_CONFIG  # type: ignore
         )
 
-        _write_yaml({'robots': config}, f'{self._save_path}/cell.yaml')
+        _write_yaml({'robots': config}, self._save_path / 'cell.yaml')
 
     def generate(self) -> None:
         self._generate_joint_limits()
@@ -515,15 +495,23 @@ class GenerateConfig:
 
 
 def main() -> None:
-    
-    srdf = GenerateSRDF()
-    srdf.generate()
+    parser = argparse.ArgumentParser(description='Generate cell config.')
+    parser.add_argument('--templates', type=Path, required=True,
+                        help='directory with the *.yaml templates')
+    parser.add_argument('--cr5-config', type=Path, required=True,
+                        help='dobot_description/config/cr5.yaml')
+    parser.add_argument('--out', type=Path, required=True,
+                        help='output directory (config/ and urdf/ created)')
+    args = parser.parse_args()
 
-    config = GenerateConfig()
-    config.generate()
+    GenerateSRDF(args.out, args.cr5_config).generate()
+    GenerateConfig(args.out, args.templates).generate()
+    GenerateXacro(args.out).generate()
 
-    xacro = GenerateXacro()
-    xacro.generate()
+    if missing := [
+        f for f in EXPECTED_OUTPUTS if not (args.out / f).is_file()
+    ]:
+        raise SystemExit(f'generator did not produce: {missing}')
 
 
 if __name__ == '__main__':

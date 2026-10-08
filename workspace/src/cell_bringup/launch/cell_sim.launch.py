@@ -19,7 +19,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description() -> LaunchDescription:
     moveit_config: str = get_package_share_directory('cell_moveit_config')
-    mujoco_share: str = get_package_share_directory('mujoco_system')
+    # mujoco_share: str = get_package_share_directory('mujoco_system')
 
     with open(os.path.join(moveit_config, 'config', 'cell.yaml')) as f:
         cell = yaml.safe_load(f)['robots']
@@ -31,9 +31,9 @@ def generate_launch_description() -> LaunchDescription:
     use_sim_time = LaunchConfiguration('use_sim_time')
     rviz = LaunchConfiguration('rviz')
     xacro_file: str = os.path.join(
-        mujoco_share, 'urdf', 'cell_mujoco.urdf.xacro')
+        moveit_config, 'urdf', 'cell_mujoco.urdf.xacro')
     controllers_file: str = os.path.join(
-        mujoco_share, 'config', 'cell_controllers.yaml')
+        moveit_config, 'config', 'cell_controllers.yaml')
     rviz_config = PathJoinSubstitution(
         [FindPackageShare('dobot_cr5_description'), 'rviz', 'view_cr5.rviz'])
 
