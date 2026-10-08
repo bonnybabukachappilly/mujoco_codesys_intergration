@@ -109,6 +109,21 @@
             },
             "problemMatcher": []
         },
+        {
+            "label": "Colcon: Build - assembly_station [debug]",
+            "type": "shell",
+            "linux": {
+                "command": "colcon build --packages-select assembly_station --event-handlers console_direct+"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/${config:ros_workspace}/"
+            },
+            "problemMatcher": []
+        },
         // * ---------------------------------------------------------------------------
         // * ----------------------------- ROS LAUNCH TASKS ----------------------------
         // * ---------------------------------------------------------------------------

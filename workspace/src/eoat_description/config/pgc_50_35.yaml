@@ -1,0 +1,26 @@
+name: pgc_50_35
+kind: gripper
+
+xacro:
+  file: urdf/pgc/pgc_50_35/pgc_50_35_macro.xacro
+  macro: pgc_50_35
+
+mujoco:
+  file: models/eoat/pgc/pgc_50_35/eoat.xml
+
+links: [gripper_base, finger_1, finger_2]
+base_link: gripper_base
+
+joints:
+  - { name: slider_1, type: actuated, mimic: null, lower: 0.0, upper: 0.0187 }
+  - { name: slider_2, type: mimic, mimic: slider_1, lower: 0.0, upper: 0.0187 }
+
+named_poses:
+  open: 0.0
+  closed: 0.0187
+
+collision:
+  disabled_pairs:
+    - { link1: gripper_base, link2: finger_1, reason: Adjacent }
+    - { link1: gripper_base, link2: finger_2, reason: Adjacent }
+    - { link1: finger_1, link2: finger_2, reason: Adjacent }

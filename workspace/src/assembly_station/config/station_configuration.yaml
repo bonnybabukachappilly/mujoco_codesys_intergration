@@ -1,0 +1,57 @@
+name: cell
+
+models:
+  cr5:
+    type: robot
+    make: dobot
+    ros:
+      package: dobot_description
+      descriptor: config/cr5.yaml
+    mujoco:
+      package: mujoco_system
+      descriptor: models/robots/dobot/cr5/robot.xml
+
+  pgc_50_35:
+    type: eoat
+    make: pgc
+    ros:
+      package: eoat_description
+      descriptor: config/pgc_50_35.yaml
+    mujoco:
+      package: mujoco_system
+      descriptor: models/eoat/pgc/pgc_50_35/gripper.xml
+
+# layout_origin: { xyz: [-1.5, 2.0, 0.0], rpy: [0, 0, 0] }
+
+# support_height: 0.595
+
+robots:
+  - id: r1
+    model: cr5
+    support: { xyz: [-0.466, -0.652, 0], rpy: [0, 0, 1.5708] }
+    eoat: pgc_50_35
+    mount: { xyz: [0, 0, 0], rpy: [0, 0, 0] }
+
+  - id: r2
+    model: cr5
+    support: { xyz: [0.152, 0.466, 0], rpy: [0, 0, 0] }
+
+  # - id: r3
+  #   model: cr5
+  #   support: { xyz: [1.148, 0.466, 0], rpy: [0, 0, 0] }
+
+  # - id: r4
+  #   model: cr5
+  #   support: { xyz: [2.148, 0.466, 0], rpy: [0, 0, 0] }
+
+  # - id: r5
+  #   model: cr5
+  #   support: { xyz: [3.148, 0.466, 0], rpy: [0, 0, 0] }
+
+  # - id: r6
+  #   model: cr5
+  #   support: { xyz: [3.148, 0.466, 3.795], rpy: [0, 3.1416, 0] }
+
+  # - id: r7
+  #   model: cr5
+  #   support: { xyz: [0.770, -1.152, 3.795], rpy: [0, 3.1416, -1.5708] }

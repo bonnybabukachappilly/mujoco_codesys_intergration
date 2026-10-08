@@ -1,0 +1,10 @@
+<mujoco>
+    <default>
+        <default class="cr5_visual">
+            <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.85 0.85 0.88 1" />
+        </default>
+        <default class="cr5_collision">
+            <geom type="mesh" group="3" />
+        </default>
+    </default>
+</mujoco>

@@ -1,0 +1,17 @@
+<mujoco>
+
+    <actuator>
+        <position name="joint_1" joint="joint_1" ctrlrange="-6.2832 6.2832" kp="8100" kv="150"
+            forcerange="-100.0 100.0" />
+        <position name="joint_2" joint="joint_2" ctrlrange="-6.2832 6.2832" kp="8600" kv="150"
+            forcerange="-100.0 100.0" />
+        <position name="joint_3" joint="joint_3" ctrlrange="-2.792 2.792" kp="8100" kv="150"
+            forcerange="-100.0 100.0" />
+        <position name="joint_4" joint="joint_4" ctrlrange="-6.2832 6.2832" kp="500" kv="30"
+            forcerange="-50.0 50.0" />
+        <position name="joint_5" joint="joint_5" ctrlrange="-6.2832 6.2832" kp="500" kv="30"
+            forcerange="-50.0 50.0" />
+        <position name="joint_6" joint="joint_6" ctrlrange="-6.2832 6.2832" kp="500" kv="30"
+            forcerange="-50.0 50.0" />
+    </actuator>
+</mujoco>
