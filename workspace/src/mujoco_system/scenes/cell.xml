@@ -11,6 +11,7 @@
   </visual>
 
   <include file="asset.xml" />
+  <include file="../models/layout.xml" />
 
 
   <worldbody>
@@ -35,7 +36,8 @@
     <geom name="factory_floor" type="plane" size="15 15 0.1" material="epoxy_floor" />
 
     <!-- Overhead Structural Steel Rails (Z=3.94m) for Ceiling-Mounted Robot -->
-    <!-- <geom name="rail_main_C" type="box" size="0.25 5 0.06" pos="0 0 3.94" material="rail_blue" />
+    <!-- <geom name="rail_main_C" type="box" size="0.25 5 0.06" pos="0 0 3.94" material="rail_blue"
+    />
     <geom name="rail_main_L" type="box" size="0.15 5 0.06" pos="-2.5 0 3.94"
       material="rail_blue" />
     <geom name="rail_main_R" type="box" size="0.15 5 0.06" pos="2.5 0 3.94" material="rail_blue" />
@@ -121,9 +123,9 @@
       <geom type="cylinder" size="0.02 0.06" pos="0 0 1.1" material="dark_metal" />
     </body>
 
-    <frame name="layout_mount" pos="-1.5 2 0">
+    <!-- <frame name="layout_mount" pos="-1.5 2 0">
       <attach model="cell_layout" prefix="layout" />
-    </frame>
+    </frame> -->
   </worldbody>
 
   <keyframe>

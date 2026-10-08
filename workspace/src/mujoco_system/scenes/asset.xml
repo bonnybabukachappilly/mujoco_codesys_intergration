@@ -22,7 +22,7 @@
         <material name="status_red" rgba="0.9 0.1 0.1 1" specular="0.6" shininess="0.8" />
         <material name="estop_red" rgba="0.9 0.05 0.05 1" specular="0.5" shininess="0.6" />
 
-        <model name="cell_layout" file="../models/layout.xml" />
+        <!-- <model name="cell_layout" file="../models/layout.xml" /> -->
 
     </asset>
 </mujoco>

@@ -1,5 +1,5 @@
 <mujoco model="cell_layout">
-    <compiler angle="radian" eulerseq="XYZ" />
+    <!-- <compiler angle="radian" eulerseq="XYZ" /> -->
 
     <asset>
         <mesh name="linear_slider" file="../assets/linear_slider.stl" />
@@ -17,6 +17,7 @@
 
 
         <model name="cr5" file="./robots/dobot/cr5/robot.xml" />
+        <model name="cr5_grip" file="./robots/dobot/cr5/robot_pgc_50_35.xml" />
     </asset>
 
     <default>
@@ -41,7 +42,7 @@
     </default>
 
     <worldbody>
-        <frame name="layout_frame">
+        <frame name="layout_frame" pos="-1.5 2 0">
             <body name="roof_support">
                 <geom childclass="support_color" class="support_roof_color" mesh="ceiling_support" />
             </body>
@@ -86,7 +87,7 @@
                 <body name="support_robot_1" pos="-0.466 -0.652 0" euler="0 0 1.5708">
                     <geom class="support_robot_color" />
                     <frame name="r1_mount" pos="0 0 0.595">
-                        <attach model="cr5" body="base_link" prefix="r1_" />
+                        <attach model="cr5_grip" body="base_link" prefix="r1_" />
                     </frame>
                 </body>
 
