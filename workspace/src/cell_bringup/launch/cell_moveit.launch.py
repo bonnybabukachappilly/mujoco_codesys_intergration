@@ -11,7 +11,7 @@ from moveit_configs_utils import MoveItConfigsBuilder
 
 def generate_launch_description() -> LaunchDescription:
     bringup = get_package_share_directory('cell_bringup')
-    mujoco = get_package_share_directory('mujoco_system')
+    # mujoco = get_package_share_directory('mujoco_system')
     moveit_cfg = get_package_share_directory('cell_moveit_config')
 
     def cfg(f):
@@ -20,7 +20,7 @@ def generate_launch_description() -> LaunchDescription:
     moveit_config = (
         MoveItConfigsBuilder('cell', package_name='cell_moveit_config')
         .robot_description(
-            file_path=os.path.join(mujoco, 'urdf', 'cell_mujoco.urdf.xacro'))
+            file_path=os.path.join(moveit_cfg, 'urdf', 'cell_mujoco.urdf.xacro'))
         .robot_description_semantic(file_path=cfg('cell.srdf'))
         .robot_description_kinematics(file_path=cfg('cell_kinematics.yaml'))
         .joint_limits(file_path=cfg('cell_joint_limits.yaml'))
