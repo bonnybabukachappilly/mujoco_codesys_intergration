@@ -6,6 +6,7 @@ from xml.etree.ElementTree import ElementTree, parse
 import yaml
 from generator.controller_generator import MoveitControllerGenerator
 from generator.joint_limit_generator import JointLimitGenerator
+from generator.kinematics_generator import KinematicsGenerator
 from generator.models import (
     EOAT,
     CollisionDisabled,
@@ -63,6 +64,11 @@ class GenerateStation:
             output_path=self._output_path
         ).generate()
 
+        KinematicsGenerator(
+            config=self._configurations,
+            output_path=self._output_path
+        ).generate()
+
     def _get_robot(self, model: str) -> Robot:
         for robot in self._robots:
             if robot.model == model:
@@ -99,7 +105,6 @@ class GenerateStation:
                     mujoco_descriptor=_mujoco['descriptor']
                 )
             )
-
 
         for robot in config_data['robots']:
             _support: dict[str, str] = robot['support']
