@@ -50,8 +50,6 @@ class MoveitControllerGenerator:
 
         self._controller['moveit_simple_controller_manager'] |= _controller
 
-        print(self._controller)
-
     def generate(self) -> None:
         _controller_names: list[str] = []
 

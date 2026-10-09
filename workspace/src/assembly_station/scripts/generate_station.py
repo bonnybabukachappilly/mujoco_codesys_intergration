@@ -4,6 +4,8 @@ from typing import Any
 from xml.etree.ElementTree import ElementTree, parse
 
 import yaml
+from generator.controller_generator import MoveitControllerGenerator
+from generator.joint_limit_generator import JointLimitGenerator
 from generator.models import (
     EOAT,
     CollisionDisabled,
@@ -17,7 +19,6 @@ from generator.models import (
     StationModel,
 )
 from generator.srdf_generator import SRDFGenerator
-from generator.controller_generator import MoveitControllerGenerator
 
 
 class GenerateStation:
@@ -51,6 +52,12 @@ class GenerateStation:
         ).generate()
 
         MoveitControllerGenerator(
+            config=self._configurations,
+            get_robot=self._get_robot,
+            output_path=self._output_path
+        ).generate()
+
+        JointLimitGenerator(
             config=self._configurations,
             get_robot=self._get_robot,
             output_path=self._output_path
@@ -92,6 +99,7 @@ class GenerateStation:
                     mujoco_descriptor=_mujoco['descriptor']
                 )
             )
+
 
         for robot in config_data['robots']:
             _support: dict[str, str] = robot['support']

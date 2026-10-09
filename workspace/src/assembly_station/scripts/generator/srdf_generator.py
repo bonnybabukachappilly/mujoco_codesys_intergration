@@ -84,7 +84,6 @@ class SRDFGenerator:
             pose.name for robot in all_robots.values() for pose in robot.poses}
 
         for pose in pose_names:
-            print(pose)
             group_state: Element = SubElement(
                 self._root, 'group_state', name=pose, group='all_arm')
 
