@@ -1,9 +1,7 @@
 from collections.abc import Callable
 from pathlib import PosixPath
 from typing import cast
-from xml.etree.ElementTree import Element, ElementTree, SubElement, indent, tostring
-
-import yaml
+from xml.etree.ElementTree import Element, ElementTree, SubElement, indent
 
 from generator.models import EOAT, Robot, StationConfigurations
 

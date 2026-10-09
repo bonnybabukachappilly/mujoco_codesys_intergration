@@ -22,7 +22,7 @@ set(GEN_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
 set(GENERATED_FILES
   "${GEN_DIR}/config/station.srdf"
-  # "${GEN_DIR}/urdf/station.urdf.xacro"
+  "${GEN_DIR}/config/cell_moveit_controllers.yaml"
 )
 
 add_custom_command(

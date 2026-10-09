@@ -17,6 +17,7 @@ from generator.models import (
     StationModel,
 )
 from generator.srdf_generator import SRDFGenerator
+from generator.controller_generator import MoveitControllerGenerator
 
 
 class GenerateStation:
@@ -46,6 +47,12 @@ class GenerateStation:
             config=self._configurations,
             get_robot=self._get_robot,
             get_eoat=self._get_eoat,
+            output_path=self._output_path
+        ).generate()
+
+        MoveitControllerGenerator(
+            config=self._configurations,
+            get_robot=self._get_robot,
             output_path=self._output_path
         ).generate()
 
