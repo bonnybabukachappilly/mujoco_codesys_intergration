@@ -19,6 +19,7 @@ from generator.models import (
     StationConfigurations,
     StationModel,
 )
+from generator.ompl_generator import OMPLGenerator
 from generator.pliz_generator import PlizGenerator
 from generator.srdf_generator import SRDFGenerator
 
@@ -71,6 +72,11 @@ class GenerateStation:
         ).generate()
 
         PlizGenerator(output_path=self._output_path).generate()
+
+        OMPLGenerator(
+            config=self._configurations,
+            output_path=self._output_path
+        ).generate()
 
     def _get_robot(self, model: str) -> Robot:
         for robot in self._robots:
