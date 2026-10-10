@@ -1,29 +1,40 @@
-acceleration_limits:
-  values:
-    joint_1: 3.49065850399
-    joint_2: 3.49065850399
-    joint_3: 3.49065850399
-    joint_4: 17.4532925199
-    joint_5: 17.4532925199
-    joint_6: 17.4532925199
+name: cr5
+kind: robot
+controller_type: joint_trajectory_controller/JointTrajectoryController
+
+xacro:
+  file: urdf/cr5/cr5_macro.xacro
+  macro: cr5_robot
+
+mujoco:
+  file: models/robots/dobot/cr5/robot.xml
+
+links: [base_link, link_1, link_2, link_3, link_4, link_5, link_6, flange]
+base_link: base_link
+tip_link: flange
+
+joints:
+  - { name: joint_1, max_velocity: 3.14159, max_acceleration: 3.49065850399 }
+  - { name: joint_2, max_velocity: 3.14159, max_acceleration: 3.49065850399 }
+  - { name: joint_3, max_velocity: 3.14159, max_acceleration: 3.49065850399 }
+  - { name: joint_4, max_velocity: 3.14159, max_acceleration: 17.4532925199 }
+  - { name: joint_5, max_velocity: 3.14159, max_acceleration: 17.4532925199 }
+  - { name: joint_6, max_velocity: 3.14159, max_acceleration: 17.4532925199 }
+
+named_poses:
+  home: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  ready: [0.0, 0.0, 1.5707, 0.0, -1.5707, 0.0]
+
+tool_adjacent_links: [link_5, link_6]
 
 collision:
   disabled_pairs:
-    - {link1: base_link, link2: link_1, reason: Adjacent}
-    - {link1: link_1,    link2: link_2, reason: Adjacent}
-    - {link1: link_1,    link2: link_3, reason: Unverified}
-    - {link1: link_1,    link2: link_4, reason: Unverified}
-    - {link1: link_2,    link2: link_3, reason: Adjacent}
-    - {link1: link_3,    link2: link_4, reason: Adjacent}
-    - {link1: link_4,    link2: link_5, reason: Adjacent}
-    - {link1: link_4,    link2: link_6, reason: Unverified}
-    - {link1: link_5,    link2: link_6, reason: Adjacent}
-
-# J1, J2, J3 -> 218 deg/sec
-# J4, J5, J6 -> 270 deg/sec
-
-# Jerk
-# J1, J2, J3 -> 2000 deg/sec^3
-# J4, J5, J6 -> 10000 deg/sec^3
-# X, Y, Z -> 18000 mm/sec^3
-# RX, RY, RZ -> 9000 deg/sec^3
+    - { link1: base_link, link2: link_1, reason: Adjacent }
+    - { link1: link_1, link2: link_2, reason: Adjacent }
+    - { link1: link_1, link2: link_3, reason: Unverified }
+    - { link1: link_1, link2: link_4, reason: Unverified }
+    - { link1: link_2, link2: link_3, reason: Adjacent }
+    - { link1: link_3, link2: link_4, reason: Adjacent }
+    - { link1: link_4, link2: link_5, reason: Adjacent }
+    - { link1: link_4, link2: link_6, reason: Unverified }
+    - { link1: link_5, link2: link_6, reason: Adjacent }
