@@ -85,7 +85,7 @@ class SRDFGenerator:
 
         for pose in pose_names:
             group_state: Element = SubElement(
-                self._root, 'group_state', name=pose, group='all_arm')
+                self._root, 'group_state', name=pose, group='all_arms')
 
             for prefix, robot in all_robots.items():
                 joint_names: list[str] = [joint.name for joint in robot.joints]

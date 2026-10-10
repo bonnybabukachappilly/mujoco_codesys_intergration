@@ -5,6 +5,7 @@ controller_type: joint_trajectory_controller/JointTrajectoryController
 xacro:
   file: urdf/cr5/cr5_macro.xacro
   macro: cr5_robot
+  package: dobot_description
 
 mujoco:
   file: models/robots/dobot/cr5/robot.xml

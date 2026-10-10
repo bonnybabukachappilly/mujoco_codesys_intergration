@@ -57,10 +57,11 @@ class EOATPose:
 @dataclass
 class EOAT:
     model: str
+    kind: str
 
     xacro_file: ElementTree
     xacro_path: PosixPath
-
+    xacro_package: str
     xacro_macro: str
 
     mujoco_file: ElementTree
@@ -91,10 +92,11 @@ class RobotPose:
 @dataclass
 class Robot:
     model: str
+    kind: str
 
     xacro_file: ElementTree
     xacro_path: PosixPath
-
+    xacro_package: str
     xacro_macro: str
 
     mujoco_file: ElementTree
