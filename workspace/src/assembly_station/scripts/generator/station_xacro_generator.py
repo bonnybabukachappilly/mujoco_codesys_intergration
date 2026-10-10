@@ -64,7 +64,7 @@ class StationXacroGenerator:
 
         SubElement(
             self._root, 'xacro:include',
-            file_name=f'$(find {_package})/{_filepath}')
+            filename=f'$(find {_package}){_filepath}')
 
     def _create_robot(self, config: StationConfigurations) -> None:
         _prefix: str = config.prefix

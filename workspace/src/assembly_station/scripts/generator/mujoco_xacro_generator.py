@@ -59,7 +59,7 @@ class MujocoXacroGenerator:
 
         SubElement(
             self._root, 'xacro:include',
-            file_name=f'$(find {robot.xacro_package})/{robot.ros_2_control}')
+            filename=f'$(find {robot.xacro_package})/{robot.ros_2_control}')
 
     def _create_ros_control(self, root: Element) -> None:
         _hardware: Element = SubElement(root, 'hardware')

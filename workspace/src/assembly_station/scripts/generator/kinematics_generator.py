@@ -2,6 +2,7 @@ from pathlib import PosixPath
 
 import yaml
 from generator.models import StationConfigurations
+from generator.utils import NoAliasDumper
 
 
 class KinematicsGenerator:
@@ -39,4 +40,4 @@ class KinematicsGenerator:
         with open(file, 'w') as f:
             yaml.dump(
                 self._kinematics, f, sort_keys=False,
-                default_flow_style=False)
+                default_flow_style=False, Dumper=NoAliasDumper)
