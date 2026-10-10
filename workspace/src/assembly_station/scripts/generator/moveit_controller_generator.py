@@ -67,4 +67,5 @@ class MoveitControllerGenerator:
         with open(file, 'w') as f:
             yaml.dump(
                 self._controller, f, sort_keys=False,
-                default_flow_style=False)
+                default_flow_style=False
+            )

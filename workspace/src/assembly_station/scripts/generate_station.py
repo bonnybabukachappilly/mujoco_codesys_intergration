@@ -4,7 +4,7 @@ from typing import Any
 from xml.etree.ElementTree import ElementTree, parse
 
 import yaml
-from generator.controller_generator import MoveitControllerGenerator
+from generator.cell_controller_generator import CellControllerGenerator
 from generator.joint_limit_generator import JointLimitGenerator
 from generator.kinematics_generator import KinematicsGenerator
 from generator.models import (
@@ -19,6 +19,7 @@ from generator.models import (
     StationConfigurations,
     StationModel,
 )
+from generator.moveit_controller_generator import MoveitControllerGenerator
 from generator.ompl_generator import OMPLGenerator
 from generator.pliz_generator import PlizGenerator
 from generator.srdf_generator import SRDFGenerator
@@ -78,13 +79,20 @@ class GenerateStation:
             output_path=self._output_path
         ).generate()
 
+        CellControllerGenerator(
+            config=self._configurations,
+            get_robot=self._get_robot,
+            get_eoat=self._get_eoat,
+            output_path=self._output_path
+        ).generate()
+
     def _get_robot(self, model: str) -> Robot:
         for robot in self._robots:
             if robot.model == model:
                 return robot
 
         raise RuntimeError(
-            'Unable to find the robot model. Please register in config.')
+            f'Unable to find the robot model: {model}. Please register in config.')
 
     def _get_eoat(self, model: str) -> EOAT:
         for eoat in self._eoat:
@@ -92,7 +100,7 @@ class GenerateStation:
                 return eoat
 
         raise RuntimeError(
-            'Unable to find the eoat model. Please register in config.')
+            f'Unable to find the eoat model: {model}. Please register in config.')
 
     def _parse_config(self, config_file: PosixPath) -> dict[str, Any]:
         with open(config_file, 'r') as data:
@@ -191,6 +199,8 @@ class GenerateStation:
             xacro_macro=eoat['xacro']['macro'],
             mujoco_file=mujoco_tree,
 
+            controller_type=eoat['controller_type'],
+
             links=eoat['links'],
             base=eoat['base_link'],
             joints=_eoat_joint,
@@ -238,6 +248,8 @@ class GenerateStation:
                 xacro_file=xacro_tree,
                 xacro_macro=robot['xacro']['macro'],
                 mujoco_file=mujoco_tree,
+
+                controller_type=robot['controller_type'],
 
                 links=robot['links'],
                 base=robot['base_link'],

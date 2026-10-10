@@ -62,6 +62,8 @@ class EOAT:
     xacro_macro: str
     mujoco_file: ElementTree
 
+    controller_type: str
+
     links: list[str]
     base: str
     joints: list[EOATJoint]
@@ -89,6 +91,8 @@ class Robot:
     xacro_file: ElementTree
     xacro_macro: str
     mujoco_file: ElementTree
+
+    controller_type: str
 
     links: list[str]
     base: str

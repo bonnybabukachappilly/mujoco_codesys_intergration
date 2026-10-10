@@ -1,5 +1,6 @@
 name: cr5
 kind: robot
+controller_type: joint_trajectory_controller/JointTrajectoryController
 
 xacro:
   file: urdf/cr5/cr5_macro.xacro

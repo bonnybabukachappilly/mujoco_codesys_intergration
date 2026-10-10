@@ -1,5 +1,6 @@
 name: pgc_50_35
 kind: gripper
+controller_type: forward_command_controller/ForwardCommandController
 
 xacro:
   file: urdf/pgc/pgc_50_35/pgc_50_35_macro.xacro
