@@ -20,13 +20,13 @@ set(STATION_YAML "${CMAKE_CURRENT_SOURCE_DIR}/config/station_configuration.yaml"
 
 set(GEN_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
 
-set(GENERATED_FILES
-  "${GEN_DIR}/config/station.srdf"
-  "${GEN_DIR}/config/cell_moveit_controllers.yaml"
-)
+set(STAMP "${GEN_DIR}/.generated")
+
+file(GLOB_RECURSE GENERATOR_SOURCES CONFIGURE_DEPENDS
+  "${CMAKE_CURRENT_SOURCE_DIR}/scripts/generator/*.py")
 
 add_custom_command(
-  OUTPUT ${GENERATED_FILES}
+  OUTPUT "${STAMP}"
   COMMAND "${Python3_EXECUTABLE}" "${GENERATOR}"
   --station "${STATION_YAML}"
   --dobot-share "${DOBOT_SHARE}"
@@ -35,23 +35,20 @@ add_custom_command(
   --out "${GEN_DIR}"
   DEPENDS
   "${GENERATOR}"
+  ${GENERATOR_SOURCES}
   "${STATION_YAML}"
   "${DOBOT_SHARE}/config/cr5.yaml"
   COMMENT "Generating assembly_station files"
   VERBATIM
   USES_TERMINAL
 )
-add_custom_target(generate_station ALL DEPENDS ${GENERATED_FILES})
+add_custom_target(generate_station ALL DEPENDS "${STAMP}")
 
 install(
-  DIRECTORY "${GEN_DIR}/config/"
-  DESTINATION share/${PROJECT_NAME}/config
+  DIRECTORY "${GEN_DIR}/"
+  DESTINATION share/${PROJECT_NAME}
+  PATTERN ".generated" EXCLUDE
 )
-
-# install(
-#   DIRECTORY "${GEN_DIR}/urdf/"
-#   DESTINATION share/${PROJECT_NAME}/urdf
-# )
 
 install(
   DIRECTORY launch config

@@ -52,6 +52,7 @@
                     fullinertia="0.000079401 0.000079169 0.000130860 4.662104e-15 2.944135e-14 -9.613137e-08" />
                   <geom class="cr5_visual" mesh="link_6_visual" />
                   <geom class="cr5_collision" mesh="link_6_collision" />
+                  <frame name="tool_mount" pos="0 0 0" euler="0 0 0"></frame>
                 </body>
               </body>
             </body>

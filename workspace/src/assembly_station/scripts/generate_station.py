@@ -20,6 +20,7 @@ from generator.models import (
     StationModel,
 )
 from generator.moveit_controller_generator import MoveitControllerGenerator
+from generator.mujoco_xml_generator import MujocoXmlGenerator
 from generator.ompl_generator import OMPLGenerator
 from generator.pliz_generator import PlizGenerator
 from generator.srdf_generator import SRDFGenerator
@@ -84,6 +85,12 @@ class GenerateStation:
             get_robot=self._get_robot,
             get_eoat=self._get_eoat,
             output_path=self._output_path
+        ).generate()
+
+        MujocoXmlGenerator(
+            config=self._configurations,
+            get_robot=self._get_robot,
+            get_eoat=self._get_eoat
         ).generate()
 
     def _get_robot(self, model: str) -> Robot:
@@ -196,8 +203,10 @@ class GenerateStation:
             model=eoat['name'],
 
             xacro_file=xacro_tree,
+            xacro_path=xacro_file,
             xacro_macro=eoat['xacro']['macro'],
             mujoco_file=mujoco_tree,
+            mujoco_path=mujoco_file,
 
             controller_type=eoat['controller_type'],
 
@@ -246,8 +255,10 @@ class GenerateStation:
                 model=robot['name'],
 
                 xacro_file=xacro_tree,
+                xacro_path=xacro_file,
                 xacro_macro=robot['xacro']['macro'],
                 mujoco_file=mujoco_tree,
+                mujoco_path=mujoco_file,
 
                 controller_type=robot['controller_type'],
 

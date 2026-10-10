@@ -59,8 +59,12 @@ class EOAT:
     model: str
 
     xacro_file: ElementTree
+    xacro_path: PosixPath
+
     xacro_macro: str
+
     mujoco_file: ElementTree
+    mujoco_path: PosixPath
 
     controller_type: str
 
@@ -89,8 +93,12 @@ class Robot:
     model: str
 
     xacro_file: ElementTree
+    xacro_path: PosixPath
+
     xacro_macro: str
+
     mujoco_file: ElementTree
+    mujoco_path: PosixPath
 
     controller_type: str
 

@@ -1,8 +1,8 @@
 <mujoco model="pgc_50_35">
     <compiler angle="radian" eulerseq="XYZ" />
 
-    <include file="gripper_asset.xml" />
-    <include file="gripper_default.xml" />
+    <include file="eoat_asset.xml" />
+    <include file="eoat_default.xml" />
 
     <worldbody>
         <body name="gripper_base" childclass="pgc_50_35" euler="-1.57079633 0 0">
@@ -34,5 +34,5 @@
         <exclude body1="finger_1" body2="finger_2" />
     </contact>
 
-    <include file="gripper_control.xml" />
+    <include file="eoat_control.xml" />
 </mujoco>
