@@ -20,6 +20,7 @@ from generator.models import (
     StationModel,
 )
 from generator.moveit_controller_generator import MoveitControllerGenerator
+from generator.mujoco_xacro_generator import MujocoXacroGenerator
 from generator.mujoco_xml_generator import MujocoXmlGenerator
 from generator.ompl_generator import OMPLGenerator
 from generator.pliz_generator import PlizGenerator
@@ -95,6 +96,13 @@ class GenerateStation:
         ).generate()
 
         StationXacroGenerator(
+            config=self._configurations,
+            get_robot=self._get_robot,
+            get_eoat=self._get_eoat,
+            output_path=self._output_path
+        ).generate()
+
+        MujocoXacroGenerator(
             config=self._configurations,
             get_robot=self._get_robot,
             get_eoat=self._get_eoat,
@@ -223,6 +231,7 @@ class GenerateStation:
             links=eoat['links'],
             base=eoat['base_link'],
             joints=_eoat_joint,
+            control_joint=eoat['control_joint'],
             poses=_eoat_pose,
             collision_disabled_pair=_col_disabled,
         ))
@@ -269,6 +278,8 @@ class GenerateStation:
                 xacro_path=xacro_file,
                 xacro_package=robot['xacro']['package'],
                 xacro_macro=robot['xacro']['macro'],
+                ros_2_control=robot['xacro']['control'],
+                ros_2_control_macro=robot['xacro']['control_macro'],
                 mujoco_file=mujoco_tree,
                 mujoco_path=mujoco_file,
 

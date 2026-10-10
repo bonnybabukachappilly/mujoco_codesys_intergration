@@ -72,6 +72,7 @@ class EOAT:
     links: list[str]
     base: str
     joints: list[EOATJoint]
+    control_joint: list[str]
     poses: list[EOATPose]
     collision_disabled_pair: list[CollisionDisabled]
 
@@ -98,6 +99,8 @@ class Robot:
     xacro_path: PosixPath
     xacro_package: str
     xacro_macro: str
+    ros_2_control: str
+    ros_2_control_macro: str
 
     mujoco_file: ElementTree
     mujoco_path: PosixPath

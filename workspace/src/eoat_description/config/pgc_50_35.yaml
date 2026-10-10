@@ -12,6 +12,7 @@ mujoco:
 
 links: [gripper_base, finger_1, finger_2]
 base_link: gripper_base
+control_joint: [slider_1]
 
 joints:
   - { name: slider_1, type: actuated, mimic: null, lower: 0.0, upper: 0.0187 }

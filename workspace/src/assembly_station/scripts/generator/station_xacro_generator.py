@@ -112,7 +112,7 @@ class StationXacroGenerator:
         for config in self._config:
             self._create_robot(config)
 
-        file: PosixPath = self._output_path / 'config' / 'station.urdf.xacro'
+        file: PosixPath = self._output_path / 'urdf' / 'station.urdf.xacro'
         file.parent.mkdir(parents=True, exist_ok=True)
 
         tree: ElementTree = ElementTree(self._root)
