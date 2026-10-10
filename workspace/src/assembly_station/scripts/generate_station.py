@@ -20,6 +20,7 @@ from generator.models import (
     StationModel,
 )
 from generator.moveit_controller_generator import MoveitControllerGenerator
+from generator.mujoco_layout_generator import MujocoLayoutGenerator
 from generator.mujoco_xacro_generator import MujocoXacroGenerator
 from generator.mujoco_xml_generator import MujocoXmlGenerator
 from generator.ompl_generator import OMPLGenerator
@@ -107,6 +108,13 @@ class GenerateStation:
             get_robot=self._get_robot,
             get_eoat=self._get_eoat,
             output_path=self._output_path
+        ).generate()
+
+        MujocoLayoutGenerator(
+            config=self._configurations,
+            get_robot=self._get_robot,
+            get_eoat=self._get_eoat,
+            output_path=self._packages.mujoco
         ).generate()
 
     def _get_robot(self, model: str) -> Robot:

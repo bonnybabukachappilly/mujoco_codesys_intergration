@@ -15,9 +15,7 @@
         <material name="support_leg_mat" rgba="0.101 0.101 0.101 1" specular="0.4" shininess="0.4" />
         <material name="support_robot_mat" rgba="0.980 0.713 0.003 1" specular="0.4" shininess="0.4" />
 
-
-        <model name="cr5" file="./robots/dobot/cr5/robot.xml" />
-        <model name="cr5_grip" file="./robots/dobot/cr5/robot_pgc_50_35.xml" />
+        <model name="robot_layout" file="./robot.xml" />
     </asset>
 
     <default>
@@ -33,7 +31,7 @@
                 <geom type="mesh" />
             </default>
         </default>
-        <default class="support_robot_color">
+        <default class="robot_support">
             <geom type="mesh" material="support_robot_mat" mesh="support_robot" />
         </default>
         <default class="lift">
@@ -84,54 +82,7 @@
             </body>
 
             <frame name="robot_mounts">
-                <body name="support_robot_1" pos="-0.466 -0.652 0" euler="0 0 1.5708">
-                    <geom class="support_robot_color" />
-                    <frame name="r1_mount" pos="0 0 0.595">
-                        <attach model="cr5_grip" body="base_link" prefix="r1_" />
-                    </frame>
-                </body>
-
-                <body name="support_robot_2" pos="0.152 0.466 0">
-                    <geom class="support_robot_color" />
-                    <frame name="r2_mount" pos="0 0 0.595">
-                        <attach model="cr5" body="base_link" prefix="r2_" />
-                    </frame>
-                </body>
-
-                <body name="support_robot_3" pos="1.148 0.466 0">
-                    <geom class="support_robot_color" />
-                    <frame name="r3_mount" pos="0 0 0.595">
-                        <attach model="cr5" body="base_link" prefix="r3_" />
-                    </frame>
-                </body>
-
-                <body name="support_robot_4" pos="2.148 0.466 0">
-                    <geom class="support_robot_color" />
-                    <frame name="r4_mount" pos="0 0 0.595">
-                        <attach model="cr5" body="base_link" prefix="r4_" />
-                    </frame>
-                </body>
-
-                <body name="support_robot_5" pos="3.148 0.466 0">
-                    <geom class="support_robot_color" />
-                    <frame name="r5_mount" pos="0 0 0.595">
-                        <attach model="cr5" body="base_link" prefix="r5_" />
-                    </frame>
-                </body>
-
-                <body name="support_robot_6" pos="3.148 0.466 3.795" euler="0 3.1416 0">
-                    <geom class="support_robot_color" />
-                    <frame name="r6_mount" pos="0 0 0.595">
-                        <attach model="cr5" body="base_link" prefix="r6_" />
-                    </frame>
-                </body>
-
-                <body name="support_robot_7" pos="0.770 -1.152 3.795" euler="0 3.1416 -1.5708">
-                    <geom class="support_robot_color" euler="0 0 0" />
-                    <frame name="r7_mount" pos="0 0 0.595">
-                        <attach model="cr5" body="base_link" prefix="r7_" />
-                    </frame>
-                </body>
+                <attach model="robot_layout" prefix="" />
             </frame>
 
             <body name="slider_top" pos="0 0 1.5">
