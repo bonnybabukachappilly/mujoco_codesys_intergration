@@ -16,6 +16,7 @@
         <material name="support_robot_mat" rgba="0.980 0.713 0.003 1" specular="0.4" shininess="0.4" />
 
         <model name="robot_layout" file="./robot_layout.xml" />
+        <model name="lift_mechanism" file="./mechanisms/lift.xml" />
     </asset>
 
     <default>
@@ -48,21 +49,29 @@
             <body name="slider_bottom">
                 <geom class="slider" mesh="linear_slider" />
 
-                <body name="lift_support_left" pos="0 0 0">
+                <frame name="left_lift_frame" pos="0 0 0">
+                    <attach model="lift_mechanism" prefix="left_" />
+                </frame>
+
+                <!-- <body name="lift_support_left" pos="0 0 0">
                     <geom class="lift" mesh="lift_support" />
                 </body>
 
                 <body name="lift_left" pos="0 0 0">
                     <geom class="lift" mesh="lift" />
-                </body>
+                </body> -->
 
-                <body name="lift_support_right" pos="2 -0.304 0" euler="0 0 1.5708">
+                <frame name="right_lift_frame" pos="2 -0.304 0" euler="0 0 1.5708">
+                    <attach model="lift_mechanism" prefix="right_" />
+                </frame>
+
+                <!-- <body name="lift_support_right" pos="2 -0.304 0" euler="0 0 1.5708">
                     <geom class="lift" mesh="lift_support" />
                 </body>
 
                 <body name="lift_right" pos="2 -0.304 0" euler="0 0 1.5708">
                     <geom class="lift" mesh="lift" />
-                </body>
+                </body> -->
 
                 <body name="support_sld_btm_1" pos="0 0 0">
                     <geom childclass="support_color" class="support_leg_color" />
@@ -110,5 +119,14 @@
             </body>
         </frame>
     </worldbody>
+
+    <contact>
+        <exclude body1="left_lift" body2="support_sld_btm_1" />
+        <exclude body1="left_lift" body2="slider_bottom" />
+        <exclude body1="left_lift" body2="slider_top" />
+        <exclude body1="right_lift" body2="support_sld_btm_3" />
+        <exclude body1="right_lift" body2="slider_bottom" />
+        <exclude body1="right_lift" body2="slider_top" />
+    </contact>
 
 </mujoco>
