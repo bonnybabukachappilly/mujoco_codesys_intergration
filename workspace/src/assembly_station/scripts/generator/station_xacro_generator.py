@@ -80,7 +80,7 @@ class StationXacroGenerator:
         SubElement(_joint, 'parent', link='world')
         SubElement(_joint, 'child', link=f'{_prefix}_{robot.base}')
         SubElement(
-            _joint, 'origin', xyz=config.robot_rpy,
+            _joint, 'origin', xyz=config.robot_xyz,
             rpy=config.robot_rpy)
 
         if has_eoat:
