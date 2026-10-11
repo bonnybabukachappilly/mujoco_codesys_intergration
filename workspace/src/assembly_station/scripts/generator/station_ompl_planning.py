@@ -63,7 +63,7 @@ class OMPLGenerator:
         config_dir: PosixPath = self._output_path / 'config'
         config_dir.mkdir(parents=True, exist_ok=True)
 
-        file: PosixPath = config_dir / 'cell_ompl_planning.yaml'
+        file: PosixPath = config_dir / 'station_ompl_planning.yaml'
         with open(file, 'w') as f:
             yaml.dump(
                 self._ompl, f, sort_keys=False, 

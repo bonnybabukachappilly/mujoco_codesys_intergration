@@ -111,7 +111,7 @@ class MujocoLayoutGenerator:
             self._create_includes(_model)
             self._mount_robots(config, _model)
 
-        file: PosixPath = self._output_path / 'models' / 'robot.xml'
+        file: PosixPath = self._output_path / 'models' / 'robot_layout.xml'
         file.parent.mkdir(parents=True, exist_ok=True)
 
         tree: ElementTree = ElementTree(self._root)

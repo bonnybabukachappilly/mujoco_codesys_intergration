@@ -20,7 +20,7 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description() -> LaunchDescription:
     moveit_config: str = get_package_share_directory('assembly_station')
 
-    with open(os.path.join(moveit_config, 'config', 'station_configuration.yaml')) as f:         # ❌
+    with open(os.path.join(moveit_config, 'config', 'station_configuration.yaml')) as f:
         cell = yaml.safe_load(f)['robots']
 
     controller_names: list[str] = (
@@ -33,11 +33,11 @@ def generate_launch_description() -> LaunchDescription:
     mujoco_model = LaunchConfiguration('mujoco_model')
 
     xacro_file: str = os.path.join(
-        moveit_config, 'urdf', 'station_mujoco.urdf.xacro')
+        moveit_config, 'urdf', 'mujoco_station.urdf.xacro')
     controllers_file: str = os.path.join(
-        moveit_config, 'config', 'cell_controllers.yaml')
+        moveit_config, 'config', 'station_controllers.yaml')
     rviz_config = PathJoinSubstitution(
-        [FindPackageShare('dobot_cr5_description'), 'rviz', 'moveit.rviz'])
+        [FindPackageShare('assembly_station'), 'rviz', 'station_moveit.rviz'])
 
     robot_description = ParameterValue(
         Command([

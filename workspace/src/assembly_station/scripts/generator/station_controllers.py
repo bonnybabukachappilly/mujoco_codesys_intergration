@@ -117,7 +117,7 @@ class CellControllerGenerator:
     def _create_eoat_controller(self, prefix: str) -> None:
         eoat: EOAT = cast(EOAT, self._active_eoat)
         joint_names: list[str] = [
-            f'{prefix}_{joint.name}' for joint in eoat.joints]
+            f'{prefix}_{joint}' for joint in eoat.control_joint]
 
         _controller: dict = {
             f'{prefix}_gripper_controller': {
@@ -147,7 +147,7 @@ class CellControllerGenerator:
                 self._create_eoat_ros_params(_prefix)
                 self._create_eoat_controller(_prefix)
 
-        file: PosixPath = self._output_path / 'config' / 'cell_controllers.yaml'
+        file: PosixPath = self._output_path / 'config' / 'station_controllers.yaml'
         with open(file, 'w') as f:
             yaml.dump(
                 self._controller, f, sort_keys=False,

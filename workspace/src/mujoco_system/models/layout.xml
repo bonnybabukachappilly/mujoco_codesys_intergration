@@ -1,4 +1,4 @@
-<mujoco model="cell_layout">
+<mujoco model="station_layout">
     <!-- <compiler angle="radian" eulerseq="XYZ" /> -->
 
     <asset>
@@ -15,7 +15,7 @@
         <material name="support_leg_mat" rgba="0.101 0.101 0.101 1" specular="0.4" shininess="0.4" />
         <material name="support_robot_mat" rgba="0.980 0.713 0.003 1" specular="0.4" shininess="0.4" />
 
-        <model name="robot_layout" file="./robot.xml" />
+        <model name="robot_layout" file="./robot_layout.xml" />
     </asset>
 
     <default>

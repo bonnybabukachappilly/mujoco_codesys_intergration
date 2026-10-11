@@ -64,7 +64,7 @@ class MoveitControllerGenerator:
 
         self._controller['moveit_simple_controller_manager']['controller_names'] = _controller_names
 
-        file: PosixPath = self._output_path / 'config' / 'cell_moveit_controllers.yaml'
+        file: PosixPath = self._output_path / 'config' / 'station_moveit_controllers.yaml'
         with open(file, 'w') as f:
             yaml.dump(
                 self._controller, f, sort_keys=False,
