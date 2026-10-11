@@ -105,7 +105,7 @@
                 "command": "simulate ${input:mujoco_scenes}"
             },
             "options": {
-                "cwd": "${workspaceFolder}/${config:ros_workspace}/install/cell_mujoco/share/cell_mujoco/scenes/"
+                "cwd": "${workspaceFolder}/${config:ros_workspace}/install/mujoco_system/share/mujoco_system/scenes/"
             },
             "problemMatcher": []
         },

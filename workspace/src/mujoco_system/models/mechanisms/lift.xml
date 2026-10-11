@@ -1,0 +1,44 @@
+<mujoco model="lift">
+    <compiler angle="radian" eulerseq="XYZ" />
+
+    <asset>
+        <mesh name="lift" file="../../assets/lift.stl" />
+        <mesh name="lift_support" file="../../assets/lift_support.stl" />
+        <material name="support_robot_mat" rgba="0.980 0.713 0.003 1" specular="0.4" shininess="0.4" />
+    </asset>
+
+    <default>
+        <default class="lift_visual">
+            <geom type="mesh" material="support_robot_mat"
+                contype="0" conaffinity="0" group="1" />
+        </default>
+        <default class="lift_collision">
+            <geom type="box" group="3" condim="4" friction="1.2 0.01 0.001"
+                rgba="0.2 0.8 0.2 0.3" />
+        </default>
+        <default class="lift_axis">
+            <joint type="slide" axis="0 0 1" damping="100" armature="2" />
+        </default>
+    </default>
+
+    <worldbody>
+        <body name="lift_support">
+            <geom class="lift_visual" mesh="lift_support" />
+
+            <body name="lift" gravcomp="1">
+                <joint name="joint" class="lift_axis" range="0 1.5" />
+                <inertial pos="0 0 0" mass="20" diaginertia="0.1 0.1 0.1" />
+                <geom class="lift_visual" mesh="lift" />
+
+                <geom name="platform" class="lift_collision"
+                    size="0.20 0.20 0.01" pos="0 0 0.30" />
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <position name="joint" joint="joint" ctrlrange="0 1.5"
+            kp="30000" kv="2000" forcerange="-2000 2000" />
+    </actuator>
+
+</mujoco>
