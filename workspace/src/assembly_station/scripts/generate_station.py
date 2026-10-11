@@ -162,8 +162,8 @@ class GenerateStation:
 
             if _eoat:
                 _mount: dict[str, str] = robot.get('mount') or {}
-                _eoat_xyz = _mount.get('xyz') or '0, 0, 0'
-                _eoat_rpy = _mount.get('rpy') or '0, 0, 0'
+                _eoat_xyz = _mount.get('xyz') or '0 0 0'
+                _eoat_rpy = _mount.get('rpy') or '0 0 0'
 
             self._configurations.append(
                 StationConfigurations(

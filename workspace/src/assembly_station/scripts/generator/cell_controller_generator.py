@@ -117,7 +117,7 @@ class CellControllerGenerator:
     def _create_eoat_controller(self, prefix: str) -> None:
         eoat: EOAT = cast(EOAT, self._active_eoat)
         joint_names: list[str] = [
-            f'{prefix}_{joint.name}' for joint in eoat.joints]
+            f'{prefix}_{joint}' for joint in eoat.control_joint]
 
         _controller: dict = {
             f'{prefix}_gripper_controller': {

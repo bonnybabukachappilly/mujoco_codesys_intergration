@@ -16,8 +16,6 @@ from generator.models import EOAT, Robot, StationConfigurations
 
 class MujocoXmlGenerator:
     __slots__: tuple[str, ...] = (
-        '_active_eoat',
-        '_active_robot',
         '_config',
         '_generated_robots',
         '_get_eoat',
@@ -33,10 +31,7 @@ class MujocoXmlGenerator:
         self._get_robot: Callable[[str], Robot] = get_robot
         self._get_eoat: Callable[[str], EOAT] = get_eoat
 
-        self._active_robot: Robot | None = None
-        self._active_eoat: EOAT | None = None
-
-        self._generated_robots: set[str] = set()
+        self._generated_robots: dict[str, tuple[str | None, str | None]] = {}
 
     def _resolve_include(self, parent: Element, dir: Path, checked: set[Path]) -> None:
         for _child in list(parent):
@@ -84,25 +79,31 @@ class MujocoXmlGenerator:
 
         return _root
 
-    def _create_robot_xml(self, has_eoat: bool) -> None:
-        robot: Robot = cast(Robot, self._active_robot)
+    def _create_robot_xml(self, config: StationConfigurations) -> None:
+        robot: Robot = self._get_robot(config.model)
+        has_eoat: bool = config.eoat is not None
+        mount = (config.eoat_xyz, config.eoat_rpy)
 
         file_name: str = f'{robot.model}.xml'
 
         if has_eoat:
-            eoat: EOAT = cast(EOAT, self._active_eoat)
+            eoat: EOAT = self._get_eoat(config.eoat)  # type: ignore
             file_name = f'{robot.model}_{eoat.model}.xml'
 
         if file_name in self._generated_robots:
+            if self._generated_robots[file_name] != mount:
+                raise RuntimeError(
+                    f'{file_name} is requested with different eoat mounts. '
+                    'Generated files are per (robot, eoat) pair; '
+                    'make the file name depend on the mount.')
             return
 
-        self._generated_robots.add(file_name)
+        self._generated_robots[file_name] = mount
 
         _root: Element = self._flatten_xml(
             robot.mujoco_file, robot.mujoco_path)
 
         if not has_eoat:
-            print(f"HELLOOO: {file_name}")
             self._save_xml_file(file_name, robot.mujoco_path.parent,  _root)
             return
 
@@ -124,27 +125,17 @@ class MujocoXmlGenerator:
             },
         )
 
-        SubElement(
-            _tool,
-            'attach',
-            {
-                'model': 'eoat_tool',
-                'body': eoat.base,  # type: ignore
-                'prefix': ''
-            },
-        )
+        _mount: Element = SubElement(
+            _tool, 'frame', name='eoat_mount',
+            pos=cast(str, config.eoat_xyz),
+            euler=cast(str, config.eoat_rpy))
 
-        print(f"HII: {file_name}")
+        SubElement(_mount, 'attach', {
+            'model': 'eoat_tool', 'body': eoat.base, 'prefix': ''})  # type: ignore
+
         self._save_xml_file(file_name, robot.mujoco_path.parent, _root)
 
     def generate(self) -> None:
 
         for config in self._config:
-            self._active_robot = self._get_robot(config.model)
-
-            has_eoat: bool = config.eoat is not None
-
-            if has_eoat:
-                self._active_eoat = self._get_eoat(config.eoat)  # type: ignore
-
-            self._create_robot_xml(has_eoat)
+            self._create_robot_xml(config)

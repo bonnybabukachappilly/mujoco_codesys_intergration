@@ -5,7 +5,7 @@
     <include file="eoat_default.xml" />
 
     <worldbody>
-        <body name="gripper_base" childclass="pgc_50_35" euler="-1.57079633 0 0">
+        <body name="gripper_base" childclass="pgc_50_35">
             <inertial pos="0 0 0.038" mass="0.4528" diaginertia="0.000415 0.000455 0.000248" />
             <geom class="pgc_50_35_visual" mesh="body_visual" />
             <geom class="pgc_50_35_collision" mesh="body_collision" />

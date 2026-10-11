@@ -30,7 +30,7 @@ robots:
     model: cr5
     support: { xyz: "-0.466 -0.652 0", rpy: "0 0 1.5708" }
     eoat: pgc_50_35
-    mount: { xyz: "0 0 0", rpy: "0 0 0" }
+    mount: { xyz: "0 0 0", rpy: "-1.57079633 0 0" }
 
   - id: r2
     model: cr5
