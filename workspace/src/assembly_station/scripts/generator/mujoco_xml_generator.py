@@ -1,3 +1,4 @@
+import copy
 import os
 from collections.abc import Callable
 from pathlib import Path, PosixPath
@@ -18,7 +19,6 @@ class MujocoXmlGenerator:
         '_active_eoat',
         '_active_robot',
         '_config',
-        '_generated_eoat',
         '_generated_robots',
         '_get_eoat',
         '_get_robot',
@@ -37,7 +37,6 @@ class MujocoXmlGenerator:
         self._active_eoat: EOAT | None = None
 
         self._generated_robots: set[str] = set()
-        self._generated_eoat: set[str] = set()
 
     def _resolve_include(self, parent: Element, dir: Path, checked: set[Path]) -> None:
         for _child in list(parent):
@@ -77,7 +76,7 @@ class MujocoXmlGenerator:
         tree.write(file, encoding='utf-8', xml_declaration=True)
 
     def _flatten_xml(self, root: ElementTree, dir: PosixPath) -> Element:
-        _root: Element = root.getroot()  # type: ignore
+        _root: Element = copy.deepcopy(root.getroot())  # type: ignore
         _dir: PosixPath = dir.parent
         _checked: set[Path] = {dir.resolve()}
 
@@ -89,6 +88,7 @@ class MujocoXmlGenerator:
         robot: Robot = cast(Robot, self._active_robot)
 
         file_name: str = f'{robot.model}.xml'
+
         if has_eoat:
             eoat: EOAT = cast(EOAT, self._active_eoat)
             file_name = f'{robot.model}_{eoat.model}.xml'
@@ -102,18 +102,9 @@ class MujocoXmlGenerator:
             robot.mujoco_file, robot.mujoco_path)
 
         if not has_eoat:
+            print(f"HELLOOO: {file_name}")
             self._save_xml_file(file_name, robot.mujoco_path.parent,  _root)
             return
-
-        _eoat_file: str = f'{eoat.model}.xml'  # type: ignore
-
-        if _eoat_file not in self._generated_eoat:
-            _eoat_root: Element = self._flatten_xml(
-                eoat.mujoco_file, eoat.mujoco_path  # type: ignore
-            )
-
-            self._save_xml_file(
-                _eoat_file, eoat.mujoco_path.parent, _eoat_root)  # type: ignore
 
         _asset: Element | None = _root.find(".//asset")
         _tool: Element | None = _root.find(".//frame[@name='tool_mount']")
@@ -139,10 +130,11 @@ class MujocoXmlGenerator:
             {
                 'model': 'eoat_tool',
                 'body': eoat.base,  # type: ignore
-                'prefix': 'grip_'
+                'prefix': ''
             },
         )
 
+        print(f"HII: {file_name}")
         self._save_xml_file(file_name, robot.mujoco_path.parent, _root)
 
     def generate(self) -> None:

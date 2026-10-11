@@ -2,6 +2,7 @@ from pathlib import PosixPath
 
 import yaml
 from generator.models import StationConfigurations
+from generator.utils import NoAliasDumper
 
 HUMBLE_ADAPTERS: list[str] = [
     'default_planner_request_adapters/AddTimeOptimalParameterization',
@@ -25,7 +26,7 @@ class OMPLGenerator:
             self, config: list[StationConfigurations], output_path: PosixPath) -> None:
         self._ompl: dict = {
             'planning_plugin': 'ompl_interface/OMPLPlanner',
-            'request_adapters': HUMBLE_ADAPTERS,
+            'request_adapters': ' '.join(HUMBLE_ADAPTERS),
             'start_state_max_bounds_error': 0.1,
             'planner_configs': {
                 'RRTConnectkConfigDefault': {
@@ -65,5 +66,7 @@ class OMPLGenerator:
         file: PosixPath = config_dir / 'cell_ompl_planning.yaml'
         with open(file, 'w') as f:
             yaml.dump(
-                self._ompl, f, sort_keys=False, default_flow_style=False
+                self._ompl, f, sort_keys=False, 
+                default_flow_style=False, Dumper=NoAliasDumper,
+                width=float('inf')
             )

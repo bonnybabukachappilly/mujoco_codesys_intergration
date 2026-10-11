@@ -4,6 +4,7 @@ from typing import cast
 
 import yaml
 from generator.models import EOAT, Robot, StationConfigurations
+from generator.utils import NoAliasDumper
 
 JTC: dict = {
     'command_interfaces': ['position'],
@@ -63,7 +64,9 @@ class CellControllerGenerator:
             'controller_manager': {
                 'ros__parameters': {
                     'update_rate': 500,
-                    'joint_state_broadcaster': 'joint_state_broadcaster/JointStateBroadcaster'
+                    'joint_state_broadcaster': {
+                        'type': 'joint_state_broadcaster/JointStateBroadcaster'
+                    }
                 }
             }
         }
@@ -71,7 +74,7 @@ class CellControllerGenerator:
         self._active_robot: Robot | None = None
         self._active_eoat: EOAT | None = None
 
-    def _create_ros_params(self, prefix: str) -> None:
+    def _create_robot_ros_params(self, prefix: str) -> None:
         robot: Robot = cast(Robot, self._active_robot)
 
         _controller: dict[str, dict[str, str]] = {
@@ -82,9 +85,21 @@ class CellControllerGenerator:
 
         self._controller['controller_manager']['ros__parameters'] |= _controller
 
+    def _create_eoat_ros_params(self, prefix: str) -> None:
+        eoat: EOAT = cast(EOAT, self._active_eoat)
+
+        _controller: dict[str, dict[str, str]] = {
+            f'{prefix}_gripper_controller': {
+                'type': eoat.controller_type
+            }
+        }
+
+        self._controller['controller_manager']['ros__parameters'] |= _controller
+
     def _create_arm_controller(self, prefix: str) -> None:
         robot: Robot = cast(Robot, self._active_robot)
-        joint_names: list[str] = [joint.name for joint in robot.joints]
+        joint_names: list[str] = [
+            f'{prefix}_{joint.name}' for joint in robot.joints]
 
         _controller: dict = {
             f'{prefix}_arm_controller': {
@@ -101,7 +116,8 @@ class CellControllerGenerator:
 
     def _create_eoat_controller(self, prefix: str) -> None:
         eoat: EOAT = cast(EOAT, self._active_eoat)
-        joint_names: list[str] = [joint.name for joint in eoat.joints]
+        joint_names: list[str] = [
+            f'{prefix}_{joint.name}' for joint in eoat.joints]
 
         _controller: dict = {
             f'{prefix}_gripper_controller': {
@@ -123,16 +139,17 @@ class CellControllerGenerator:
             has_eoat: bool = config.eoat is not None
             _prefix: str = config.prefix
 
-            self._create_ros_params(_prefix)
+            self._create_robot_ros_params(_prefix)
             self._create_arm_controller(_prefix)
 
             if has_eoat:
                 self._active_eoat = self._get_eoat(config.eoat)  # type: ignore
+                self._create_eoat_ros_params(_prefix)
                 self._create_eoat_controller(_prefix)
 
         file: PosixPath = self._output_path / 'config' / 'cell_controllers.yaml'
         with open(file, 'w') as f:
             yaml.dump(
                 self._controller, f, sort_keys=False,
-                default_flow_style=False
+                default_flow_style=False, Dumper=NoAliasDumper
             )

@@ -4,6 +4,7 @@ from typing import cast
 
 import yaml
 from generator.models import Robot, StationConfigurations
+from generator.utils import NoAliasDumper
 
 
 class MoveitControllerGenerator:
@@ -67,5 +68,5 @@ class MoveitControllerGenerator:
         with open(file, 'w') as f:
             yaml.dump(
                 self._controller, f, sort_keys=False,
-                default_flow_style=False
+                default_flow_style=False, Dumper=NoAliasDumper
             )

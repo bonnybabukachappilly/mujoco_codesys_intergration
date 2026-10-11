@@ -5,12 +5,14 @@ controller_type: forward_command_controller/ForwardCommandController
 xacro:
   file: urdf/pgc/pgc_50_35/pgc_50_35_macro.xacro
   macro: pgc_50_35
+  package: eoat_description
 
 mujoco:
   file: models/eoat/pgc/pgc_50_35/eoat.xml
 
 links: [gripper_base, finger_1, finger_2]
 base_link: gripper_base
+control_joint: [slider_1]
 
 joints:
   - { name: slider_1, type: actuated, mimic: null, lower: 0.0, upper: 0.0187 }

@@ -1,6 +1,7 @@
 from pathlib import PosixPath
 
 import yaml
+from generator.utils import NoAliasDumper
 
 
 class PlizGenerator:
@@ -26,4 +27,4 @@ class PlizGenerator:
         with open(file, 'w') as f:
             yaml.dump(
                 self._pliz, f, sort_keys=False,
-                default_flow_style=False)
+                default_flow_style=False, Dumper=NoAliasDumper)

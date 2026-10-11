@@ -75,7 +75,7 @@ class SRDFGenerator:
                 link2=f'{prefix}_{pair.link_2}', reason=pair.reason)
 
     def _create_all_arm(self, all_robots: dict[str, Robot]) -> None:
-        group: Element = SubElement(self._root, 'group', name='all_arm')
+        group: Element = SubElement(self._root, 'group', name='all_arms')
 
         for prefix in all_robots:
             SubElement(group, 'group', name=f'{prefix}_arm')
@@ -85,7 +85,7 @@ class SRDFGenerator:
 
         for pose in pose_names:
             group_state: Element = SubElement(
-                self._root, 'group_state', name=pose, group='all_arm')
+                self._root, 'group_state', name=pose, group='all_arms')
 
             for prefix, robot in all_robots.items():
                 joint_names: list[str] = [joint.name for joint in robot.joints]

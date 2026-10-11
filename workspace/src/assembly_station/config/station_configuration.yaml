@@ -28,30 +28,30 @@ models:
 robots:
   - id: r1
     model: cr5
-    support: { xyz: [-0.466, -0.652, 0], rpy: [0, 0, 1.5708] }
+    support: { xyz: "-0.466 -0.652 0", rpy: "0 0 1.5708" }
     eoat: pgc_50_35
-    mount: { xyz: [0, 0, 0], rpy: [0, 0, 0] }
+    mount: { xyz: "0 0 0", rpy: "0 0 0" }
 
   - id: r2
     model: cr5
-    support: { xyz: [0.152, 0.466, 0], rpy: [0, 0, 0] }
+    support: { xyz: "0.152 0.466 0", rpy: "0 0 0" }
 
-  # - id: r3
-  #   model: cr5
-  #   support: { xyz: [1.148, 0.466, 0], rpy: [0, 0, 0] }
+  - id: r3
+    model: cr5
+    support: { xyz: "1.148 0.466 0", rpy: "0 0 0" }
 
-  # - id: r4
-  #   model: cr5
-  #   support: { xyz: [2.148, 0.466, 0], rpy: [0, 0, 0] }
+  - id: r4
+    model: cr5
+    support: { xyz: "2.148 0.466 0", rpy: "0 0 0" }
 
-  # - id: r5
-  #   model: cr5
-  #   support: { xyz: [3.148, 0.466, 0], rpy: [0, 0, 0] }
+  - id: r5
+    model: cr5
+    support: { xyz: "3.148 0.466 0", rpy: "0 0 0" }
 
-  # - id: r6
-  #   model: cr5
-  #   support: { xyz: [3.148, 0.466, 3.795], rpy: [0, 3.1416, 0] }
+  - id: r6
+    model: cr5
+    support: { xyz: "3.148 0.466 3.795", rpy: "0 3.1416 0" }
 
-  # - id: r7
-  #   model: cr5
-  #   support: { xyz: [0.770, -1.152, 3.795], rpy: [0, 3.1416, -1.5708] }
+  - id: r7
+    model: cr5
+    support: { xyz: "-0.257 -1.719 3.795", rpy: "0 3.1416 -1.5708" }
