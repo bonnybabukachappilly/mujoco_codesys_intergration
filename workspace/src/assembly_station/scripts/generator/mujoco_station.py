@@ -114,7 +114,7 @@ class MujocoXacroGenerator:
 
             self._add_joints(_control, config.prefix, has_eoat)
 
-        file: PosixPath = self._output_path / 'urdf' / 'station_mujoco.urdf.xacro'
+        file: PosixPath = self._output_path / 'urdf' / 'mujoco_station.urdf.xacro'
         file.parent.mkdir(parents=True, exist_ok=True)
 
         tree: ElementTree = ElementTree(self._root)

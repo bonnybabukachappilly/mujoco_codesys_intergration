@@ -147,7 +147,7 @@ class CellControllerGenerator:
                 self._create_eoat_ros_params(_prefix)
                 self._create_eoat_controller(_prefix)
 
-        file: PosixPath = self._output_path / 'config' / 'cell_controllers.yaml'
+        file: PosixPath = self._output_path / 'config' / 'station_controllers.yaml'
         with open(file, 'w') as f:
             yaml.dump(
                 self._controller, f, sort_keys=False,

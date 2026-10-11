@@ -56,7 +56,7 @@ class JointLimitGenerator:
             self._active_robot = self._get_robot(config.model)
             self._create_joint_limit(config.prefix)
 
-        file: PosixPath = self._output_path / 'config' / 'cell_joint_limits.yaml'
+        file: PosixPath = self._output_path / 'config' / 'station_joint_limits.yaml'
         with open(file, 'w') as f:
             yaml.dump(
                 self._joint_limit, f, sort_keys=False,

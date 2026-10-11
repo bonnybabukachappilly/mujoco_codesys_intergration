@@ -36,7 +36,7 @@ class KinematicsGenerator:
         for config in self._config:
             self._create_kinematics(config.prefix)
 
-        file: PosixPath = self._output_path / 'config' / 'cell_kinematics.yaml'
+        file: PosixPath = self._output_path / 'config' / 'station_kinematics.yaml'
         with open(file, 'w') as f:
             yaml.dump(
                 self._kinematics, f, sort_keys=False,

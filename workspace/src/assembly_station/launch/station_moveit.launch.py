@@ -25,14 +25,14 @@ def generate_launch_description() -> LaunchDescription:
                 moveit_cfg, 'urdf', 'station_mujoco.urdf.xacro'),
             mappings={'mujoco_model': mujoco_model})
         .robot_description_semantic(file_path=cfg('station.srdf'))
-        .robot_description_kinematics(file_path=cfg('cell_kinematics.yaml'))
-        .joint_limits(file_path=cfg('cell_joint_limits.yaml'))
-        .trajectory_execution(file_path=cfg('cell_moveit_controllers.yaml'))
+        .robot_description_kinematics(file_path=cfg('station_kinematics.yaml'))
+        .joint_limits(file_path=cfg('station_joint_limits.yaml'))
+        .trajectory_execution(file_path=cfg('station_moveit_controllers.yaml'))
         .pilz_cartesian_limits(file_path=cfg('pilz_cartesian_limits.yaml'))
         .to_moveit_configs()
     )
 
-    with open(cfg('cell_ompl_planning.yaml')) as f:
+    with open(cfg('station_ompl_planning.yaml')) as f:
         ompl = yaml.safe_load(f)
     moveit_config.planning_pipelines = {
         'planning_pipelines': ['ompl'],
@@ -43,7 +43,7 @@ def generate_launch_description() -> LaunchDescription:
 
     sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(moveit_cfg, 'launch', 'cell_sim.launch.py')),
+            os.path.join(moveit_cfg, 'launch', 'station_sim.launch.py')),
         launch_arguments={'rviz': 'false'}.items(),
     )
     move_group = Node(
@@ -52,7 +52,7 @@ def generate_launch_description() -> LaunchDescription:
     )
     rviz = Node(
         package='rviz2', executable='rviz2', output='log',
-        arguments=['-d', cfg('cell_moveit.rviz')],
+        arguments=['-d', cfg('station_moveit.rviz')],
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,

@@ -53,13 +53,13 @@
       quat="0.7071 0.7071 0 0" material="conduit_silver" />
 
     <!-- Cell Boundaries & Green Pedestrian Walkway -->
-    <geom name="cell_line_N" type="box" size="4.05 0.05 0.001" pos="0 5 0.001"
+    <geom name="station_line_N" type="box" size="4.05 0.05 0.001" pos="0 5 0.001"
       material="safety_yellow" />
-    <geom name="cell_line_S" type="box" size="4.05 0.05 0.001" pos="0 -5 0.001"
+    <geom name="station_line_S" type="box" size="4.05 0.05 0.001" pos="0 -5 0.001"
       material="safety_yellow" />
-    <geom name="cell_line_E" type="box" size="0.05 5.05 0.001" pos="4 0 0.001"
+    <geom name="station_line_E" type="box" size="0.05 5.05 0.001" pos="4 0 0.001"
       material="safety_yellow" />
-    <geom name="cell_line_W" type="box" size="0.05 5.05 0.001" pos="-4 0 0.001"
+    <geom name="station_line_W" type="box" size="0.05 5.05 0.001" pos="-4 0 0.001"
       material="safety_yellow" />
     <geom name="pedestrian_walkway" type="box" size="6 0.6 0.001" pos="0 -6.2 0.001"
       material="walkway_green" />
@@ -124,7 +124,7 @@
     </body>
 
     <!-- <frame name="layout_mount" pos="-1.5 2 0">
-      <attach model="cell_layout" prefix="layout" />
+      <attach model="station_layout" prefix="layout" />
     </frame> -->
   </worldbody>
 

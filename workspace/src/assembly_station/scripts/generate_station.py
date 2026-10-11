@@ -4,9 +4,6 @@ from typing import Any
 from xml.etree.ElementTree import ElementTree, parse
 
 import yaml
-from generator.cell_controller_generator import CellControllerGenerator
-from generator.joint_limit_generator import JointLimitGenerator
-from generator.kinematics_generator import KinematicsGenerator
 from generator.models import (
     EOAT,
     CollisionDisabled,
@@ -19,14 +16,17 @@ from generator.models import (
     StationConfigurations,
     StationModel,
 )
-from generator.moveit_controller_generator import MoveitControllerGenerator
-from generator.mujoco_layout_generator import MujocoLayoutGenerator
-from generator.mujoco_xacro_generator import MujocoXacroGenerator
+from generator.mujoco_robot_layout import MujocoLayoutGenerator
+from generator.mujoco_station import MujocoXacroGenerator
 from generator.mujoco_xml_generator import MujocoXmlGenerator
-from generator.ompl_generator import OMPLGenerator
-from generator.pliz_generator import PlizGenerator
-from generator.srdf_generator import SRDFGenerator
-from generator.station_xacro_generator import StationXacroGenerator
+from generator.pilz_cartesian_limits import PlizGenerator
+from generator.station_controllers import CellControllerGenerator
+from generator.station_joint_limits import JointLimitGenerator
+from generator.station_kinematics import KinematicsGenerator
+from generator.station_moveit_controllers import MoveitControllerGenerator
+from generator.station_ompl_planning import OMPLGenerator
+from generator.station_srdf import SRDFGenerator
+from generator.station_urdf import StationXacroGenerator
 
 
 class GenerateStation:
