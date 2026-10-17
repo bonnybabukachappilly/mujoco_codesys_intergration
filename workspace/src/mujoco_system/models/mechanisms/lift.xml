@@ -9,11 +9,10 @@
 
     <default>
         <default class="lift_visual">
-            <geom type="mesh" material="support_robot_mat"
-                contype="0" conaffinity="0" group="1" />
+            <geom type="mesh" material="support_robot_mat" />
         </default>
         <default class="lift_collision">
-            <geom type="box" group="3" condim="4" friction="1.2 0.01 0.001"
+            <geom type="mesh" friction="1.2 0.01 0.001"
                 rgba="0.2 0.8 0.2 0.3" />
         </default>
         <default class="lift_axis">
@@ -22,23 +21,30 @@
     </default>
 
     <worldbody>
-        <body name="lift_support">
-            <geom class="lift_visual" mesh="lift_support" />
+        <body name="lift_support" pos="0 0 0">
+            <geom name="lift_support_geom" type="mesh" mesh="lift_support" contype="1"
+                conaffinity="1" group="1" />
 
-            <body name="lift" gravcomp="1">
-                <joint name="joint" class="lift_axis" range="0 1.5" />
-                <inertial pos="0 0 0" mass="20" diaginertia="0.1 0.1 0.1" />
-                <geom class="lift_visual" mesh="lift" />
-
-                <geom name="platform" class="lift_collision"
-                    size="0.20 0.20 0.01" pos="0 0 0.30" />
+            <body name="lift_carriage" pos="0 0 0">
+                <joint name="lift_slide" type="slide" pos="0 0 0" axis="0 0 1" range="0 1.5"
+                    limited="true" damping="100" />
+                <geom name="lift_geom" type="mesh" mesh="lift" contype="1" conaffinity="1" group="1" />
+                <site name="plate_mount" pos="0.152 -2.152 0.620" size="0.02" rgba="0 1 0 1" />
             </body>
+
         </body>
     </worldbody>
 
     <actuator>
-        <position name="joint" joint="joint" ctrlrange="0 1.5"
-            kp="30000" kv="2000" forcerange="-2000 2000" />
+        <position name="lift_position" joint="lift_slide" kp="4006" kv="100" ctrllimited="true"
+            ctrlrange="0 1.55" forcelimited="true" forcerange="-2000 2000" />
     </actuator>
+
+    <contact>
+        <exclude body1="lift_carriage" body2="lift_support" />
+        <exclude body1="lift_carriage" body2="slider_bottom" />
+        <exclude body1="lift_carriage" body2="slider_top" />
+    </contact>
+
 
 </mujoco>

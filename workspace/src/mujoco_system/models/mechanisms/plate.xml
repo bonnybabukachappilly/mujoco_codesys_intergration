@@ -1,0 +1,43 @@
+<mujoco model="plate">
+    <compiler angle="radian" eulerseq="XYZ" />
+
+    <asset>
+        <mesh name="plate" file="../../assets/plate.stl" />
+    </asset>
+
+    <default>
+        <default class="plate_visual">
+            <geom type="mesh" rgba="0.75 0.77 0.80 1" />
+        </default>
+        <default class="plate_collision">
+            <geom type="mesh" friction="0.6 0.005 0.0001" rgba="0.2 0.8 0.2 0.3" />
+        </default>
+        <default class="plate_axis">
+            <joint type="slide" damping="0" armature="0.5" />
+        </default>
+    </default>
+
+    <worldbody>
+        <body name="plate">
+            <joint name="x" class="plate_axis" axis="1 0 0" range="-0.01 4"/>
+            <joint name="y" class="plate_axis" axis="0 1 0" range="-2.05 0.01"/>
+            <joint name="z" type="slide" axis="0 0 1" range="0 4" damping="50" armature="0" />
+
+            <inertial pos="0 0 0.01" mass="2" diaginertia="0.0217 0.0217 0.0432" />
+            <geom name="plate_geom" type="mesh" mesh="plate" contype="1" conaffinity="1" />
+        </body>
+    </worldbody>
+
+    <actuator>
+        <position name="plate_x" joint="x" kp="1000" kv="100" ctrllimited="true"
+            ctrlrange="-0.01 4" forcerange="-300 300" />
+
+        <position name="plate_y" joint="y" kp="1000" kv="100" ctrllimited="true"
+            ctrlrange="-2.05 0.01" forcerange="-300 300" />
+    </actuator>
+
+    <contact>
+        <exclude body1="plate" body2="left_lift_support" />
+        <exclude body1="plate" body2="right_lift_support" /> 
+    </contact>
+</mujoco>
