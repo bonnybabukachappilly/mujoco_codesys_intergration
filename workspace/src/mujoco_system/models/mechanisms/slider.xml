@@ -1,0 +1,62 @@
+<mujoco model="plate">
+    <compiler angle="radian" eulerseq="XYZ" />
+
+    <asset>
+        <mesh name="sld_1" file="../../assets/slider/slider_p1.stl" />
+        <mesh name="sld_2" file="../../assets/slider/slider_p2.stl" />
+        <mesh name="sld_3" file="../../assets/slider/slider_p3.stl" />
+        <mesh name="sld_4" file="../../assets/slider/slider_p4.stl" />
+        <mesh name="sld_5" file="../../assets/slider/slider_p5.stl" />
+        <mesh name="sld_6" file="../../assets/slider/slider_p6.stl" />
+        <mesh name="sld_7" file="../../assets/slider/slider_p7.stl" />
+        <mesh name="sld_8" file="../../assets/slider/slider_p8.stl" />
+        <mesh name="sld_9" file="../../assets/slider/slider_p9.stl" />
+        <mesh name="sld_10" file="../../assets/slider/slider_p10.stl" />
+        <mesh name="sld_11" file="../../assets/slider/slider_p11.stl" />
+        <mesh name="sld_12" file="../../assets/slider/slider_p12.stl" />
+        <mesh name="sld_13" file="../../assets/slider/slider_p13.stl" />
+    </asset>
+
+    <default>
+        <default class="slider_visual">
+            <geom type="mesh" rgba="0.75 0.77 0.80 1" />
+        </default>
+        <default class="slider_collision">
+            <geom type="mesh" friction="0.6 0.005 0.0001" rgba="0.2 0.8 0.2 0.3" />
+        </default>
+    </default>
+
+    <worldbody>
+        <body name="slider">
+            <geom class="slider_visual" mesh="sld_1" />
+            <geom class="slider_collision" mesh="sld_1" />
+            <geom class="slider_visual" mesh="sld_2" />
+            <geom class="slider_collision" mesh="sld_2" />
+            <geom class="slider_visual" mesh="sld_2" />
+            <geom class="slider_collision" mesh="sld_2" />
+            <geom class="slider_visual" mesh="sld_3" />
+            <geom class="slider_collision" mesh="sld_3" />
+            <geom class="slider_visual" mesh="sld_4" />
+            <geom class="slider_collision" mesh="sld_4" />
+            <geom class="slider_visual" mesh="sld_5" />
+            <geom class="slider_collision" mesh="sld_5" />
+            <geom class="slider_visual" mesh="sld_6" />
+            <geom class="slider_collision" mesh="sld_6" />
+            <geom class="slider_visual" mesh="sld_7" />
+            <geom class="slider_collision" mesh="sld_7" />
+            <geom class="slider_visual" mesh="sld_8" />
+            <geom class="slider_collision" mesh="sld_8" />
+            <geom class="slider_visual" mesh="sld_9" />
+            <geom class="slider_collision" mesh="sld_9" />
+            <geom class="slider_visual" mesh="sld_10" />
+            <geom class="slider_collision" mesh="sld_10" />
+            <geom class="slider_visual" mesh="sld_11" />
+            <geom class="slider_collision" mesh="sld_11" />
+            <geom class="slider_visual" mesh="sld_12" />
+            <geom class="slider_collision" mesh="sld_12" />
+            <geom class="slider_visual" mesh="sld_13" />
+            <geom class="slider_collision" mesh="sld_13" />
+        </body>
+    </worldbody>
+
+</mujoco>

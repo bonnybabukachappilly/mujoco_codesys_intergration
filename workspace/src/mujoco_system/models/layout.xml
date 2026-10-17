@@ -17,6 +17,8 @@
 
         <model name="robot_layout" file="./robot_layout.xml" />
         <model name="lift_mechanism" file="./mechanisms/lift.xml" />
+        <model name="plate_mechanism" file="./mechanisms/plate.xml" />
+        <model name="slider_mechanism" file="./mechanisms/slider.xml" />
     </asset>
 
     <default>
@@ -29,7 +31,7 @@
                 <geom type="mesh" mesh="support_leg" />
             </default>
             <default class="support_roof_color">
-                <geom type="mesh" />
+                <geom type="mesh" contype="0" conaffinity="0" />
             </default>
         </default>
         <default class="robot_support">
@@ -47,31 +49,9 @@
             </body>
 
             <body name="slider_bottom">
-                <geom class="slider" mesh="linear_slider" />
+                <attach model="slider_mechanism" prefix="bottom" />
 
-                <frame name="left_lift_frame" pos="0 0 0">
-                    <attach model="lift_mechanism" prefix="left_" />
-                </frame>
 
-                <!-- <body name="lift_support_left" pos="0 0 0">
-                    <geom class="lift" mesh="lift_support" />
-                </body>
-
-                <body name="lift_left" pos="0 0 0">
-                    <geom class="lift" mesh="lift" />
-                </body> -->
-
-                <frame name="right_lift_frame" pos="2 -0.304 0" euler="0 0 1.5708">
-                    <attach model="lift_mechanism" prefix="right_" />
-                </frame>
-
-                <!-- <body name="lift_support_right" pos="2 -0.304 0" euler="0 0 1.5708">
-                    <geom class="lift" mesh="lift_support" />
-                </body>
-
-                <body name="lift_right" pos="2 -0.304 0" euler="0 0 1.5708">
-                    <geom class="lift" mesh="lift" />
-                </body> -->
 
                 <body name="support_sld_btm_1" pos="0 0 0">
                     <geom childclass="support_color" class="support_leg_color" />
@@ -95,7 +75,7 @@
             </frame>
 
             <body name="slider_top" pos="0 0 1.5">
-                <geom class="slider" mesh="linear_slider" />
+                <attach model="slider_mechanism" prefix="top" />
 
                 <body name="support_sld_1" pos="0 0 -1.5">
                     <geom childclass="support_color" class="support_roof_color"
@@ -117,16 +97,28 @@
                         mesh="support_roof" />
                 </body>
             </body>
+
+            <frame name="left_lift_frame" pos="0 0 0">
+                <attach model="lift_mechanism" prefix="left_" />
+            </frame>
+
+            <frame name="right_lift_frame" pos="2 -0.304 0" euler="0 0 1.5708">
+                <attach model="lift_mechanism" prefix="right_" />
+            </frame>
+
+            <frame name="plate_1_frame" pos="0 0 0">
+                <attach model="plate_mechanism" prefix="p1_" />
+            </frame>
         </frame>
     </worldbody>
 
     <contact>
-        <exclude body1="left_lift" body2="support_sld_btm_1" />
+        <!-- <exclude body1="left_lift" body2="support_sld_btm_1" />
         <exclude body1="left_lift" body2="slider_bottom" />
         <exclude body1="left_lift" body2="slider_top" />
         <exclude body1="right_lift" body2="support_sld_btm_3" />
         <exclude body1="right_lift" body2="slider_bottom" />
-        <exclude body1="right_lift" body2="slider_top" />
+        <exclude body1="right_lift" body2="slider_top" /> -->
     </contact>
 
 </mujoco>
