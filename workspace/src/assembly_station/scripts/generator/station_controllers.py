@@ -26,11 +26,11 @@ FCC: dict = {
 
 MECH_CONTROLLERS: dict[str, dict] = {
     'lift_controller': {
-        'joints': ['left_lift_slide', 'right_lift_slide'],
+        'joints': ['left_lift_slide', 'right_lift_slide'], 'interface': ['effort'],
         'p': 1200.0, 'i': 100.0, 'd': 0.0, 'i_clamp': 20.0, 'ff': 100.0,
         'goal': 0.003, 'stopped_vel': 0.005},
     'p1_controller': {
-        'joints': ['p1_plate_x', 'p1_plate_y'],
+        'joints': ['p1_plate_x', 'p1_plate_y'], 'interface': ['position'],
         'p': 250.0, 'i': 25.0, 'd': 50.0, 'i_clamp': 24.5, 'ff': 0.0,
         'trajectory': 0.05, 'goal': 0.005, 'stopped_vel': 0.01},
 }
@@ -165,7 +165,7 @@ class StationControllerGenerator:
                 'type': jtc_type}
             params = copy.deepcopy(JTC)
             params['joints'] = m['joints']
-            params['command_interfaces'] = ['effort']
+            params['command_interfaces'] = m['interface']
             params['open_loop_control'] = False
             params['gains'] = {
                 j: {'p': m['p'], 'i': m['i'], 'd': m['d'],

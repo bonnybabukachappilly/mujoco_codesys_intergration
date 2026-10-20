@@ -21,6 +21,8 @@ models:
       package: mujoco_system
       descriptor: models/eoat/pgc/pgc_50_35/gripper.xml
 
+  
+
 # layout_origin: { xyz: [-1.5, 2.0, 0.0], rpy: [0, 0, 0] }
 
 # support_height: 0.595

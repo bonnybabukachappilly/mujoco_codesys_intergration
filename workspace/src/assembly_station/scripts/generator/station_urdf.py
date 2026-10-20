@@ -10,6 +10,7 @@ from xml.etree.ElementTree import (
 )
 
 from generator.models import EOAT, Robot, StationConfigurations
+from generator.utils import apply_base_offset
 
 
 class StationXacroGenerator:
@@ -80,7 +81,7 @@ class StationXacroGenerator:
         SubElement(_joint, 'parent', link='world')
         SubElement(_joint, 'child', link=f'{_prefix}_{robot.base}')
         SubElement(
-            _joint, 'origin', xyz=config.robot_xyz,
+            _joint, 'origin', xyz=apply_base_offset(config.robot_xyz, config.robot_rpy),
             rpy=config.robot_rpy)
 
         if has_eoat:
