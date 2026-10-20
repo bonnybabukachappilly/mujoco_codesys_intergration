@@ -21,11 +21,14 @@ def generate_launch_description() -> LaunchDescription:
     moveit_config: str = get_package_share_directory('assembly_station')
 
     with open(os.path.join(moveit_config, 'config', 'station_configuration.yaml')) as f:
-        cell = yaml.safe_load(f)['robots']
+        config = yaml.safe_load(f)
+        station = config['robots']
+        mechanisms = config['mechanism']
 
     controller_names: list[str] = (
-        [f'{r["id"]}_arm_controller' for r in cell]
-        + [f'{r["id"]}_gripper_controller' for r in cell if r.get('eoat')]
+        [f'{r["id"]}_arm_controller' for r in station]
+        + [f'{r["id"]}_gripper_controller' for r in station if r.get('eoat')]
+        + [f'{r}_controller' for r in mechanisms]
     )
 
     use_sim_time = LaunchConfiguration('use_sim_time')
@@ -92,6 +95,6 @@ def generate_launch_description() -> LaunchDescription:
         DeclareLaunchArgument(
             'mujoco_model',
             default_value=PathJoinSubstitution(
-                [FindPackageShare('mujoco_system'), 'scenes', 'cell.xml'])),
+                [FindPackageShare('mujoco_system'), 'scenes', 'station.xml'])),
         rsp, control_node, jsb, delay, rviz_node,
     ])

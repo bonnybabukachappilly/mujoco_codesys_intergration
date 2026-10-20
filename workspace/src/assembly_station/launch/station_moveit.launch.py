@@ -13,16 +13,16 @@ def generate_launch_description() -> LaunchDescription:
     moveit_cfg = get_package_share_directory('assembly_station')
 
     mujoco_model = os.path.join(
-        get_package_share_directory('mujoco_system'), 'scenes', 'cell.xml')
+        get_package_share_directory('mujoco_system'), 'scenes', 'station.xml')
 
     def cfg(f):
         return os.path.join(moveit_cfg, 'config', f)
 
     moveit_config = (
-        MoveItConfigsBuilder('cell', package_name='assembly_station')
+        MoveItConfigsBuilder('station', package_name='assembly_station')
         .robot_description(
             file_path=os.path.join(
-                moveit_cfg, 'urdf', 'station_mujoco.urdf.xacro'),
+                moveit_cfg, 'urdf', 'mujoco_station.urdf.xacro'),
             mappings={'mujoco_model': mujoco_model})
         .robot_description_semantic(file_path=cfg('station.srdf'))
         .robot_description_kinematics(file_path=cfg('station_kinematics.yaml'))

@@ -21,7 +21,7 @@ class SRDFGenerator:
             self, config: list[StationConfigurations],
             get_robot: Callable[[str], Robot],
             get_eoat: Callable[[str], EOAT], output_path: PosixPath) -> None:
-        self._root: Element = Element('robot', name='cell')
+        self._root: Element = Element('robot', name='station')
 
         self._config: list[StationConfigurations] = config
         self._get_robot: Callable[[str], Robot] = get_robot

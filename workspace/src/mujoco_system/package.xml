@@ -3,7 +3,7 @@
 <package format="3">
   <name>mujoco_system</name>
   <version>0.0.0</version>
-  <description>MuJoCo scene and models for the robot cell</description>
+  <description>MuJoCo scene and models for the robot station</description>
   <maintainer email="bonnybabukachappilly@gmail.com">bonnybk</maintainer>
   <license>GPL-3.0-only</license>
 

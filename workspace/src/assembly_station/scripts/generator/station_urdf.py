@@ -31,7 +31,7 @@ class StationXacroGenerator:
 
         register_namespace("xacro", "http://www.ros.org/wiki/xacro")
         self._root: Element = Element('robot', {
-            'name': 'cell',
+            'name': 'station',
             "xmlns:xacro": "http://www.ros.org/wiki/xacro"
         })
 
