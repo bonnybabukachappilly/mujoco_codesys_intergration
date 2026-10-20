@@ -1,3 +1,4 @@
+import copy
 from collections.abc import Callable
 from pathlib import PosixPath
 from typing import cast
@@ -23,6 +24,17 @@ FCC: dict = {
     'interface_name': 'position'
 }
 
+MECH_CONTROLLERS: dict[str, dict] = {
+    'lift_controller': {
+        'joints': ['left_lift_slide', 'right_lift_slide'],
+        'p': 1200.0, 'i': 100.0, 'd': 0.0, 'i_clamp': 20.0, 'ff': 100.0,
+        'goal': 0.003, 'stopped_vel': 0.005},
+    'p1_controller': {
+        'joints': ['p1_plate_x', 'p1_plate_y'],
+        'p': 250.0, 'i': 25.0, 'd': 50.0, 'i_clamp': 24.5, 'ff': 0.0,
+        'trajectory': 0.05, 'goal': 0.005, 'stopped_vel': 0.01},
+}
+
 
 def get_controller(name: str) -> dict:
     _controller: dict = {
@@ -39,7 +51,7 @@ def get_controller(name: str) -> dict:
     return _controller[_request]
 
 
-class CellControllerGenerator:
+class StationControllerGenerator:
     __slots__: tuple[str, ...] = (
         '_active_eoat',
         '_active_robot',
@@ -146,6 +158,24 @@ class CellControllerGenerator:
                 self._active_eoat = self._get_eoat(config.eoat)  # type: ignore
                 self._create_eoat_ros_params(_prefix)
                 self._create_eoat_controller(_prefix)
+
+        jtc_type = 'joint_trajectory_controller/JointTrajectoryController'
+        for name, m in MECH_CONTROLLERS.items():
+            self._controller['controller_manager']['ros__parameters'][name] = {
+                'type': jtc_type}
+            params = copy.deepcopy(JTC)
+            params['joints'] = m['joints']
+            params['command_interfaces'] = ['effort']
+            params['open_loop_control'] = False
+            params['gains'] = {
+                j: {'p': m['p'], 'i': m['i'], 'd': m['d'],
+                    'i_clamp': m['i_clamp'], 'ff_velocity_scale': 0.0}
+                for j in m['joints']}
+            params['constraints'] = {
+                'stopped_velocity_tolerance': m['stopped_vel'],
+                'goal_time': 1.0,
+                **{j: {'goal': m['goal']} for j in m['joints']}}
+            self._controller[name] = {'ros__parameters': params}
 
         file: PosixPath = self._output_path / 'config' / 'station_controllers.yaml'
         with open(file, 'w') as f:

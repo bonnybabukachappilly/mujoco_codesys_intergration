@@ -31,7 +31,7 @@ class MujocoXacroGenerator:
 
         register_namespace("xacro", "http://www.ros.org/wiki/xacro")
         self._root: Element = Element('robot', {
-            'name': 'cell',
+            'name': 'station',
             "xmlns:xacro": "http://www.ros.org/wiki/xacro"
         })
 
@@ -39,6 +39,9 @@ class MujocoXacroGenerator:
         SubElement(
             self._root, 'xacro:include',
             filename='$(find assembly_station)/urdf/station.urdf.xacro')
+        SubElement(
+            self._root, 'xacro:include',
+            filename='$(find assembly_station)/urdf/mechanisms_ros2_control.xacro')
 
         self._config: list[StationConfigurations] = config
         self._get_robot: Callable[[str], Robot] = get_robot
@@ -101,6 +104,8 @@ class MujocoXacroGenerator:
 
         _control: Element = SubElement(
             self._root, 'ros2_control', name='station_system', type='system')
+
+        SubElement(_control, 'xacro:station_mechanism_joints')
 
         self._create_ros_control(_control)
 

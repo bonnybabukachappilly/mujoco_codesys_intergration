@@ -170,9 +170,9 @@
             "id": "mujoco_scenes",
             "type": "pickString",
             "description": "MuJoCo Scene",
-            "default": "cell.xml",
+            "default": "station.xml",
             "options": [
-                "cell.xml"
+                "station.xml"
             ]
         },
     ]

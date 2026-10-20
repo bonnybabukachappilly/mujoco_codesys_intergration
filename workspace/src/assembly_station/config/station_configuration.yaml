@@ -1,4 +1,4 @@
-name: cell
+name: station
 
 models:
   cr5:
@@ -55,3 +55,7 @@ robots:
   - id: r7
     model: cr5
     support: { xyz: "-0.257 -1.719 3.795", rpy: "0 3.1416 -1.5708" }
+
+mechanism:
+  - lift
+  - p1

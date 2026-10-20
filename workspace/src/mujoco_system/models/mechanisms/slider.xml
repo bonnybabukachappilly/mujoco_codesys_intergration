@@ -1,4 +1,4 @@
-<mujoco model="plate">
+<mujoco model="slider">
     <compiler angle="radian" eulerseq="XYZ" />
 
     <asset>
@@ -30,8 +30,6 @@
         <body name="slider">
             <geom class="slider_visual" mesh="sld_1" />
             <geom class="slider_collision" mesh="sld_1" />
-            <geom class="slider_visual" mesh="sld_2" />
-            <geom class="slider_collision" mesh="sld_2" />
             <geom class="slider_visual" mesh="sld_2" />
             <geom class="slider_collision" mesh="sld_2" />
             <geom class="slider_visual" mesh="sld_3" />

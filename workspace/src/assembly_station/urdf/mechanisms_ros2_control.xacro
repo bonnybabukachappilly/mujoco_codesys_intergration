@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="mech_joint_interface"
+        params="joint_name limit:=0 command:=true command_type:= 'effort' min_val:='' max_val:='' ">
+        <joint name="${joint_name}">
+            <xacro:if value="${command}">
+                <command_interface name="${command_type}">
+                    <xacro:if value="${command_type == 'effort'}">
+                        <param name="min">-${limit}</param>
+                        <param name="max">${limit}</param>
+                    </xacro:if>
+                    <xacro:if value="${command_type == 'position'}">
+                        <param name="min">${min_val}</param>
+                        <param name="max">${max_val}</param>
+                    </xacro:if>
+                </command_interface>
+            </xacro:if>
+            <state_interface name="position">
+                <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity" />
+            <state_interface name="effort" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="station_mechanism_joints">
+        <!-- Lifts keep their effort control -->
+        <xacro:mech_joint_interface joint_name="left_lift_slide" limit="2000" />
+        <xacro:mech_joint_interface joint_name="right_lift_slide" limit="2000" />
+
+        <!-- Plate axes updated to use position control and match MuJoCo ranges -->
+        <xacro:mech_joint_interface joint_name="p1_plate_x" command_type="position" min_val="-0.01"
+            max_val="4.0" />
+        <xacro:mech_joint_interface joint_name="p1_plate_y" command_type="position" min_val="-2.05"
+            max_val="0.01" />
+
+        <!-- Unactuated passive joint -->
+        <xacro:mech_joint_interface joint_name="p1_plate_z" command="false" />
+    </xacro:macro>
+</robot>

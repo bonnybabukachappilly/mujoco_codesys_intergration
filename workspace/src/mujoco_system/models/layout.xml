@@ -49,11 +49,9 @@
             </body>
 
             <body name="slider_bottom">
-                <attach model="slider_mechanism" prefix="bottom" />
+                <attach model="slider_mechanism" body="slider" prefix="bottom" />
 
-
-
-                <body name="support_sld_btm_1" pos="0 0 0">
+                <!-- <body name="support_sld_btm_1" pos="0 0 0">
                     <geom childclass="support_color" class="support_leg_color" />
                 </body>
 
@@ -67,7 +65,7 @@
 
                 <body name="support_sld_btm_4" pos="3.296 0 0">
                     <geom childclass="support_color" class="support_leg_color" />
-                </body>
+                </body> -->
             </body>
 
             <frame name="robot_mounts">
@@ -75,7 +73,7 @@
             </frame>
 
             <body name="slider_top" pos="0 0 1.5">
-                <attach model="slider_mechanism" prefix="top" />
+                <attach model="slider_mechanism" body="slider" prefix="top" />
 
                 <body name="support_sld_1" pos="0 0 -1.5">
                     <geom childclass="support_color" class="support_roof_color"
@@ -99,26 +97,17 @@
             </body>
 
             <frame name="left_lift_frame" pos="0 0 0">
-                <attach model="lift_mechanism" prefix="left_" />
+                <attach model="lift_mechanism" body="lift_support" prefix="left_" />
             </frame>
 
             <frame name="right_lift_frame" pos="2 -0.304 0" euler="0 0 1.5708">
-                <attach model="lift_mechanism" prefix="right_" />
+                <attach model="lift_mechanism" body="lift_support" prefix="right_" />
             </frame>
 
             <frame name="plate_1_frame" pos="0 0 0">
-                <attach model="plate_mechanism" prefix="p1_" />
+                <attach model="plate_mechanism" body="plate" prefix="p1_" />
             </frame>
         </frame>
     </worldbody>
-
-    <contact>
-        <!-- <exclude body1="left_lift" body2="support_sld_btm_1" />
-        <exclude body1="left_lift" body2="slider_bottom" />
-        <exclude body1="left_lift" body2="slider_top" />
-        <exclude body1="right_lift" body2="support_sld_btm_3" />
-        <exclude body1="right_lift" body2="slider_bottom" />
-        <exclude body1="right_lift" body2="slider_top" /> -->
-    </contact>
 
 </mujoco>

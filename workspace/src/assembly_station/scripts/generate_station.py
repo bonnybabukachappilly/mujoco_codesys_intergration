@@ -20,7 +20,7 @@ from generator.mujoco_robot_layout import MujocoLayoutGenerator
 from generator.mujoco_station import MujocoXacroGenerator
 from generator.mujoco_xml_generator import MujocoXmlGenerator
 from generator.pilz_cartesian_limits import PlizGenerator
-from generator.station_controllers import CellControllerGenerator
+from generator.station_controllers import StationControllerGenerator
 from generator.station_joint_limits import JointLimitGenerator
 from generator.station_kinematics import KinematicsGenerator
 from generator.station_moveit_controllers import MoveitControllerGenerator
@@ -83,7 +83,7 @@ class GenerateStation:
             output_path=self._output_path
         ).generate()
 
-        CellControllerGenerator(
+        StationControllerGenerator(
             config=self._configurations,
             get_robot=self._get_robot,
             get_eoat=self._get_eoat,
