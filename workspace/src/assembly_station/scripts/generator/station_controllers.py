@@ -26,14 +26,20 @@ FCC: dict = {
 
 MECH_CONTROLLERS: dict[str, dict] = {
     'lift_controller': {
-        'joints': ['left_lift_slide', 'right_lift_slide'],
+        'joints': ['left_lift_slide', 'right_lift_slide'], 'interface': ['effort'],
         'p': 1200.0, 'i': 100.0, 'd': 0.0, 'i_clamp': 20.0, 'ff': 100.0,
         'goal': 0.003, 'stopped_vel': 0.005},
-    'p1_controller': {
-        'joints': ['p1_plate_x', 'p1_plate_y'],
+    'plate': {
+        'joints': ['plate_x', 'plate_y'], 'interface': ['position'],
         'p': 250.0, 'i': 25.0, 'd': 50.0, 'i_clamp': 24.5, 'ff': 0.0,
         'trajectory': 0.05, 'goal': 0.005, 'stopped_vel': 0.01},
 }
+
+PLATE_CONTROLLERS: list[str] = [
+    'p1', 'p2', 'p3', 'p4', 'p5',
+    'p6', 'p7', 'p8', 'p9', 'p10',
+    'p11'
+]
 
 
 def get_controller(name: str) -> dict:
@@ -144,6 +150,31 @@ class StationControllerGenerator:
 
         self._controller |= _controller
 
+    def _create_mechanism(self, name, m, plate=False) -> None:
+        jtc_type = 'joint_trajectory_controller/JointTrajectoryController'
+        _joint = list(m['joints'])
+
+        if plate:
+            _prefix = name
+            name = f'{name}_controller'
+            _joint = [f'{_prefix}_{j}' for j in m['joints']]
+
+        self._controller['controller_manager']['ros__parameters'][name] = {
+            'type': jtc_type}
+        params = copy.deepcopy(JTC)
+        params['joints'] = _joint
+        params['command_interfaces'] = m['interface']
+        params['open_loop_control'] = False
+        params['gains'] = {
+            j: {'p': m['p'], 'i': m['i'], 'd': m['d'],
+                'i_clamp': m['i_clamp'], 'ff_velocity_scale': 0.0}
+            for j in _joint}
+        params['constraints'] = {
+            'stopped_velocity_tolerance': m['stopped_vel'],
+            'goal_time': 1.0,
+            **{j: {'goal': m['goal']} for j in _joint}}
+        self._controller[name] = {'ros__parameters': params}
+
     def generate(self) -> None:
         for config in self._config:
             self._active_robot = self._get_robot(config.model)
@@ -159,23 +190,12 @@ class StationControllerGenerator:
                 self._create_eoat_ros_params(_prefix)
                 self._create_eoat_controller(_prefix)
 
-        jtc_type = 'joint_trajectory_controller/JointTrajectoryController'
         for name, m in MECH_CONTROLLERS.items():
-            self._controller['controller_manager']['ros__parameters'][name] = {
-                'type': jtc_type}
-            params = copy.deepcopy(JTC)
-            params['joints'] = m['joints']
-            params['command_interfaces'] = ['effort']
-            params['open_loop_control'] = False
-            params['gains'] = {
-                j: {'p': m['p'], 'i': m['i'], 'd': m['d'],
-                    'i_clamp': m['i_clamp'], 'ff_velocity_scale': 0.0}
-                for j in m['joints']}
-            params['constraints'] = {
-                'stopped_velocity_tolerance': m['stopped_vel'],
-                'goal_time': 1.0,
-                **{j: {'goal': m['goal']} for j in m['joints']}}
-            self._controller[name] = {'ros__parameters': params}
+            if name == 'plate':
+                for plate in PLATE_CONTROLLERS:
+                    self._create_mechanism(plate, m, plate=True)
+            else:
+                self._create_mechanism(name, m)
 
         file: PosixPath = self._output_path / 'config' / 'station_controllers.yaml'
         with open(file, 'w') as f:

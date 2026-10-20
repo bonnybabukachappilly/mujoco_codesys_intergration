@@ -40,7 +40,7 @@ def generate_launch_description() -> LaunchDescription:
     controllers_file: str = os.path.join(
         moveit_config, 'config', 'station_controllers.yaml')
     rviz_config = PathJoinSubstitution(
-        [FindPackageShare('assembly_station'), 'rviz', 'station_moveit.rviz'])
+        [FindPackageShare('assembly_station'), 'config', 'station_moveit.rviz'])
 
     robot_description = ParameterValue(
         Command([

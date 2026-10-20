@@ -25,6 +25,14 @@ set(STAMP "${GEN_DIR}/.generated")
 file(GLOB_RECURSE GENERATOR_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/scripts/generator/*.py")
 
+file(GLOB_RECURSE GENERATOR_INPUTS CONFIGURE_DEPENDS
+  "${DOBOT_SHARE}/config/*.yaml"
+  "${DOBOT_SHARE}/urdf/*.xacro"
+  "${EOAT_SHARE}/config/*.yaml"
+  "${EOAT_SHARE}/urdf/*.xacro"
+  "${MUJOCO_SHARE}/models/robots/*.xml"
+  "${MUJOCO_SHARE}/models/eoat/*.xml")
+
 add_custom_command(
   OUTPUT "${STAMP}"
   COMMAND "${Python3_EXECUTABLE}" "${GENERATOR}"
@@ -33,11 +41,12 @@ add_custom_command(
   --eoat-share "${EOAT_SHARE}"
   --mujoco-share "${MUJOCO_SHARE}"
   --out "${GEN_DIR}"
+  COMMAND ${CMAKE_COMMAND} -E touch "${STAMP}"
   DEPENDS
   "${GENERATOR}"
   ${GENERATOR_SOURCES}
   "${STATION_YAML}"
-  "${DOBOT_SHARE}/config/cr5.yaml"
+  ${GENERATOR_INPUTS}
   COMMENT "Generating assembly_station files"
   VERBATIM
   USES_TERMINAL

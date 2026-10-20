@@ -21,6 +21,8 @@ models:
       package: mujoco_system
       descriptor: models/eoat/pgc/pgc_50_35/gripper.xml
 
+  
+
 # layout_origin: { xyz: [-1.5, 2.0, 0.0], rpy: [0, 0, 0] }
 
 # support_height: 0.595
@@ -59,3 +61,13 @@ robots:
 mechanism:
   - lift
   - p1
+  - p2
+  - p3
+  - p4
+  - p5
+  - p6
+  - p7
+  - p8
+  - p9
+  - p10
+  - p11
