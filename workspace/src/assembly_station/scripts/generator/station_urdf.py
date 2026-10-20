@@ -10,7 +10,7 @@ from xml.etree.ElementTree import (
 )
 
 from generator.models import EOAT, Robot, StationConfigurations
-from generator.utils import apply_base_offset
+from generator.utils import LAYOUT_ORIGIN, apply_base_offset
 
 
 class StationXacroGenerator:
@@ -37,6 +37,9 @@ class StationXacroGenerator:
         })
 
         SubElement(self._root, 'xacro:arg', name='mujoco_model', default='')
+        SubElement(
+            self._root, 'xacro:include',
+            filename='$(find assembly_station)/urdf/layout.urdf.xacro')
 
         self._config: list[StationConfigurations] = config
         self._get_robot: Callable[[str], Robot] = get_robot
@@ -70,6 +73,14 @@ class StationXacroGenerator:
     def _create_robot(self, config: StationConfigurations) -> None:
         _prefix: str = config.prefix
         has_eoat: bool = config.eoat is not None
+
+        SubElement(
+            self._root, 'xacro:fixed_mesh_link', {
+                'name': f'{_prefix}_support', 'parent': 'layout_frame',
+                'mesh': 'support_robot.stl', 'material': 'layout_yellow',
+                'xyz': config.robot_xyz, 'rpy': config.robot_rpy
+            }
+        )
 
         robot: Robot = self._get_robot(config.model)
 
@@ -109,6 +120,9 @@ class StationXacroGenerator:
                 self._create_includes(_model, True)
 
         SubElement(self._root, 'link', name='world')
+        SubElement(
+            self._root, 'xacro:station_layout',
+            origin_xyz=' '.join(str(v) for v in LAYOUT_ORIGIN))
 
         for config in self._config:
             self._create_robot(config)

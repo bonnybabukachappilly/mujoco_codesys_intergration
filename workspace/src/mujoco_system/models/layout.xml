@@ -107,6 +107,47 @@
             <frame name="plate_1_frame" pos="0 0 0">
                 <attach model="plate_mechanism" body="plate" prefix="p1_" />
             </frame>
+
+            <frame name="plate_2_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p2_" />
+            </frame>
+
+            <frame name="plate_3_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p3_" />
+            </frame>
+
+            <frame name="plate_4_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p4_" />
+            </frame>
+
+            <frame name="plate_5_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p5_" />
+            </frame>
+
+            <frame name="plate_6_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p6_" />
+            </frame>
+
+            <frame name="plate_7_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p7_" />
+            </frame>
+
+            <frame name="plate_8_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p8_" />
+            </frame>
+
+            <frame name="plate_9_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p9_" />
+            </frame>
+
+            <frame name="plate_10_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p10_" />
+            </frame>
+
+            <frame name="plate_11_frame" pos="0 0 0">
+                <attach model="plate_mechanism" body="plate" prefix="p11_" />
+            </frame>
+
         </frame>
     </worldbody>
 

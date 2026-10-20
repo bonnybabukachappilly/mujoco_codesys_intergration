@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="assets" value="package://mujoco_system/assets" />
+
+    <material name="layout_yellow">
+        <color rgba="0.980 0.713 0.003 1" />
+    </material>
+    <material name="layout_grey">
+        <color rgba="0.75 0.77 0.80 1" />
+    </material>
+    <material name="layout_dark">
+        <color rgba="0.101 0.101 0.101 1" />
+    </material>
+
+    <xacro:macro name="mesh_visual" params="mesh material">
+        <visual>
+            <geometry>
+                <mesh filename="${assets}/${mesh}" />
+            </geometry>
+            <material name="${material}" />
+        </visual>
+    </xacro:macro>
+
+    <!-- One mesh, fixed to its parent. Also used by the generator for robot supports. -->
+    <xacro:macro name="fixed_mesh_link"
+        params="name parent mesh material xyz:='0 0 0' rpy:='0 0 0'">
+        <link name="${name}">
+            <xacro:mesh_visual mesh="${mesh}" material="${material}" />
+        </link>
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${parent}" />
+            <child link="${name}" />
+            <origin xyz="${xyz}" rpy="${rpy}" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="slider" params="name xyz:='0 0 0'">
+        <link name="${name}">
+            <xacro:mesh_visual mesh="slider/slider_p1.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p2.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p3.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p4.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p5.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p6.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p7.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p8.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p9.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p10.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p11.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p12.stl" material="layout_grey" />
+            <xacro:mesh_visual mesh="slider/slider_p13.stl" material="layout_grey" />
+        </link>
+        <joint name="${name}_joint" type="fixed">
+            <parent link="layout_frame" />
+            <child link="${name}" />
+            <origin xyz="${xyz}" rpy="0 0 0" />
+        </joint>
+    </xacro:macro>
+
+    <!-- prefix "left_" gives joint "left_lift_slide" -->
+    <xacro:macro name="lift" params="prefix xyz rpy">
+        <xacro:fixed_mesh_link name="${prefix}lift_support" parent="layout_frame"
+            mesh="lift_support.stl" material="layout_grey" xyz="${xyz}" rpy="${rpy}" />
+        <link name="${prefix}lift_carriage">
+            <xacro:mesh_visual mesh="lift.stl" material="layout_yellow" />
+        </link>
+        <joint name="${prefix}lift_slide" type="prismatic">
+            <parent link="${prefix}lift_support" />
+            <child link="${prefix}lift_carriage" />
+            <axis xyz="0 0 1" />
+            <limit lower="0" upper="1.5" effort="2000" velocity="2.0" />
+        </joint>
+    </xacro:macro>
+
+    <!-- prefix "p1_" gives p1_plate_x / p1_plate_y / p1_plate_z (same order as MuJoCo) -->
+    <xacro:macro name="plate" params="prefix">
+        <link name="${prefix}plate_x_link" />
+        <link name="${prefix}plate_y_link" />
+        <link name="${prefix}plate_link">
+            <xacro:mesh_visual mesh="plate.stl" material="layout_grey" />
+        </link>
+        <joint name="${prefix}plate_x" type="prismatic">
+            <parent link="layout_frame" />
+            <child link="${prefix}plate_x_link" />
+            <axis xyz="1 0 0" />
+            <limit lower="-0.01" upper="4.0" effort="300" velocity="5.0" />
+        </joint>
+        <joint name="${prefix}plate_y" type="prismatic">
+            <parent link="${prefix}plate_x_link" />
+            <child link="${prefix}plate_y_link" />
+            <axis xyz="0 1 0" />
+            <limit lower="-2.05" upper="0.01" effort="300" velocity="5.0" />
+        </joint>
+        <joint name="${prefix}plate_z" type="prismatic">
+            <parent link="${prefix}plate_y_link" />
+            <child link="${prefix}plate_link" />
+            <axis xyz="0 0 1" />
+            <limit lower="0" upper="4.0" effort="0" velocity="5.0" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="station_layout" params="origin_xyz">
+        <link name="layout_frame" />
+        <joint name="world_to_layout_frame" type="fixed">
+            <parent link="world" />
+            <child link="layout_frame" />
+            <origin xyz="${origin_xyz}" rpy="0 0 0" />
+        </joint>
+
+        <xacro:fixed_mesh_link name="roof_support" parent="layout_frame"
+            mesh="ceiling_support.stl" material="layout_dark" />
+
+        <xacro:slider name="slider_bottom" xyz="0 0 0" />
+        <xacro:slider name="slider_top" xyz="0 0 1.5" />
+
+        <!-- In MuJoCo these are children of slider_top at z=-1.5, so z=0 in the layout frame -->
+        <xacro:fixed_mesh_link name="support_sld_1" parent="layout_frame"
+            mesh="support_roof_middle.stl" material="layout_dark" xyz="0 0 0" />
+        <xacro:fixed_mesh_link name="support_sld_2" parent="layout_frame"
+            mesh="support_roof.stl" material="layout_dark" xyz="0 -0.28 0" />
+        <xacro:fixed_mesh_link name="support_sld_3" parent="layout_frame"
+            mesh="support_roof.stl" material="layout_dark" xyz="3.5 0 0" rpy="0 0 -1.5708" />
+        <xacro:fixed_mesh_link name="support_sld_4" parent="layout_frame"
+            mesh="support_roof.stl" material="layout_dark" xyz="5 0 0" rpy="0 0 -1.5708" />
+
+        <xacro:lift prefix="left_" xyz="0 0 0" rpy="0 0 0" />
+        <xacro:lift prefix="right_" xyz="2 -0.304 0" rpy="0 0 1.5708" />
+
+        <xacro:plate prefix="p1_" />
+        <xacro:plate prefix="p2_" />
+        <xacro:plate prefix="p3_" />
+        <xacro:plate prefix="p4_" />
+        <xacro:plate prefix="p5_" />
+        <xacro:plate prefix="p6_" />
+        <xacro:plate prefix="p7_" />
+        <xacro:plate prefix="p8_" />
+        <xacro:plate prefix="p9_" />
+        <xacro:plate prefix="p10_" />
+        <xacro:plate prefix="p11_" />
+    </xacro:macro>
+</robot>
