@@ -26,8 +26,8 @@
 
     <xacro:macro name="station_mechanism_joints">
         <!-- Lifts keep their effort control -->
-        <xacro:mech_joint_interface joint_name="left_lift_slide" limit="2000" />
-        <xacro:mech_joint_interface joint_name="right_lift_slide" limit="2000" />
+        <xacro:mech_joint_interface joint_name="left_lift_slide" limit="2000" init="-0.005"/>
+        <xacro:mech_joint_interface joint_name="right_lift_slide" limit="2000" init="-0.005"/>
 
         <!-- Plate axes updated to use position control and match MuJoCo ranges -->
         <xacro:mech_joint_interface joint_name="p1_plate_x" command_type="position" min_val="-0.01"
