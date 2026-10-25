@@ -167,25 +167,13 @@ class LiftController:
             cb(self._ok)
 
     def _cb_up(self, req: Empty_Request, resp: Empty_Response) -> Empty_Response:
-        self._log.info('****************')
-
-        target: list[float] = [1.5, 1.5]
-
+        target: list[float] = [1.5, 1.505]
         self._lift_position.send_goal(target, 3.0, self._plate_done)
-
-        self._log.info(f'{self._lift_position}: {target}')
-        self._log.info('****************')
 
         return resp
 
     def _cb_down(self, req: Empty_Request, resp: Empty_Response) -> Empty_Response:
-        self._log.info('****************')
-
-        target: list[float] = [0, 0]
-
+        target: list[float] = [-0.005, -0.005]
         self._lift_position.send_goal(target, 3.0, self._plate_done)
-
-        self._log.info(f'{self._lift_position}: {target}')
-        self._log.info('****************')
 
         return resp

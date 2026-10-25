@@ -52,3 +52,8 @@ class OPCUAServer:
 
     async def subscribe(self, handler, period_ms: int = 100) -> Subscription:
         return await self._server.create_subscription(period_ms, handler)
+
+
+# nmcli connection modify "BBK_S23" ipv4.dns "" ipv4.ignore-auto-dns no
+# nmcli connection modify "BBK_S23" ipv6.dns "" ipv6.ignore-auto-dns no
+# nmcli connection up "BBK_S23"
