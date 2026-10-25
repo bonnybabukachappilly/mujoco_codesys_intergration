@@ -2,12 +2,15 @@
     <compiler angle="radian" eulerseq="XYZ" />
 
     <asset>
-        <mesh name="lift" file="../../assets/lift.stl" />
+        <mesh name="plate_p1" file="../../assets/plate/plate_p1.stl" />
+        <mesh name="plate_p2" file="../../assets/plate/plate_p2.stl" />
+        <mesh name="plate_p3" file="../../assets/plate/plate_p3.stl" />
+        <mesh name="plate_p4" file="../../assets/plate/plate_p4.stl" />
         <mesh name="lift_support" file="../../assets/lift_support.stl" />
         <material name="support_robot_mat" rgba="0.980 0.713 0.003 1" specular="0.4" shininess="0.4" />
     </asset>
 
-    <default>
+    <!-- <default>
         <default class="lift_visual">
             <geom type="mesh" material="support_robot_mat" />
         </default>
@@ -18,7 +21,7 @@
         <default class="lift_axis">
             <joint type="slide" axis="0 0 1" damping="100" armature="2" />
         </default>
-    </default>
+    </default> -->
 
     <worldbody>
         <body name="lift_support" pos="0 0 0">
@@ -26,18 +29,21 @@
                 conaffinity="1" group="1" />
 
             <body name="lift_carriage" pos="0 0 0" gravcomp="1">
-                <joint name="lift_slide" type="slide" pos="0 0 0" axis="0 0 1" range="0 1.5"
+                <joint name="lift_slide" type="slide" pos="0 0 0" axis="0 0 1" range="-0.005 1.505"
                     limited="true" damping="100" />
 
-                <geom name="lift_geom" type="mesh" mesh="lift" contype="1" conaffinity="1" group="1" />
+                <geom name="lift_geom1" type="mesh" mesh="plate_p1" contype="1" conaffinity="1" group="1" />
+                <geom name="lift_geom2" type="mesh" mesh="plate_p2" contype="1" conaffinity="1" group="1" />
+                <geom name="lift_geom3" type="mesh" mesh="plate_p3" contype="1" conaffinity="1" group="1" />
+                <geom name="lift_geom4" type="mesh" mesh="plate_p4" contype="1" conaffinity="1" group="1" />
                 <site name="plate_mount" pos="0.152 -2.152 0.620" size="0.02" rgba="0 1 0 1" />
             </body>
         </body>
     </worldbody>
 
     <actuator>
-        <motor name="lift_slide" joint="lift_slide" gear="1"
-            ctrllimited="true" ctrlrange="-2000 2000" />
+        <position name="lift_slide" joint="lift_slide" kp="5000" kv="100" ctrllimited="true"
+            ctrlrange="-0.005 1.505" forcerange="-300 300" />
     </actuator>
 
     <contact>

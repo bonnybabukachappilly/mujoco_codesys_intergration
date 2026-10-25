@@ -19,6 +19,7 @@
         <model name="lift_mechanism" file="./mechanisms/lift.xml" />
         <model name="plate_mechanism" file="./mechanisms/plate.xml" />
         <model name="slider_mechanism" file="./mechanisms/slider.xml" />
+        <model name="robot_mechanism" file="./mechanisms/robot_lift.xml" />
     </asset>
 
     <default>

@@ -26,9 +26,9 @@ FCC: dict = {
 
 MECH_CONTROLLERS: dict[str, dict] = {
     'lift_controller': {
-        'joints': ['left_lift_slide', 'right_lift_slide'], 'interface': ['effort'],
+        'joints': ['left_lift_slide', 'right_lift_slide'], 'interface': ['position'],
         'p': 1200.0, 'i': 100.0, 'd': 0.0, 'i_clamp': 20.0, 'ff': 100.0,
-        'goal': 0.003, 'stopped_vel': 0.005},
+        'goal': 0.005, 'stopped_vel': 0.005},
     'plate': {
         'joints': ['plate_x', 'plate_y'], 'interface': ['position'],
         'p': 250.0, 'i': 25.0, 'd': 50.0, 'i_clamp': 24.5, 'ff': 0.0,

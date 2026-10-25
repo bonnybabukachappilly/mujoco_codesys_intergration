@@ -25,94 +25,85 @@
     </xacro:macro>
 
     <xacro:macro name="station_mechanism_joints">
-        <!-- Lifts keep their effort control -->
-        <xacro:mech_joint_interface joint_name="left_lift_slide" limit="2000" />
-        <xacro:mech_joint_interface joint_name="right_lift_slide" limit="2000" />
+        <xacro:mech_joint_interface joint_name="left_lift_slide" command_type="position"
+            min_val="-0.005" max_val="1.505" init="-0.005" />
+        <xacro:mech_joint_interface joint_name="right_lift_slide" command_type="position"
+            min_val="-0.005" max_val="1.505" init="-0.005" />
 
-        <!-- Plate axes updated to use position control and match MuJoCo ranges -->
         <xacro:mech_joint_interface joint_name="p1_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="0.0"/>
+            max_val="4.0" init="0.0" />
         <xacro:mech_joint_interface joint_name="p1_plate_y" command_type="position" min_val="-2.05"
             max_val="0.01" init="-1.0" />
         <xacro:mech_joint_interface joint_name="p1_plate_z" command="false" init="0.0" />
 
 
         <xacro:mech_joint_interface joint_name="p2_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="0.0"/>
+            max_val="4.0" init="0.0" />
         <xacro:mech_joint_interface joint_name="p2_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p2_plate_z" command="false" init="0.0" />
 
 
-
         <xacro:mech_joint_interface joint_name="p3_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="1.0"/>
+            max_val="4.0" init="1.0" />
         <xacro:mech_joint_interface joint_name="p3_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p3_plate_z" command="false" init="0.0" />
 
 
-
         <xacro:mech_joint_interface joint_name="p4_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="2.0"/>
+            max_val="4.0" init="2.0" />
         <xacro:mech_joint_interface joint_name="p4_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p4_plate_z" command="false" init="0.0" />
 
 
-
         <xacro:mech_joint_interface joint_name="p5_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="3.0"/>
+            max_val="4.0" init="3.0" />
         <xacro:mech_joint_interface joint_name="p5_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p5_plate_z" command="false" init="0.0" />
 
 
-
         <xacro:mech_joint_interface joint_name="p6_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="3.0"/>
+            max_val="4.0" init="3.0" />
         <xacro:mech_joint_interface joint_name="p6_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p6_plate_z" command="false" init="1.5" />
 
 
-
         <xacro:mech_joint_interface joint_name="p7_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="2.0"/>
+            max_val="4.0" init="2.0" />
         <xacro:mech_joint_interface joint_name="p7_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p7_plate_z" command="false" init="1.5" />
 
 
-
         <xacro:mech_joint_interface joint_name="p8_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="1.0"/>
+            max_val="4.0" init="1.0" />
         <xacro:mech_joint_interface joint_name="p8_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p8_plate_z" command="false" init="1.5" />
 
 
-
         <xacro:mech_joint_interface joint_name="p9_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="0.0"/>
+            max_val="4.0" init="0.0" />
         <xacro:mech_joint_interface joint_name="p9_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="0.0"/>
+            max_val="0.01" init="0.0" />
         <xacro:mech_joint_interface joint_name="p9_plate_z" command="false" init="1.5" />
 
 
-
         <xacro:mech_joint_interface joint_name="p10_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="0.0"/>
+            max_val="4.0" init="0.0" />
         <xacro:mech_joint_interface joint_name="p10_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="-1.0"/>
+            max_val="0.01" init="-1.0" />
         <xacro:mech_joint_interface joint_name="p10_plate_z" command="false" init="1.5" />
 
 
-
         <xacro:mech_joint_interface joint_name="p11_plate_x" command_type="position" min_val="-0.01"
-            max_val="4.0"  init="0.0"/>
+            max_val="4.0" init="0.0" />
         <xacro:mech_joint_interface joint_name="p11_plate_y" command_type="position" min_val="-2.05"
-            max_val="0.01" init="-2.0"/>
+            max_val="0.01" init="-2.0" />
         <xacro:mech_joint_interface joint_name="p11_plate_z" command="false" init="0.0" />
 
     </xacro:macro>

@@ -1,0 +1,18 @@
+server:
+  endpoint: opc.tcp://0.0.0.0:4840/assembly_station
+  namespace_uri: urn:assembly_station:opcua
+  server_name: Assembly Station OPC UA Server
+  publish_rate: 20.0
+
+modules:
+  joint_states:
+    enabled: true
+    jsp_topic: /joint_states
+    deadband: 0.0001
+    lifts:
+      - { name: Left, joint: left_lift_slide }
+      - { name: Right, joint: right_lift_slide }
+    plates:
+      count: 11
+      joint_pattern: "p{n}_plate_{axis}"
+      axes: [x, y, z]
