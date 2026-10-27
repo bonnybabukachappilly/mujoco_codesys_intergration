@@ -1,6 +1,8 @@
+schema_version: 1
 name: base_top_vacuum
+type: eoat
 kind: static
-controller_type: forward_command_controller/ForwardCommandController
+controller_type: null
 
 xacro:
   file: urdf/static/base_top_vacuum/base_top_vacuum_macro.xacro
@@ -9,6 +11,7 @@ xacro:
 
 mujoco:
   file: models/eoat/static/base_top_vacuum/eoat.xml
+  package: mujoco_system
 
-link: gripper_base
+links: gripper_base
 base_link: gripper_base

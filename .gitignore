@@ -631,3 +631,4 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 refrences/
+ignore.md

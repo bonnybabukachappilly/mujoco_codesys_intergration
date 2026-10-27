@@ -15,54 +15,31 @@ get_filename_component(DOBOT_SHARE "${dobot_description_DIR}/.." ABSOLUTE)
 get_filename_component(EOAT_SHARE "${eoat_description_DIR}/.." ABSOLUTE)
 get_filename_component(MUJOCO_SHARE "${mujoco_system_DIR}/.." ABSOLUTE)
 
-set(GENERATOR "${CMAKE_CURRENT_SOURCE_DIR}/scripts/generate_station.py")
-set(STATION_YAML "${CMAKE_CURRENT_SOURCE_DIR}/config/station_configuration.yaml")
 
+set(STATION_YAML "${CMAKE_CURRENT_SOURCE_DIR}/config/model.yaml")
 set(GEN_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
-
-set(STAMP "${GEN_DIR}/.generated")
-
-file(GLOB_RECURSE GENERATOR_SOURCES CONFIGURE_DEPENDS
-  "${CMAKE_CURRENT_SOURCE_DIR}/scripts/generator/*.py")
-
-file(GLOB_RECURSE GENERATOR_INPUTS CONFIGURE_DEPENDS
-  "${DOBOT_SHARE}/config/*.yaml"
-  "${DOBOT_SHARE}/urdf/*.xacro"
-  "${EOAT_SHARE}/config/*.yaml"
-  "${EOAT_SHARE}/urdf/*.xacro"
-  "${MUJOCO_SHARE}/models/robots/*.xml"
-  "${MUJOCO_SHARE}/models/eoat/*.xml")
+set(MANIFEST "${GEN_DIR}/manifest.txt")
 
 add_custom_command(
-  OUTPUT "${STAMP}"
-  COMMAND "${Python3_EXECUTABLE}" "${GENERATOR}"
+  OUTPUT "${MANIFEST}"
+  COMMAND ${CMAKE_COMMAND} -E env
+  "PYTHONPATH=${STATION_GENERATOR_SRC}:$ENV{PYTHONPATH}"
+  ${Python3_EXECUTABLE} -m station_generator
   --station "${STATION_YAML}"
   --dobot-share "${DOBOT_SHARE}"
   --eoat-share "${EOAT_SHARE}"
   --mujoco-share "${MUJOCO_SHARE}"
   --out "${GEN_DIR}"
-  COMMAND ${CMAKE_COMMAND} -E touch "${STAMP}"
-  DEPENDS
-  "${GENERATOR}"
-  ${GENERATOR_SOURCES}
-  "${STATION_YAML}"
-  ${GENERATOR_INPUTS}
+  --verbose
+  DEPENDS ${GENERATOR_INPUTS}
   COMMENT "Generating assembly_station files"
-  VERBATIM
-  USES_TERMINAL
+  VERBATIM USES_TERMINAL
 )
-add_custom_target(generate_station ALL DEPENDS "${STAMP}")
+add_custom_target(generate_station ALL DEPENDS "${MANIFEST}")
 
 install(
-  DIRECTORY "${GEN_DIR}/"
-  DESTINATION share/${PROJECT_NAME}
-  PATTERN ".generated" EXCLUDE
-)
-
-install(
-  DIRECTORY launch config urdf
-  DESTINATION share/${PROJECT_NAME}
-)
+  DIRECTORY "${GEN_DIR}/" DESTINATION share/${PROJECT_NAME}
+  PATTERN "manifest.txt" EXCLUDE)
 
 
 if(BUILD_TESTING)

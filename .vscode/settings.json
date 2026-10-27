@@ -6,6 +6,7 @@
     ],
     "python.analysis.extraPaths": [
         "./workspace/install/**/lib/python3.*/site-packages",
+        "/usr/lib/python3/dist-packages"
     ],
     "python-envs.pythonProjects": [
         {
@@ -22,5 +23,5 @@
             "pattern": "**/*.xml",
             "systemId": "https://raw.githubusercontent.com/google-deepmind/mujoco/refs/heads/main/src/xml/generated/mjcf.xsd"
         }
-    ]
+    ],
 }
