@@ -1,5 +1,6 @@
+schema_version: 1
 name: cr5
-kind: robot
+type: robot
 controller_type: joint_trajectory_controller/JointTrajectoryController
 
 xacro:
@@ -7,14 +8,14 @@ xacro:
   macro: cr5_robot
   control: urdf/cr5/cr5_ros2_control.xacro
   control_macro: cr5_joint_interface
-  package: dobot_description
 
 mujoco:
+  package: mujoco_system
   file: models/robots/dobot/cr5/robot.xml
 
 links: [base_link, link_1, link_2, link_3, link_4, link_5, link_6, flange]
 base_link: base_link
-tip_link: flange
+flange_link: flange
 
 joints:
   - { name: joint_1, max_velocity: 3.14159, max_acceleration: 3.49065850399 }
@@ -25,8 +26,10 @@ joints:
   - { name: joint_6, max_velocity: 3.14159, max_acceleration: 17.4532925199 }
 
 named_poses:
-  home: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-  ready: [0.0, 0.0, 1.5707, 0.0, -1.5707, 0.0]
+  - name: home
+    joints: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  - name: ready
+    joints: [0.0, 0.0, 1.5707, 0.0, -1.5707, 0.0]
 
 tool_adjacent_links: [link_5, link_6]
 

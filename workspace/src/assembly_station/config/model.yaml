@@ -1,105 +1,74 @@
+schema_version: 1
 name: station
 
-models:
+components:
   cr5:
     type: robot
     make: dobot
-    ros:
-      package: dobot_description
-      descriptor: config/cr5.yaml
-    mujoco:
-      package: mujoco_system
-      descriptor: models/robots/dobot/cr5/robot.xml
+    descriptor: config/cr5.yaml
+    package: dobot_description
 
   pgc_50_35:
     type: eoat
     make: pgc
-    ros:
-      package: eoat_description
-      descriptor: config/pgc_50_35.yaml
-    mujoco:
-      package: mujoco_system
-      descriptor: models/eoat/pgc/pgc_50_35/gripper.xml
+    descriptor: config/pgc_50_35.yaml
+    package: eoat_description
 
-mechanism:
-  lift:
-    mujoco:
-      package: mujoco_system
-      descriptor: models/mechanisms/lift.xml
-    variant_list:
-      prefix:
-        - left_
-        - right_
-      commons:
-        body: lift_support
-        min_value: -0.005
-        max_val: 1.505
+  base_top_vacuum:
+    type: eoat
+    make: custom
+    descriptor: config/base_top_vacuum.yaml
+    package: eoat_description
 
-    variants:
-      left_:
-        body: lift_support
-        mujoco: { xyz: "0 0 0", rpy: "0 0 0" }
-        init_correction: -0.005
-        min_value: -0.005
-        max_val: 1.505
-      right_:
-        body: lift_support
-        mujoco: { xyz: "2 -0.304 0", rpy: "0 0 1.5708" }
-        init_correction: -0.005
-        min_value: -0.005
-        max_val: 1.505
+  # lift:
+  #   type: station_mech
+  #   make: custom
+  #   descriptor: config/lift.yaml
+  #   package: mujoco_system
 
-  plate:
-    mujoco:
-      package: mujoco_system
-      descriptor: models/mechanisms/plate.xml
-    variant_list:
-      - p1_
-      - p2_
-      - p3_
-      - p4_
-      - p5_
-      - p6_
-      - p7_
-      - p8_
-      - p9_
-      - p10_
-      - p11_
-    variants:
-      p1_:
+  # plate:
+  #   type: station_mech
+  #   make: custom
+  #   descriptor: config/plate.yaml
+  #   package: mujoco_system
 
-# layout_origin: { xyz: [-1.5, 2.0, 0.0], rpy: [0, 0, 0] }
+  # robot_lift:
+  #   type: base_mech
+  #   make: custom
+  #   descriptor: config/robot_lift.yaml
+  #   package: mujoco_system
 
-# support_height: 0.595
+layout_origin: { xyz: [-1.5, 2.0, 0.0], rpy: [0, 0, 0] }
+static_support_height: 0.595
 
 robots:
   - id: r1
     model: cr5
-    support: { xyz: "-0.466 -0.652 0", rpy: "0 0 1.5708" }
+    support: { xyz: [-0.466, -0.652, 0], rpy: [0, 0, 1.5708] }
     eoat: pgc_50_35
-    mount: { xyz: "0 0 0", rpy: "-1.57079633 0 0" }
-    base: robot_lift
+    mount: { xyz: [0, 0, 0], rpy: [-1.57079633, 0, 0] }
+    # base: robot_lift
 
   - id: r2
     model: cr5
-    support: { xyz: "0.152 0.466 0", rpy: "0 0 0" }
+    support: { xyz: [0.152, 0.466, 0], rpy: [0, 0, 0] }
 
   - id: r3
     model: cr5
-    support: { xyz: "1.148 0.466 0", rpy: "0 0 0" }
+    support: { xyz: [1.148, 0.466, 0], rpy: [0, 0, 0] }
 
   - id: r4
     model: cr5
-    support: { xyz: "2.148 0.466 0", rpy: "0 0 0" }
+    support: { xyz: [2.148, 0.466, 0], rpy: [0, 0, 0] }
 
   - id: r5
     model: cr5
-    support: { xyz: "3.148 0.466 0", rpy: "0 0 0" }
+    support: { xyz: [3.148, 0.466, 0], rpy: [0, 0, 0] }
 
   - id: r6
     model: cr5
-    support: { xyz: "3.148 0.466 3.795", rpy: "0 3.1416 0" }
+    support: { xyz: [3.148, 0.466, 3.795], rpy: [0, 3.1416, 0] }
 
   - id: r7
     model: cr5
-    support: { xyz: "-0.257 -1.719 3.795", rpy: "0 3.1416 -1.5708" }
+    support: { xyz: [-0.257, -1.719, 3.795], rpy: [0, 3.1416, -1.5708] }
